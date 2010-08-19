@@ -24,11 +24,14 @@
 
 @implementation ZKRelatedListSort
 
--(BOOL) ascending {
+-(BOOL) ascending 
+{
 	return [self boolean:@"ascending"];
 }
 
--(NSString *) column {
+-(NSString *) column 
+{
 	return [self string:@"column"];
 }
+
 @end

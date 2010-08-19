@@ -19,8 +19,8 @@
 // THE SOFTWARE.
 //
 
-#import "zkQueryResult.h"
-#import "zkDescribeField.h"
+#import "ZKQueryResult.h"
+#import "ZKDescribeField.h"
 
 @class ZKDescribeField;
 @class ZKElement;

@@ -20,15 +20,16 @@
 //
 
 
-#import "zkDescribeSObject.h"
-#import "zkDescribeField.h"
-#import "zkChildRelationship.h"
-#import "zkRecordTypeInfo.h"
-#import "zkParser.h"
+#import "ZKDescribeSObject.h"
+#import "ZKDescribeField.h"
+#import "ZKChildRelationship.h"
+#import "ZKRecordTypeInfo.h"
+#import "ZKParser.h"
 
 @implementation ZKDescribeSObject
 
--(void)dealloc {
+-(void)dealloc 
+{
 	[fields release];
 	[fieldsByName release];
 	[childRelationships release];
@@ -37,22 +38,29 @@
 }
 
 
--(NSString *)urlDetail {
+-(NSString *)urlDetail 
+{
 	return [self string:@"urlDetail"];
 }
--(NSString *)urlEdit {
+
+-(NSString *)urlEdit 
+{
 	return [self string:@"urlEdit"];
 }
--(NSString *)urlNew {
+
+-(NSString *)urlNew 
+{
 	return [self string:@"urlNew"];
 }
 
 -(NSArray *)fields {
-	if (fields == nil) {
+	if (fields == nil) 
+    {
 		NSArray * fn = [node childElements:@"fields"];
 		NSMutableDictionary *byName = [NSMutableDictionary dictionary];
 		NSMutableArray * fs = [NSMutableArray arrayWithCapacity:[fn count]];
-		for (ZKElement *fieldNode in fn) {
+		for (ZKElement *fieldNode in fn) 
+        {
 			ZKDescribeField * df = [[ZKDescribeField alloc] initWithXmlElement:fieldNode];
 			[df setSobject:self];
 			[fs addObject:df];
@@ -71,11 +79,14 @@
 	return [fieldsByName objectForKey:[name lowercaseString]];
 }
 
--(NSArray *)childRelationships {
-	if (childRelationships == nil) {
+-(NSArray *)childRelationships 
+{
+	if (childRelationships == nil) 
+    {
 		NSArray *crn = [node childElements:@"childRelationships"];
 		NSMutableArray *crs = [NSMutableArray arrayWithCapacity:[crn count]];
-		for (ZKElement *crNode in crn) {
+		for (ZKElement *crNode in crn) 
+        {
 			ZKChildRelationship * cr = [[ZKChildRelationship alloc] initWithXmlElement:crNode];
 			[crs addObject:cr];
 			[cr release];
@@ -85,15 +96,19 @@
 	return childRelationships;
 }
 
-- (NSString *)description {
+- (NSString *)description 
+{
 	return [NSString stringWithFormat:@"SObject %@ (%@)", [self name], [self label]];
 }
 
--(NSArray *)recordTypeInfos {
-	if (recordTypeInfos == nil) {
+-(NSArray *)recordTypeInfos 
+{
+	if (recordTypeInfos == nil) 
+    {
 		NSArray *rti = [node childElements:@"recordTypeInfos"];
 		NSMutableArray *res = [NSMutableArray arrayWithCapacity:[rti count]];
-		for (ZKElement *rnode in rti) {
+		for (ZKElement *rnode in rti) 
+        {
 			ZKRecordTypeInfo *r = [[ZKRecordTypeInfo alloc] initWithXmlElement:rnode];
 			[res addObject:r];
 			[r release];
@@ -107,7 +122,8 @@
 #pragma mark Utility methods
 
 // list all the fields, return string with comma seperator
-- (NSString *) getComaSepFieldList {
+- (NSString *) getComaSepFieldList 
+{
 	NSString *ret = @"";for (ZKDescribeField *fieldNode in [self fields] ) {
 		ret = [ret stringByAppendingFormat:@" %@,",[fieldNode name] ];
     }
@@ -128,7 +144,8 @@
 }
 
 // basic soql query for this object, returns all fields
-- (NSString *) getSimpleSoqlQuery {
+- (NSString *) getSimpleSoqlQuery 
+{
 	NSString *ret = @"Select ";	
 	ret = [ret stringByAppendingString: [self getComaSepFieldList]];
 	return  [ret stringByAppendingFormat:@" from %@", [self name] ];	

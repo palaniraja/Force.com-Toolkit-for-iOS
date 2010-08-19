@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 //
 
-#import "zkQueryResult_NSTableView.h"
+#import "ZKQueryResult_NSTableView.h"
 #import "ZKSObject.h"
 
 @implementation ZKQueryResult (NSTableViewAdditions)

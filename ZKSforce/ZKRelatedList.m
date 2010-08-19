@@ -26,36 +26,52 @@
 
 
 @implementation ZKRelatedList
--(void)dealloc {
+
+-(void)dealloc 
+{
 	[columns release];
 	[sort release];
 	[super dealloc];
 }
 
--(BOOL) custom {
+-(BOOL) custom 
+{
 	return [self boolean:@"custom"];
 }
 
--(NSString *) field {
+-(NSString *) field 
+{
 	return [self string:@"field"];
 }
--(NSString *) name {
+
+-(NSString *) name 
+{
 	return [self string:@"name"];
 }
--(NSString *) label {
+
+-(NSString *) label 
+{
 	return [self string:@"label"];
 }
--(NSString *) sobject {
+
+-(NSString *) sobject 
+{
 	return [self string:@"sobject"];
 }
-- (NSInteger ) limitRows {
+
+- (NSInteger ) limitRows 
+{
 	return [self integer:@"limitRows"];
 }
-- (NSArray *) columns {
-	if (columns == nil) {
+
+- (NSArray *) columns 
+{
+	if (columns == nil) 
+    {
 		NSArray *rti = [node childElements:@"columns"];
 		NSMutableArray *res = [NSMutableArray arrayWithCapacity:[rti count]];
-		for (ZKElement *rnode in rti) {
+		for (ZKElement *rnode in rti) 
+        {
 			ZKRelatedListColumn *r = [[ZKRelatedListColumn alloc] initWithXmlElement:rnode];
 			[res addObject:r];
 			[r release];
@@ -68,7 +84,8 @@
 	if (sort == nil) {
 		NSArray *rti = [node childElements:@"sort"];
 		NSMutableArray *res = [NSMutableArray arrayWithCapacity:[rti count]];
-		for (ZKElement *rnode in rti) {
+		for (ZKElement *rnode in rti) 
+        {
 			ZKRelatedListSort *r = [[ZKRelatedListSort alloc] initWithXmlElement:rnode];
 			[res addObject:r];
 			[r release];
@@ -84,27 +101,31 @@
 
 - (NSString *) describe 
 {	
-	return [@"" stringByAppendingFormat:@"%@ %@ %@ %@ %@",
+	return [NSString stringWithFormat:@"%@ %@ %@ %@ %@",
 			[self sobject],
 			[self name],
 			[self label],
-			[self field],[self custom]?@"custom":@"standard"
+			[self field],
+            [self custom]?@"custom":@"standard"
 			];
 }
 
-- (NSString *) removeLastComma :(NSString *) str {
+- (NSString *) removeLastComma :(NSString *) str 
+{
 	NSRange myRange = {[str length]-1,1};	// remove last comma
 	return [str stringByReplacingOccurrencesOfString:@"," withString:@"" options:0 range:myRange ];
 }
 
--(NSString *) normalName: (NSString *) str {
+-(NSString *) normalName: (NSString *) str 
+{
 	NSRange myRange = {0,[str length]};	
 	str = [str stringByReplacingOccurrencesOfString:@"toLabel(" withString:@"" options:0 range:myRange ];
 	NSRange bRange = {0,[str length]};
 	return [str stringByReplacingOccurrencesOfString:@")" withString:@"" options:0 range:bRange ]; 
 }
 			
--(NSString *) columnsFieldNames {
+-(NSString *) columnsFieldNames 
+{
 	NSString *ret = @"";
 	for (ZKRelatedListColumn *col in [self columns] ) {
 		ret = [ ret stringByAppendingFormat:@"%@,", [self normalName:[col name]] ];

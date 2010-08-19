@@ -25,16 +25,23 @@
 
 @implementation ZKRelatedListColumn
 
--(NSString *) field {
+-(NSString *) field 
+{
 	return [self string:@"field"];
 }
--(NSString *) name {
+
+-(NSString *) name 
+{
 	return [self string:@"name"];
 }
--(NSString *) format {
+
+-(NSString *) format 
+{
 	return [self string:@"format"];
 }
--(NSString *) label {
+
+-(NSString *) label 
+{
 	return [self string:@"label"];
 }
 

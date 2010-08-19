@@ -36,9 +36,11 @@
 - (NSArray *)childElements:(NSString *)name ns:(NSString *)namespace;
 - (NSArray *)childElements;
 - (NSString *)attributeValue:(NSString *)name ns:(NSString *)namespace;
+
 @end;
 
-@interface zkParser : NSObject {
+@interface ZKParser : NSObject {
 }
 +(ZKElement *)parseData:(NSData *)data;
+
 @end

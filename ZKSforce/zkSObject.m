@@ -20,9 +20,9 @@
 //
 
 
-#import "zkSObject.h"
-#import "zkQueryResult.h"
-#import "zkParser.h"
+#import "ZKSObject.h"
+#import "ZKQueryResult.h"
+#import "ZKParser.h"
 
 NSString * NS_URI_XSI = @"http://www.w3.org/2001/XMLSchema-instance";
 
@@ -31,7 +31,8 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 
 @implementation ZKSObject
 
-+(void)initialize {
++(void)initialize 
+{
 	dateTimeFormatter = [[NSDateFormatter alloc] init];
 	[dateTimeFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSZ"];
 	dateFormatter = [[NSDateFormatter alloc] init];
@@ -53,81 +54,93 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 	[currencyFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
 	[currencyFormatter setCurrencySymbol:@"$"];
 	[currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	
 }
 
-+ (id)withType:(NSString *)type {
++ (id)withType:(NSString *)type 
+{
 	return [[[ZKSObject alloc] initWithType:type] autorelease];
 }
 
-+ (id)withTypeAndId:(NSString *)type sfId:(NSString *)sfId {
++ (id)withTypeAndId:(NSString *)type sfId:(NSString *)sfId 
+{
 	ZKSObject *s = [ZKSObject withType:type];
 	[s setId:sfId];
 	return s;
 }
 
-+ (id) fromXmlNode:(ZKElement *)node {
++ (id) fromXmlNode:(ZKElement *)node 
+{
 	return [[[ZKSObject alloc] initFromXmlNode:node] autorelease];
 }
 
-- (id) initWithType:(NSString *)aType {
-	self = [super init];	
-	type = [aType retain];
-	fieldsToNull = [[NSMutableSet alloc] init];
-	fields = [[NSMutableDictionary alloc] init];
-	fieldOrder = [[NSMutableArray alloc] init];
+- (id) initWithType:(NSString *)aType 
+{
+	if (self = [super init])
+    {
+        type = [aType retain];
+        fieldsToNull = [[NSMutableSet alloc] init];
+        fields = [[NSMutableDictionary alloc] init];
+        fieldOrder = [[NSMutableArray alloc] init];
+    }
 	return self;
 }
 
 - (id) initFromXmlNode:(ZKElement *)node {
-	self = [super init];
-	int i, childCount;
-	Id = [[[node childElement:@"sf:Id"] stringValue] copy];
-	type = [[[node childElement:@"sf:type"] stringValue] copy];
-	fields = [[NSMutableDictionary alloc] init];
-	fieldOrder = [[NSMutableArray alloc] init];
-	fieldsToNull = [[NSMutableSet alloc] init];
-	NSArray *children = [node childElements];
-	childCount = [children count];
-	// start at 2 to skip Id & Type
-	for (i = 2; i < childCount; i++)
-	{
-		ZKElement *f = [children objectAtIndex:i];
-		NSString *xsiNil = [f attributeValue:@"nil" ns:NS_URI_XSI];
-		id fieldVal;
-		if (xsiNil != nil && [xsiNil isEqualToString:@"true"]) 
-			fieldVal = [NSNull null];
-		else {
-			NSString *xsiType = [f attributeValue:@"type" ns:NS_URI_XSI];
-			if ([xsiType hasSuffix:@"QueryResult"]) 
-				fieldVal = [[[ZKQueryResult alloc] initFromXmlNode:f] autorelease];
-			else if ([xsiType hasSuffix:@"sObject"])
-				fieldVal = [[[ZKSObject alloc] initFromXmlNode:f] autorelease];
-			else {
-				fieldVal = [f stringValue];
-			}
-		}
-		[fields setValue:fieldVal forKey:[f name]];
-		[fieldOrder addObject:[f name]];
-	}
+	if (self = [super init])
+    {
+        int i, childCount;
+        Id = [[[node childElement:@"sf:Id"] stringValue] copy];
+        type = [[[node childElement:@"sf:type"] stringValue] copy];
+        fields = [[NSMutableDictionary alloc] init];
+        fieldOrder = [[NSMutableArray alloc] init];
+        fieldsToNull = [[NSMutableSet alloc] init];
+        NSArray *children = [node childElements];
+        childCount = [children count];
+        // start at 2 to skip Id & Type
+        for (i = 2; i < childCount; i++)
+        {
+            ZKElement *f = [children objectAtIndex:i];
+            NSString *xsiNil = [f attributeValue:@"nil" ns:NS_URI_XSI];
+            id fieldVal;
+            if (xsiNil != nil && [xsiNil isEqualToString:@"true"]) 
+                fieldVal = [NSNull null];
+            else {
+                NSString *xsiType = [f attributeValue:@"type" ns:NS_URI_XSI];
+                if ([xsiType hasSuffix:@"QueryResult"]) 
+                    fieldVal = [[[ZKQueryResult alloc] initFromXmlNode:f] autorelease];
+                else if ([xsiType hasSuffix:@"sObject"])
+                    fieldVal = [[[ZKSObject alloc] initFromXmlNode:f] autorelease];
+                else {
+                    fieldVal = [f stringValue];
+                }
+            }
+            [fields setValue:fieldVal forKey:[f name]];
+            [fieldOrder addObject:[f name]];
+        }
+    }
 	return self;
 }
 
 -(id)initWithId:(NSString *)anId type:(NSString *)t fieldsToNull:(NSSet *)ftn fields:(NSDictionary *)f fieldOrder:(NSArray *)fo {
-	self = [super init];
-	Id = [anId copy];
-	type = [t copy];
-	fieldsToNull = [[NSMutableSet setWithSet:ftn] retain];
-	fields = [[NSMutableDictionary dictionaryWithDictionary:f] retain];
-	fieldOrder = [[NSMutableArray arrayWithArray:fo] retain];
+	if (self = [super init])
+    {
+        Id = [anId copy];
+        type = [t copy];
+        fieldsToNull = [[NSMutableSet setWithSet:ftn] retain];
+        fields = [[NSMutableDictionary dictionaryWithDictionary:f] retain];
+        fieldOrder = [[NSMutableArray arrayWithArray:fo] retain];
+    }
+
 	return self;
 }
 
--(id)copyWithZone:(NSZone *)zone {
+-(id)copyWithZone:(NSZone *)zone 
+{
 	return [[ZKSObject alloc] initWithId:Id type:type fieldsToNull:fieldsToNull fields:fields fieldOrder:fieldOrder];
 }
 
-- (void)dealloc {
+- (void)dealloc 
+{
 	[Id release];
 	[type release];
 	[fieldsToNull release];
@@ -136,31 +149,39 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 	[super dealloc];
 }
 
-- (id)description {
+- (id)description 
+{
 	return [NSString stringWithFormat:@"%@ %@ fields=%@ toNull=%@", type, Id, fields, fieldsToNull];
 }
 
-- (NSArray *)orderedFieldNames {
+- (NSArray *)orderedFieldNames 
+{
 	return fieldOrder;
 }
 
-- (void)setId:(NSString *)theId {
-	[Id autorelease];
-	Id = [theId retain];
+- (void)setId:(NSString *)theId 
+{
+    [theId retain];
+    [Id release];
+    Id = theId;
 }
 
-- (void)setType:(NSString *)t {
-	[type autorelease];
-	type = [t retain];
+- (void)setType:(NSString *)t 
+{
+    [t retain];
+    [type release];
+    type = t;
 }
 
-- (void)setFieldToNull:(NSString *)field {
+- (void)setFieldToNull:(NSString *)field 
+{
 	[fieldsToNull addObject:field];
 	[fields removeObjectForKey:field];
 	[fieldOrder removeObject:field];
 }
 
-- (void)setFieldValue:(NSObject *)value field:(NSString *)field {
+- (void)setFieldValue:(NSObject *)value field:(NSString *)field 
+{
 	if ((value == nil) || (value == [NSNull null]) || ([value isKindOfClass:[NSString class]] && [(NSString *)value length] == 0)) {
 		[self setFieldToNull:field];
 	} else {
@@ -171,31 +192,37 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 	}
 }
 
-- (void)setFieldDateTimeValue:(NSDate *)value field:(NSString *)field {
+- (void)setFieldDateTimeValue:(NSDate *)value field:(NSString *)field 
+{
 	NSMutableString *dt = [NSMutableString stringWithString:[dateTimeFormatter stringFromDate:value]];
 	// meh, insert the : in the TZ offset, to make it xsd:dateTime
 	[dt insertString:@":" atIndex:[dt length]-2];
 	[self setFieldValue:dt field:field];
 }
 
-- (void)setFieldDateValue:(NSDate *)value field:(NSString *)field {
+- (void)setFieldDateValue:(NSDate *)value field:(NSString *)field 
+{
 	[self setFieldValue:[dateFormatter stringFromDate:value] field:field];	
 }	
 
-- (id)fieldValue:(NSString *)field {
+- (id)fieldValue:(NSString *)field 
+{
 	id v = [fields objectForKey:field];
 	return v == [NSNull null] ? nil : v;
 }
 
-- (BOOL)isFieldToNull:(NSString *)field {
+- (BOOL)isFieldToNull:(NSString *)field 
+{
 	return [fieldsToNull containsObject:field];
 }
 
-- (BOOL)boolValue:(NSString *)field {
+- (BOOL)boolValue:(NSString *)field 
+{
 	return [[self fieldValue:field] isEqualToString:@"true"];
 }
 
-- (NSDate *)dateTimeValue:(NSString *)field {
+- (NSDate *)dateTimeValue:(NSString *)field 
+{
 	// ok, so a little hackish, but does the job
 	// note to self, make sure API always returns GMT times ;)
 	NSMutableString *dt = [NSMutableString stringWithString:[self fieldValue:field]];
@@ -204,39 +231,48 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 	return [dateTimeFormatter dateFromString:dt];
 }
 
-- (NSDate *)dateValue:(NSString *)field {
+- (NSDate *)dateValue:(NSString *)field 
+{
 	return [dateFormatter dateFromString:[self fieldValue:field]];
 }
 
-- (int)intValue:(NSString *)field {
+- (int)intValue:(NSString *)field 
+{
 	return [[self fieldValue:field] intValue];
 }
 
-- (double)doubleValue:(NSString *)field {
+- (double)doubleValue:(NSString *)field 
+{
 	return [[self fieldValue:field] doubleValue];
 }
 
-- (ZKQueryResult *)queryResultValue:(NSString *)field {
+- (ZKQueryResult *)queryResultValue:(NSString *)field 
+{
 	return [self fieldValue:field];
 }
 
-- (NSString *) Id {
+- (NSString *) Id 
+{
 	return [self fieldValue:@"Id"];
 }
 
-- (NSString *) getId {
+- (NSString *) getId 
+{
 	return [self fieldValue:@"Id"];
 }
 
-- (NSString *)type {
+- (NSString *)type 
+{
 	return type;
 }
 
-- (NSArray *)fieldsToNull {
+- (NSArray *)fieldsToNull 
+{
 	return [fieldsToNull allObjects];
 }
 
-- (NSDictionary *)fields {
+- (NSDictionary *)fields 
+{
 	return fields;
 }
 
@@ -244,7 +280,8 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 #pragma mark formatting helpers
 
 // if the UI view wants a string, and you know the type, format that here
-- (NSString *)fieldValueFormatted : (NSString *)field : (ZKDescribeField *)describe {
+- (NSString *)fieldValueFormatted : (NSString *)field : (ZKDescribeField *)describe 
+{
 	NSString *ftype  = [describe type];
 	NSString *ret = @"";
 	

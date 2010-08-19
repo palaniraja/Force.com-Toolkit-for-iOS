@@ -24,16 +24,23 @@
 
 @implementation ZKRecordTypeInfo
 
-- (BOOL)available {
+- (BOOL)available 
+{
 	return [self boolean:@"available"];
 }
-- (BOOL)defaultRecordTypeMapping {
+
+- (BOOL)defaultRecordTypeMapping 
+{
 	return [self boolean:@"defaultRecordTypeMapping"];
 }
-- (NSString *)name {
+
+- (NSString *)name 
+{
 	return [self string:@"name"];
 }
-- (NSString *)recordTypeId {
+
+- (NSString *)recordTypeId 
+{
 	return [self string:@"recordTypeId"];
 }
 

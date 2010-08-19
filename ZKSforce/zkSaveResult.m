@@ -20,30 +20,37 @@
 //
 
 
-#import "zkSaveResult.h"
-#import "zkParser.h"
+#import "ZKSaveResult.h"
+#import "ZKParser.h"
 
 @implementation ZKSaveResult
 
-- (NSString *)id {
+- (NSString *)id 
+{
 	return [self string:@"id"];
 }
 
-- (BOOL)success {
+- (BOOL)success 
+{
 	return [self boolean:@"success"];
 }
 
-- (NSString *)statusCode {
-	if ([self success]) return nil;
+- (NSString *)statusCode 
+{
+	if ([self success]) 
+        return nil;
 	return [self string:@"statusCode" fromXmlElement:[node childElement:@"errors"]];
 }
 
-- (NSString *)message {
-	if ([self success]) return nil;
+- (NSString *)message 
+{
+	if ([self success]) 
+        return nil;
 	return [self string:@"message" fromXmlElement:[node childElement:@"errors"]];
 }
 
-- (NSString *)description {
+- (NSString *)description 
+{
 	if ([self success])
 		return [self id];
 	return [NSString stringWithFormat:@"%@ - %@", [self statusCode], [self message]];

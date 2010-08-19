@@ -20,7 +20,7 @@
 //
 
 
-#import "zkEnvelope.h"
+#import "ZKEnvelope.h"
 
 @implementation ZKEnvelope
 
@@ -30,45 +30,55 @@ enum envState {
 	inBody = 3
 };
 
-- (void)start:(NSString *)primaryNamespceUri {
+- (void)start:(NSString *)primaryNamespceUri 
+{
 	[env release];
 	env = [NSMutableString stringWithFormat:@"<s:Envelope xmlns:s='http://schemas.xmlsoap.org/soap/envelope/' xmlns='%@'>", primaryNamespceUri];
 	state = inEnvelope;
 }
 
-- (void)moveToHeaders {
+- (void)moveToHeaders 
+{
 	if (state == inBody)
 		@throw [NSException exceptionWithName:@"Illegal State Exception" reason:@"Unable to write headers once we've moved to the body" userInfo:nil];
-	if (state == inHeaders) return;
+	if (state == inHeaders) 
+        return;
 	[self startElement:@"s:Header"];
 	state = inHeaders;
 }
 
-- (void)writeSessionHeader:(NSString *)sessionId {
-	if ([sessionId length] == 0) return;
+- (void)writeSessionHeader:(NSString *)sessionId 
+{
+	if ([sessionId length] == 0) 
+        return;
 	[self moveToHeaders];
 	[self startElement:@"SessionHeader"];
 	[self addElement:@"sessionId" elemValue:sessionId];
 	[self endElement:@"SessionHeader"];
 }
 
-- (void)writeCallOptionsHeader:(NSString *)clientId {
-	if ([clientId length] == 0) return;
+- (void)writeCallOptionsHeader:(NSString *)clientId 
+{
+	if ([clientId length] == 0) 
+        return;
 	[self moveToHeaders];
 	[self startElement:@"CallOptions"];
 	[self addElement:@"client" elemValue:clientId];
 	[self endElement:@"CallOptions"];
 }
 
-- (void)writeMruHeader:(BOOL)updateMru {
-	if (!updateMru) return;
+- (void)writeMruHeader:(BOOL)updateMru 
+{
+	if (!updateMru) 
+        return;
 	[self moveToHeaders];
 	[self startElement:@"MruHeader"];
 	[self addElement:@"updateMru" elemValue:@"true"];
 	[self endElement:@"MruHeader"];
 }
 
-- (void) moveToBody {
+- (void) moveToBody 
+{
 	if (state == inHeaders)
 		[self endElement:@"s:Header"];
 	if (state != inBody) 
@@ -76,41 +86,51 @@ enum envState {
 	state = inBody;
 }
 
-- (void) addElement:(NSString *)elemName elemValue:(id)elemValue {
-	if ([elemValue isKindOfClass:[NSString class]])      	[self addElementString:elemName elemValue:elemValue];
-	else if ([elemValue isKindOfClass:[NSArray class]]) 	[self addElementArray:elemName elemValue:elemValue];
-	else if ([elemValue isKindOfClass:[ZKSObject class]]) 	[self addElementSObject:elemName elemValue:elemValue];
+- (void) addElement:(NSString *)elemName elemValue:(id)elemValue 
+{
+	if ([elemValue isKindOfClass:[NSString class]])      	
+        [self addElementString:elemName elemValue:elemValue];
+	else if ([elemValue isKindOfClass:[NSArray class]]) 	
+        [self addElementArray:elemName elemValue:elemValue];
+	else if ([elemValue isKindOfClass:[ZKSObject class]]) 	
+        [self addElementSObject:elemName elemValue:elemValue];
 	else if ([elemValue isKindOfClass:[NSNull class]]) ;
-	else [self addElementString:elemName elemValue:[elemValue stringValue]];
+	else 
+        [self addElementString:elemName elemValue:[elemValue stringValue]];
 }
 
-- (void) addElementArray:(NSString *)elemName elemValue:(NSArray *)elemValues {
+- (void) addElementArray:(NSString *)elemName elemValue:(NSArray *)elemValues 
+{
 	NSEnumerator *e = [elemValues objectEnumerator];
 	id o;
 	while(o = [e nextObject])
 		[self addElement:elemName elemValue:o];
 }
 
-- (void) addElementString:(NSString *)elemName elemValue:(NSString *)elemValue {
+- (void) addElementString:(NSString *)elemName elemValue:(NSString *)elemValue 
+{
 	[self startElement:elemName];
 	[self writeText:elemValue];
 	[self endElement:elemName];
 }
 
-- (void) addElementSObject:(NSString *)elemName elemValue:(ZKSObject *)sobject {
+- (void) addElementSObject:(NSString *)elemName elemValue:(ZKSObject *)sobject 
+{
 	[self startElement:elemName];
 	[self addElement:@"type" elemValue:[sobject type]];
 	[self addElement:@"fieldsToNull" elemValue:[sobject fieldsToNull]];
 
 	NSEnumerator *e = [[sobject fields] keyEnumerator];
 	NSString *key;
-	while(key = [e nextObject]) {
+	while(key = [e nextObject]) 
+    {
 		[self addElement:key elemValue:[[sobject fields] valueForKey:key]];
 	}
 	[self endElement:elemName];
 }
 
-- (void) writeText:(NSString *)text  {
+- (void) writeText:(NSString *)text  
+{
 	unichar c;
 	unsigned int i, len = [text length];
 	for(i = 0; i < len; i++)
@@ -126,15 +146,18 @@ enum envState {
 	}
 }
 
-- (void )startElement:(NSString *)elemName {
+- (void )startElement:(NSString *)elemName 
+{
 	[env appendFormat:@"<%@>", elemName];
 }
 
-- (void )endElement:(NSString *)elemName {
+- (void )endElement:(NSString *)elemName 
+{
 	[env appendFormat:@"</%@>", elemName];
 }
 
-- (NSString *)end {
+- (NSString *)end 
+{
 	[env appendString:@"</s:Envelope>"];
 	return env;
 }

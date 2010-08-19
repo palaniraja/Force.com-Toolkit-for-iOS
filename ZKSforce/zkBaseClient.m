@@ -19,9 +19,9 @@
 // THE SOFTWARE.
 //
 
-#import "zkBaseClient.h"
-#import "zkSoapException.h"
-#import "zkParser.h"
+#import "ZKBaseClient.h"
+#import "ZKSoapException.h"
+#import "ZKParser.h"
 
 
 @implementation ZKBaseClient
@@ -34,15 +34,22 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 //@synthesize receivedData;
 @synthesize connectionStack;
 
-- (id) init {
-	connectionStack = [[NSMutableDictionary alloc] initWithCapacity:3];
+- (id) init 
+{
+    if (self = [super init]) {
+        connectionStack = [[NSMutableDictionary alloc] initWithCapacity:3];
+    }
 	return self;
 }
+
 - (void)dealloc {
+    [connectionStack release];
 	[endpointUrl release]; 
 	[super dealloc];
 }
-- (NSMutableURLRequest *)makeRequest:(NSString *)payload {
+
+- (NSMutableURLRequest *)makeRequest:(NSString *)payload 
+{
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:endpointUrl]];
 	[request setHTTPMethod:@"POST"];
 	[request addValue:@"text/xml; charset=UTF-8" forHTTPHeaderField:@"content-type"];	
@@ -53,7 +60,8 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	return request;
 }
 
-- (void) sendRequestAsync:(NSString *)payload withResponseDelegate:(id)responseDelegate andResponseSelector:(NSString *)responseSelector withOperationName:(NSString *)operation withObjectName:(NSString *)objectName withDelegate:(id)delegate {
+- (void) sendRequestAsync:(NSString *)payload withResponseDelegate:(id)responseDelegate andResponseSelector:(NSString *)responseSelector withOperationName:(NSString *)operation withObjectName:(NSString *)objectName withDelegate:(id)delegate 
+{
 	
 	NSMutableURLRequest *request = [self makeRequest:payload] ;
 	ZKURLConnection * conn = [[ZKURLConnection alloc] initWithRequest:request delegate:self withResponseDelegate:responseDelegate withResponseSelector:responseSelector 
@@ -61,16 +69,17 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	[conn release];
 }
 
-- (NSString *)getConnectionHashString:(NSURLConnection *)conn {
+- (NSString *)getConnectionHashString:(NSURLConnection *)conn 
+{
 	NSNumber *hash = [NSNumber numberWithInt:[conn hash]];
 	return [NSString stringWithFormat:@"%@", hash];
 }
 
-- (void)connection:(ZKURLConnection *)conn didReceiveResponse:(NSURLResponse *)response
 // A delegate method called by the NSURLConnection when the request/response 
 // exchange is complete.  We look at the response to check that the HTTP 
 // status code is 2xx and that the Content-Type is acceptable.  If these checks 
 // fail, we give up on the transfer.
+- (void)connection:(ZKURLConnection *)conn didReceiveResponse:(NSURLResponse *)response
 {
     NSLog(@"didReceiveResponse");
     
@@ -98,9 +107,9 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
     }    
 }
 
-- (void)connection:(ZKURLConnection *)conn didReceiveData:(NSData *)data
 // A delegate method called by the NSURLConnection as data arrives.  We just 
 // write the data to the file.
+- (void)connection:(ZKURLConnection *)conn didReceiveData:(NSData *)data
 {
 	NSLog(@"Data Received.");
 	
@@ -108,11 +117,12 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	[conn.receivedData appendData:data];
 }
 
-- (void)_stopReceiveWithStatus:(NSString *)statusString withConnection:(ZKURLConnection *)conn
 // Shuts down the connection and displays the result (statusString == nil) 
 // or the error status (otherwise).
+- (void)_stopReceiveWithStatus:(NSString *)statusString withConnection:(ZKURLConnection *)conn
 {
-    if (conn != nil) {
+    if (conn != nil) 
+    {
         [conn cancel];
     }
     //[self _receiveDidStopWithStatus:statusString];
@@ -120,8 +130,9 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 
 
 
--(ZKElement *)processResponse:(NSData *)respPayload response:(NSHTTPURLResponse *)resp error:(NSError **)err {
-	ZKElement *root = [zkParser parseData:respPayload];
+-(ZKElement *)processResponse:(NSData *)respPayload response:(NSHTTPURLResponse *)resp error:(NSError **)err 
+{
+	ZKElement *root = [ZKParser parseData:respPayload];
 	if (root == nil)	
 		@throw [NSException exceptionWithName:@"Xml error" reason:@"Unable to parse XML returned by server" userInfo:nil];
 	if (![[root name] isEqualToString:@"Envelope"])
@@ -129,7 +140,8 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	if (![[root namespace] isEqualToString:SOAP_NS])
 		@throw [NSException exceptionWithName:@"Xml error" reason:[NSString stringWithFormat:@"response XML not valid SOAP, root namespace should be %@ but was %@", SOAP_NS, [root namespace]] userInfo:nil];
 	ZKElement *body = [root childElement:@"Body" ns:SOAP_NS];
-	if (500 == resp.statusCode) {
+	if (500 == resp.statusCode) 
+    {
 		ZKElement *fault = [body childElement:@"Fault" ns:SOAP_NS];
 		if (fault == nil)
 			@throw [NSException exceptionWithName:@"Xml error" reason:@"Fault status code returned, but unable to find soap:Fault element" userInfo:nil];
@@ -143,7 +155,8 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 #pragma mark Original Code
 
 
-- (ZKElement *)sendRequest:(NSString *)payload {
+- (ZKElement *)sendRequest:(NSString *)payload 
+{
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:endpointUrl]];
 	[request setHTTPMethod:@"POST"];
 	[request addValue:@"text/xml; charset=UTF-8" forHTTPHeaderField:@"content-type"];	
@@ -151,13 +164,13 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	
 	NSData *data = [payload dataUsingEncoding:NSUTF8StringEncoding];
 	[request setHTTPBody:data];
-	
+	 
 	NSHTTPURLResponse *resp = nil;
 	NSError *err = nil;
 	// todo, support request compression
 	// todo, support response compression
 	NSData *respPayload = [ZKURLConnection sendSynchronousRequest:request returningResponse:&resp error:&err];
-	ZKElement *root = [zkParser parseData:respPayload];
+	ZKElement *root = [ZKParser parseData:respPayload];
 	if (root == nil)	
 		@throw [NSException exceptionWithName:@"Xml error" reason:@"Unable to parse XML returned by server" userInfo:nil];
 	if (![[root name] isEqualToString:@"Envelope"])
@@ -165,7 +178,8 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	if (![[root namespace] isEqualToString:SOAP_NS])
 		@throw [NSException exceptionWithName:@"Xml error" reason:[NSString stringWithFormat:@"response XML not valid SOAP, root namespace should be %@ but was %@", SOAP_NS, [root namespace]] userInfo:nil];
 	ZKElement *body = [root childElement:@"Body" ns:SOAP_NS];
-	if (500 == [resp statusCode]) {
+	if (500 == [resp statusCode]) 
+    {
 		ZKElement *fault = [body childElement:@"Fault" ns:SOAP_NS];
 		if (fault == nil)
 			@throw [NSException exceptionWithName:@"Xml error" reason:@"Fault status code returned, but unable to find soap:Fault element" userInfo:nil];

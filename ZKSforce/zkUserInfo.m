@@ -20,7 +20,7 @@
 //
 
 
-#import "zkUserInfo.h"
+#import "ZKUserInfo.h"
 
 @implementation ZKUserInfo
 
@@ -45,55 +45,88 @@
 */
 
 					
--(BOOL)accessibilityMode {
+-(BOOL)accessibilityMode 
+{
 	return [self boolean:@"accessibilityMode"];
 }
--(NSString *)currencySymbol {
+
+-(NSString *)currencySymbol 
+{
 	return [self string:@"currencySymbol"];
 }
--(NSString *)organizationId {
+
+-(NSString *)organizationId 
+{
 	return [self string:@"organizationId"];
 }
--(BOOL)organizationIsMultiCurrency {
+
+-(BOOL)organizationIsMultiCurrency 
+{
 	return [self boolean:@"organizationMultiCurrency"];
 }
--(NSString *)organizationName {
+
+-(NSString *)organizationName 
+{
 	return [self string:@"organizationName"];
 }
--(NSString *)defaultCurrencyIsoCode {
+
+-(NSString *)defaultCurrencyIsoCode 
+{
 	return [self string:@"userDefaultCurrencyIsoCode"];
 }
--(NSString *)email {
+
+-(NSString *)email 
+{
 	return [self string:@"userEmail"];
 }
--(NSString *)fullName {
+
+-(NSString *)fullName 
+{
 	return [self string:@"userFullName"];
 }
--(NSString *)userId {
+
+-(NSString *)userId 
+{
 	return [self string:@"userId"];
 }
--(NSString *)language {
+
+-(NSString *)language 
+{
 	return [self string:@"userLanguage"];
 }
--(NSString *)locale {
+
+-(NSString *)locale 
+{
 	return [self string:@"userLocale"];
 }
--(NSString *)timeZone {
+
+-(NSString *)timeZone 
+{
 	return [self string:@"userTimeZone"];
 }
--(NSString *)skin {
+
+-(NSString *)skin 
+{
 	return [self string:@"userUiSkin"];
 }
--(NSString *)licenseType {
+
+-(NSString *)licenseType 
+{
 	return [self string:@"licenseType"];
 }
--(NSString *)profileId {
+
+-(NSString *)profileId 
+{
 	return [self string:@"profileId"];
 }
--(NSString *)roleId {
+
+-(NSString *)roleId 
+{
 	return [self string:@"roleId"];
 }
--(NSString *)userName {
+
+-(NSString *)userName 
+{
 	return [self string:@"userName"];
 }
 

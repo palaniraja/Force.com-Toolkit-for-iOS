@@ -37,8 +37,8 @@
 	NSArray *relatedLists;
 }
 - (ZKDescribeLayoutButtonSection *) buttonLayoutSectionCopy;
-- (NSArray * ) detailLayoutSections;
-- (NSArray * ) editLayoutSections;
-- (NSString * ) Id;
+- (NSArray *) detailLayoutSections;
+- (NSArray *) editLayoutSections;
+- (NSString *) Id;
 - (NSArray *) relatedLists;
 @end

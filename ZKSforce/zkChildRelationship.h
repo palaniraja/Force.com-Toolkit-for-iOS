@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 //
 
-#import "zkXmlDeserializer.h"
+#import "ZKXmlDeserializer.h"
 
 //			<complexType name="ChildRelationship">
 //				<sequence>

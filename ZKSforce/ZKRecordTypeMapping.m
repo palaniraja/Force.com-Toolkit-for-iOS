@@ -24,32 +24,46 @@
 
 
 @implementation ZKRecordTypeMapping
--(void)dealloc {
+
+-(void)dealloc 
+{
 	[picklistsForRecordType release];
 	[super dealloc];
 }
 
--(BOOL) available {
+-(BOOL) available 
+{
 	return [self boolean:@"available"];
 }
--(BOOL) defaultRecordTypeMapping {
+
+-(BOOL) defaultRecordTypeMapping 
+{
 	return [self boolean:@"defaultRecordTypeMapping"];
 }
--(NSString *) recordTypeId {
+
+-(NSString *) recordTypeId 
+{
 	return [self string:@"recordTypeId"];
 } 
--(NSString *) name {
+
+-(NSString *) name 
+{
 	return [self string:@"name"];
 }
--(NSString *) layoutId {
+
+-(NSString *) layoutId 
+{
 	return [self string:@"layoutId"];
 }
 
-- (NSArray *) picklistsForRecordType {
-	if (picklistsForRecordType == nil) {
+- (NSArray *) picklistsForRecordType 
+{
+	if (picklistsForRecordType == nil) 
+    {
 		NSArray *rti = [node childElements:@"picklistsForRecordType"];
 		NSMutableArray *res = [NSMutableArray arrayWithCapacity:[rti count]];
-		for (ZKElement *rnode in rti) {
+		for (ZKElement *rnode in rti) 
+        {
 			ZKRecordTypeMapping *r = [[ZKRecordTypeMapping alloc] initWithXmlElement:rnode];
 			[res addObject:r];
 			[r release];

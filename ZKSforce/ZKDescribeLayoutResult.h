@@ -39,4 +39,5 @@
 - (NSArray *) layouts;
 - (NSArray *) recordTypeMappings;
 - (BOOL ) recordTypeSelectorRequired;
+
 @end

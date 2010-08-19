@@ -20,32 +20,37 @@
 //
 
 
-#import "zkChildRelationship.h"
+#import "ZKChildRelationship.h"
 
 @implementation ZKChildRelationship
 
--(BOOL)cascadeDelete {
+-(BOOL)cascadeDelete 
+{
 	return [self boolean:@"cascadeDelete"];
 }
 
--(NSString *)childSObject {
+-(NSString *)childSObject 
+{
 	return [self string:@"childSObject"];
 }
 
--(NSString *)field {
+-(NSString *)field 
+{
 	return [self string:@"field"];
 }
 
--(NSString *)relationshipName {
+-(NSString *)relationshipName 
+{
 	return [self string:@"relationshipName"];
 }
 
--(NSString *)description {
+-(NSString *)description 
+{
 	return [NSString stringWithFormat:@"ZKChildRelationship %@ %@ %@ %@",
-			[self string:@"childSObject"],
-			[self string:@"relationshipName"],
-			[self string:@"field"],
-			[self boolean:@"cascadeDelete"]?@"true":@"false"
+			[self childSObject],
+			[self relationshipName],
+			[self field],
+			[self cascadeDelete]?@"true":@"false"
 			];
 }
 

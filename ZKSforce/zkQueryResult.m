@@ -20,70 +20,84 @@
 //
 
 
-#import "zkQueryResult.h"
-#import "zkSObject.h"
-#import "zkParser.h"
+#import "ZKQueryResult.h"
+#import "ZKSObject.h"
+#import "ZKParser.h"
 
 @implementation ZKQueryResult
 
-- (id)initFromXmlNode:(ZKElement *)node {
-	self = [super init];
-	int i = 0;
-	size = [[[node childElement:@"size"] stringValue] intValue];
-	NSString * strDone = [[node childElement:@"done"] stringValue]; 
-	done = [strDone isEqualToString:@"true"];
-	if (done == NO)
-		queryLocator = [[[node childElement:@"queryLocator"] stringValue] copy];
+- (id)initFromXmlNode:(ZKElement *)node 
+{
+	if (self = [super init])
+    {
+        int i = 0;
+        size = [[[node childElement:@"size"] stringValue] intValue];
+        NSString * strDone = [[node childElement:@"done"] stringValue]; 
+        done = [strDone isEqualToString:@"true"];
+        if (done == NO)
+            queryLocator = [[[node childElement:@"queryLocator"] stringValue] copy];
 		
-	NSArray * nodes = [node childElements:@"records"];
-	NSMutableArray * recArray = [NSMutableArray arrayWithCapacity:[nodes count]];
-	ZKSObject * o;
-	for (i = 0; i < [nodes count]; i++)
-	{
-		ZKElement * n = [nodes objectAtIndex:i];
-		NSString *xsiNil = [n attributeValue:@"nil" ns:NS_URI_XSI];
-		if (xsiNil != nil && [xsiNil isEqualToString:@"true"]) 
-			continue;
-		o = [[ZKSObject alloc] initFromXmlNode:n];
-		[recArray addObject:o];
-		[o release];
-	}	
-	records = [recArray retain];
+        NSArray * nodes = [node childElements:@"records"];
+        NSMutableArray * recArray = [NSMutableArray arrayWithCapacity:[nodes count]];
+        ZKSObject * o;
+        for (i = 0; i < [nodes count]; i++)
+        {
+            ZKElement * n = [nodes objectAtIndex:i];
+            NSString *xsiNil = [n attributeValue:@"nil" ns:NS_URI_XSI];
+            if (xsiNil != nil && [xsiNil isEqualToString:@"true"]) 
+                continue;
+            o = [[ZKSObject alloc] initFromXmlNode:n];
+            [recArray addObject:o];
+            [o release];
+        }	
+        records = [recArray retain];
+    }
+
 	return self;
 }
 
-- (id)initWithRecords:(NSArray *)r size:(int)s done:(BOOL)d queryLocator:(NSString *)ql {
-	self = [super init];
-	records = [r retain];
-	done = d;
-	size = s;
-	queryLocator = [ql retain];
+- (id)initWithRecords:(NSArray *)r size:(int)s done:(BOOL)d queryLocator:(NSString *)ql 
+{
+	if (self = [super init])
+    {
+        records = [r retain];
+        done = d;
+        size = s;
+        queryLocator = [ql retain];
+    }
+
 	return self;
 }
 
-- (id)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(NSZone *)zone 
+{
 	return [[ZKQueryResult alloc] initWithRecords:records size:size done:done queryLocator:queryLocator];
 }
 
-- (void)dealloc {
+- (void)dealloc 
+{
 	[queryLocator release];
 	[records release];
 	[super dealloc];
 }
 
-- (int)size {
+- (int)size 
+{
 	return size;
 }
 
-- (BOOL)done {
+- (BOOL)done 
+{
 	return done;
 }
 
-- (NSString *)queryLocator {
+- (NSString *)queryLocator 
+{
 	return queryLocator;
 }
 
-- (NSArray *)records {
+- (NSArray *)records 
+{
 	return records;
 }
 

@@ -19,69 +19,108 @@
 // THE SOFTWARE.
 //
 
-#import "zkDescribeGlobalSObject.h"
+#import "ZKDescribeGlobalSObject.h"
 
 
 @implementation ZKDescribeGlobalSObject
 
--(BOOL)activateable {
+-(BOOL)activateable 
+{
 	return [self boolean:@"activateable"];
 }
--(BOOL)createable {
+
+-(BOOL)createable 
+{
 	return [self boolean:@"createable"];
 }
--(BOOL)custom {
+
+-(BOOL)custom 
+{
 	return [self boolean:@"custom"];
 }
--(BOOL)customSetting {
+
+-(BOOL)customSetting 
+{
 	return [self boolean:@"customSetting"];
 }
--(BOOL)deletable {
+
+-(BOOL)deletable 
+{
 	return [self boolean:@"deletable"];
 }
--(BOOL)deprecatedAndHidden {
+
+-(BOOL)deprecatedAndHidden 
+{
 	return [self boolean:@"deprecatedAndHidden"];
 }
--(BOOL)feedEnabled {
+
+-(BOOL)feedEnabled 
+{
 	return [self boolean:@"feedEnabled"];
 }
--(BOOL)layoutable {
+
+-(BOOL)layoutable 
+{
 	return [self boolean:@"layoutable"];
 }
--(BOOL)mergeable {
+
+-(BOOL)mergeable 
+{
 	return [self boolean:@"mergeable"];
 }
--(BOOL)queryable {
+
+-(BOOL)queryable 
+{
 	return [self boolean:@"queryable"];
 }
--(BOOL)replicateable {
+
+-(BOOL)replicateable 
+{
 	return [self boolean:@"replicateable"];
 }
--(BOOL)retrieveable {
+
+-(BOOL)retrieveable 
+{
 	return [self boolean:@"retrieveable"];
 }
--(BOOL)searchable {
+
+-(BOOL)searchable 
+{
 	return [self boolean:@"searchable"];
 }
--(BOOL)triggerable {
+
+-(BOOL)triggerable 
+{
 	return [self boolean:@"triggerable"];
 }
--(BOOL)undeleteable {
+
+-(BOOL)undeleteable 
+{
 	return [self boolean:@"undeleteable"];
 }
--(BOOL)updateable {
+
+-(BOOL)updateable 
+{
 	return [self boolean:@"updateable"];
 }
--(NSString *)keyPrefix {
+
+-(NSString *)keyPrefix 
+{
 	return [self string:@"keyPrefix"];
 }
--(NSString *)label {
+
+-(NSString *)label 
+{
 	return [self string:@"label"];
 }
--(NSString *)labelPlural {
+
+-(NSString *)labelPlural 
+{
 	return [self string:@"labelPlural"];
 }
--(NSString *)name {
+
+-(NSString *)name 
+{
 	return [self string:@"name"];
 }
 

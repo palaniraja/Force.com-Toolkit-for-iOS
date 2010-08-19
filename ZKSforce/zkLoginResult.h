@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 //
 
-#import "zkXmlDeserializer.h"
+#import "ZKXmlDeserializer.h"
 
 @class ZKUserInfo;
 
@@ -42,4 +42,5 @@
 -(ZKUserInfo *)userInfo;
 -(BOOL)passwordExpired;
 -(BOOL)sandbox;
+
 @end

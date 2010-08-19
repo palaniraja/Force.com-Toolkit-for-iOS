@@ -25,15 +25,19 @@
 
 @implementation ZKPicklistForRecordType
 
--(NSString *) picklistName {
+-(NSString *) picklistName 
+{
 	return [self string:@"picklistName"];
 }
 
-- (NSArray *) picklistValues {
-	if (picklistValues == nil) {
+- (NSArray *) picklistValues 
+{
+	if (picklistValues == nil) 
+    {
 		NSArray *pickVals = [node childElements:@"picklistValues"];
 		NSMutableArray *res = [NSMutableArray arrayWithCapacity:[pickVals count]];
-		for (ZKElement *rnode in pickVals) {
+		for (ZKElement *rnode in pickVals) 
+        {
 			ZKPicklistEntry *r = [[ZKPicklistEntry alloc] initWithXmlElement:rnode];
 			[res addObject:r];
 			[r release];

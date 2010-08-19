@@ -20,7 +20,7 @@
 //
 
 
-#import "zkXmlDeserializer.h"
+#import "ZKXmlDeserializer.h"
 
 /*
 <element name="autoNumber"         type="xsd:boolean"/>

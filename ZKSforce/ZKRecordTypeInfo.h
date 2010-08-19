@@ -20,7 +20,7 @@
 //
 
 
-#import "zkXmlDeserializer.h"
+#import "ZKXmlDeserializer.h"
 
 //            <complexType name="RecordTypeInfo">
 //               <sequence>
@@ -37,4 +37,5 @@
 - (BOOL)defaultRecordTypeMapping;
 - (NSString *)name;
 - (NSString *)recordTypeId;
+
 @end

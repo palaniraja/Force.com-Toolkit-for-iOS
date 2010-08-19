@@ -19,45 +19,53 @@
 // THE SOFTWARE.
 //
 
-#import "zkXmlDeserializer.h"
-#import "zkParser.h"
+#import "ZKXmlDeserializer.h"
+#import "ZKParser.h"
 
 @implementation ZKXmlDeserializer
 
--(id)initWithXmlElement:(ZKElement *)e {
+-(id)initWithXmlElement:(ZKElement *)e 
+{
 	self = [super init];
 	node = [e retain];
 	values = [[NSMutableDictionary alloc] init];
 	return self;
 }
 
--(void)dealloc {
+-(void)dealloc 
+{
 	[node release];
 	[values release];
 	[super dealloc];
 }
 
-- (NSString *)string:(NSString *)elem {
+- (NSString *)string:(NSString *)elem 
+{
 	id cached = [values objectForKey:elem];
-	if (cached != nil) return cached == [NSNull null] ? nil : cached;
+	if (cached != nil) 
+        return cached == [NSNull null] ? nil : cached;
 	id v = [self string:elem fromXmlElement:node];
 	[values setObject:(v != nil ? v : [NSNull null]) forKey:elem];
 	return v;
 }
 
-- (BOOL)boolean:(NSString *)elem {
+- (BOOL)boolean:(NSString *)elem 
+{
 	return [[self string:elem] isEqualToString:@"true"];
 }
 
-- (int)integer:(NSString *)elem {
+- (int)integer:(NSString *)elem 
+{
 	return [[self string:elem] intValue];
 }
 
-- (double)double:(NSString *)elem {
+- (double)double:(NSString *)elem 
+{
 	return [[self string:elem] doubleValue];
 }
 
-- (NSArray *)strings:(NSString *)elem {
+- (NSArray *)strings:(NSString *)elem 
+{
 	NSArray *cached = [values objectForKey:elem];
 	if (cached != nil) return cached;
 	NSArray *nodes = [node childElements:elem];
@@ -69,16 +77,20 @@
 	return s;
 }
 
-- (NSString *)string:(NSString *)elemName fromXmlElement:(ZKElement*)xmlElement {
+- (NSString *)string:(NSString *)elemName fromXmlElement:(ZKElement*)xmlElement 
+{
 	return [[xmlElement childElement:elemName] stringValue];
 }
 
-- (NSArray *)complexTypeArrayFromElements:(NSString *)elemName cls:(Class)type {
+- (NSArray *)complexTypeArrayFromElements:(NSString *)elemName cls:(Class)type 
+{
 	NSArray *cached = [values objectForKey:elemName];
-	if (cached == nil) {
+	if (cached == nil) 
+    {
 		NSArray *elements = [node childElements:elemName];
 		NSMutableArray *results = [NSMutableArray arrayWithCapacity:[elements count]];
-		for(ZKElement *childNode in elements) {
+		for(ZKElement *childNode in elements) 
+        {
 			NSObject *child = [[type alloc] initWithXmlElement:childNode];
 			[results addObject:child];
 			[child release];

@@ -17,7 +17,8 @@
 	  withResponseSelector:(NSString *)inResponseSelector
 		withClientDelegate:(id)inClientDelegate 
 	  withLayoutObjectName:(NSString *)inLayoutObjectName 
-		withOperationName:(NSString *)inOperationName; {
+		withOperationName:(NSString *)inOperationName
+{
 	
 	self.responseDelegate = inResponseDelegate; 
 	self.responseSelector = inResponseSelector;

@@ -26,7 +26,6 @@
 
 + (id) exceptionWithFaultCode:(NSString *)fc faultString:(NSString *)fs;
 
-- (NSString *)faultCode;
-- (void)setFaultCode:(NSString *)faultCode;
+@property (nonatomic, copy) NSString *faultCode;
 
 @end

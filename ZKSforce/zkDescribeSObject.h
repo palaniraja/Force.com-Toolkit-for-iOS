@@ -19,9 +19,9 @@
 // THE SOFTWARE.
 //
 
-#import "zkXmlDeserializer.h"
-#import "zkDescribeField.h"
-#import "zkDescribeGlobalSObject.h"
+#import "ZKXmlDeserializer.h"
+#import "ZKDescribeField.h"
+#import "ZKDescribeGlobalSObject.h"
 
 /*
 <element name="activateable"   		type="xsd:boolean"/>

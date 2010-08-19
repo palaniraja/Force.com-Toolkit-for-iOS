@@ -19,36 +19,43 @@
 // THE SOFTWARE.
 //
 
-#import "zkLoginResult.h"
-#import "zkUserInfo.h"
+#import "ZKLoginResult.h"
+#import "ZKUserInfo.h"
 
 @implementation ZKLoginResult
 
--(NSString *)metadataServerUrl {
+-(NSString *)metadataServerUrl 
+{
 	return [self string:@"metadataServerUrl"];
 }
 
--(NSString *)serverUrl {
+-(NSString *)serverUrl 
+{
 	return [self string:@"serverUrl"];
 }
 
--(NSString *)sessionId {
+-(NSString *)sessionId 
+{
 	return [self string:@"sessionId"];
 }
 
--(NSString *)userId {
+-(NSString *)userId 
+{
 	return [self string:@"userId"];
 }
 
--(ZKUserInfo *)userInfo {
+-(ZKUserInfo *)userInfo 
+{
 	return [[self complexTypeArrayFromElements:@"userInfo" cls:[ZKUserInfo class]] objectAtIndex:0];
 }
 
--(BOOL)passwordExpired {
+-(BOOL)passwordExpired 
+{
 	return [self boolean:@"passwordExpired"];
 }
 
--(BOOL)sandbox {
+-(BOOL)sandbox
+{
 	return [self boolean:@"sandbox"];
 }
 

@@ -19,19 +19,23 @@
 // THE SOFTWARE.
 //
 
-#import "zkParser.h"
+#import "ZKParser.h"
 
 @implementation ZKElement
 
--(id)initWithDocument:(xmlDocPtr)d node:(xmlNodePtr)n parent:(ZKElement *)p {
-	self = [super init];
-	parent = [p retain];
-	doc = d;
-	node = n;
+-(id)initWithDocument:(xmlDocPtr)d node:(xmlNodePtr)n parent:(ZKElement *)p 
+{
+	if (self = [super init])
+    {	
+        parent = [p retain];
+        doc = d;
+        node = n;
+    }
 	return self;
 }
 
--(id)initWithDocument:(xmlDocPtr)d {
+-(id)initWithDocument:(xmlDocPtr)d 
+{
 	xmlChar *xmlbuff;
     int buffersize;
 
@@ -40,29 +44,35 @@
 	return [self initWithDocument:d node:xmlDocGetRootElement(d) parent:nil];
 }
 
--(id)initWithNode:(xmlNodePtr)n parent:(ZKElement *)p {
+-(id)initWithNode:(xmlNodePtr)n parent:(ZKElement *)p 
+{
 	return [self initWithDocument:nil node:n parent:p];
 }
 
--(id)copyWithZone:(NSZone *)z {
+-(id)copyWithZone:(NSZone *)z 
+{
 	return [[ZKElement allocWithZone:z] initWithDocument:doc node:node parent:parent == nil ? self : parent];
 }
 
--(void)dealloc {
+-(void)dealloc 
+{
 	[parent release];
 	xmlFreeDoc(doc);
 	[super dealloc];
 }
 
-- (NSString *)name {
+- (NSString *)name 
+{
 	return [NSString stringWithUTF8String:(const char *)node->name];
 }
 
-- (NSString *)namespace {
+- (NSString *)namespace 
+{
 	return [NSString stringWithUTF8String:(const char *)node->ns->href];
 }
 
-- (NSString *)stringValue {
+- (NSString *)stringValue 
+{
 	xmlChar *v = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
 	NSString *s;
 	if (v == nil) {
@@ -74,7 +84,8 @@
 	return s;
 }
 
-- (NSString *)attributeValue:(NSString *)name ns:(NSString *)namespace {
+- (NSString *)attributeValue:(NSString *)name ns:(NSString *)namespace 
+{
 	const xmlChar * n = (const xmlChar *)[name UTF8String];
 	const xmlChar * ns = (const xmlChar *)[namespace UTF8String];
 	xmlChar *v = xmlGetNsProp(node, n, ns);
@@ -84,7 +95,8 @@
 	return sv;
 }
 
-- (id)childElements:(NSString *)name ns:(NSString *)namespace checkNs:(BOOL)checkNs all:(BOOL)returnAll {
+- (id)childElements:(NSString *)name ns:(NSString *)namespace checkNs:(BOOL)checkNs all:(BOOL)returnAll
+{
 	NSMutableArray *results = returnAll ? [NSMutableArray array] : nil;
 	const xmlChar * n = (const xmlChar *)[name UTF8String];
 	const xmlChar * ns = (const xmlChar *)[namespace UTF8String];
@@ -102,31 +114,37 @@
 	return results;
 }
 
-- (ZKElement *)childElement:(NSString *)name ns:(NSString *)namespace {
+- (ZKElement *)childElement:(NSString *)name ns:(NSString *)namespace 
+{
 	return [self childElements:name ns:namespace checkNs:YES all:NO];
 }
 
-- (ZKElement *)childElement:(NSString *)name {
+- (ZKElement *)childElement:(NSString *)name 
+{
 	return [self childElements:name ns:nil checkNs:NO all:NO];
 }
 
-- (NSArray *)childElements:(NSString *)name ns:(NSString *)namespace {
+- (NSArray *)childElements:(NSString *)name ns:(NSString *)namespace 
+{
 	return [self childElements:name ns:namespace checkNs:YES all:YES];
 }
 
-- (NSArray *)childElements:(NSString *)name {
+- (NSArray *)childElements:(NSString *)name 
+{
 	return [self childElements:name ns:nil checkNs:NO all:YES];
 }
 
-- (NSArray *)childElements {
+- (NSArray *)childElements 
+{
 	return [self childElements:nil ns:nil checkNs:NO all:YES];
 }
 
 @end
 
-@implementation zkParser
+@implementation ZKParser
 
-+(ZKElement *)parseData:(NSData *)data {
++(ZKElement *)parseData:(NSData *)data 
+{
 	xmlDocPtr doc = xmlReadMemory([data bytes], [data length], "noname.xml", NULL, 0);
 	if (doc != nil)
 		return [[[ZKElement alloc] initWithDocument:doc] autorelease];

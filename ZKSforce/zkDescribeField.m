@@ -20,159 +20,241 @@
 //
 
 
-#import "zkDescribeField.h"
-#import "zkPicklistEntry.h"
-#import "zkParser.h"
+#import "ZKDescribeField.h"
+#import "ZKPicklistEntry.h"
+#import "ZKParser.h"
 
 @implementation ZKDescribeField
 
-- (void)dealloc {
+- (void)dealloc 
+{
 	[picklistValues release];
 	[super dealloc];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(NSZone *)zone 
+{
 	ZKElement *n = [[node copyWithZone:zone] autorelease];
 	ZKDescribeField *rhs = [[ZKDescribeField alloc] initWithXmlElement:n];
 	[rhs setSobject:sobject];
 	return rhs;
 }
 
-- (ZKElement *)node {
+- (ZKElement *)node 
+{
 	return node;
 }
 
-- (BOOL)isEqual:(id)anObject {
-	if (![anObject isKindOfClass:[ZKDescribeField class]]) return NO;
+- (BOOL)isEqual:(id)anObject 
+{
+	if (![anObject isKindOfClass:[ZKDescribeField class]]) 
+        return NO;
 	return [node isEqual:[anObject node]];
 }
 
+// note we explicitly don't retain this to stop a retain cycle between us and the parent sobject.
+// as it has a reatined reference on us, it can't go away before we do.
 - (void)setSobject:(ZKDescribeSObject *)s {
-	// note we explicitly don't retain this to stop a retain cycle between us and the parent sobject.
-	// as it has a reatined reference on us, it can't go away before we do.
 	sobject = s;
 }
 
-- (ZKDescribeSObject *)sobject {
+- (ZKDescribeSObject *)sobject 
+{
 	return sobject;
 }
 
-- (unsigned)hash {
+- (unsigned)hash 
+{
 	return [node hash];
 }
-- (BOOL)autoNumber {
+
+- (BOOL)autoNumber 
+{
 	return [self boolean:@"autoNumber"];
 }
-- (int)byteLength {
+
+- (int)byteLength 
+{
 	return [self integer:@"byteLength"];
 }
-- (BOOL)calculated {
+
+- (BOOL)calculated 
+{
 	return [self boolean:@"calculated"];
 }
-- (NSString *)controllerName {
+
+- (NSString *)controllerName 
+{
 	return [self string:@"controllerName"];
 }
-- (BOOL)createable {
+
+- (BOOL)createable 
+{
 	return [self boolean:@"createable"];
 }
-- (BOOL)custom {
+
+- (BOOL)custom 
+{
 	return [self boolean:@"custom"];
 }
-- (BOOL)defaultOnCreate {
+
+- (BOOL)defaultOnCreate 
+{
 	return [self boolean:@"defaultOnCreate"];
 }
-- (BOOL)dependentPicklist {
+
+- (BOOL)dependentPicklist 
+{
 	return [self boolean:@"dependentPicklist"];
 }
-- (int)digits {
+
+- (int)digits 
+{
 	return [self integer:@"digits"];
 }
-- (BOOL)externalId {
+
+- (BOOL)externalId 
+{
 	return [self boolean:@"externalId"];
 }
-- (BOOL)filterable {
+
+- (BOOL)filterable 
+{
 	return [self boolean:@"filterable"];
 }
-- (BOOL)htmlFormatted {
+
+- (BOOL)htmlFormatted 
+{
 	return [self boolean:@"htmlFormatted"];
 }
-- (NSString *)label {
+
+- (NSString *)label 
+{
 	return [self string:@"label"];
 }
-- (int)length {
+
+- (int)length 
+{
 	return [self integer:@"length"];
 }
-- (NSString *)name {
+
+- (NSString *)name 
+{
 	return [self string:@"name"];
 }
-- (BOOL)nameField {
+
+- (BOOL)nameField 
+{
 	return [self boolean:@"nameField"];
 }
-- (BOOL)nillable {
+
+- (BOOL)nillable 
+{
 	return [self boolean:@"nillable"];
 }
-- (NSArray *)picklistValues {
+
+- (NSArray *)picklistValues 
+{
 	if (picklistValues == nil) 
 		picklistValues = [[self complexTypeArrayFromElements:@"picklistValues" cls:[ZKPicklistEntry class]] retain];
 	return picklistValues;
 }
-- (int)precision {
+
+- (int)precision 
+{
 	return [self integer:@"precision"];
 }
-- (NSArray *)referenceTo {
+
+- (NSArray *)referenceTo 
+{
 	return [self strings:@"referenceTo"];
 }
-- (NSString *)relationshipName {
+
+- (NSString *)relationshipName 
+{
 	return [self string:@"relationshipName"];
 }
-- (BOOL)restrictedPicklist {
+
+- (BOOL)restrictedPicklist 
+{
 	return [self boolean:@"restrictedPicklist"];
 }
-- (int)scale {
+
+- (int)scale 
+{
 	return [self integer:@"scale"];
 }
-- (NSString *)soapType {
+
+- (NSString *)soapType 
+{
 	return [self string:@"soapType"];
 }
-- (NSString *)type {
+
+- (NSString *)type 
+{
 	return [self string:@"type"];
 }
-- (BOOL)updateable {
+
+- (BOOL)updateable 
+{
 	return [self boolean:@"updateable"];
 }
-- (NSString *)description {
+
+- (NSString *)description 
+{
 	return [NSString stringWithFormat:@"Field %@ (%@)", [self name], [self label]];
 }
-- (NSString *)calculatedFormula {
+
+- (NSString *)calculatedFormula 
+{
 	return [self string:@"calculatedFormula"];
 }
-- (BOOL)caseSensitive {
+
+- (BOOL)caseSensitive 
+{
 	return [self boolean:@"caseSensitive"];
 }
-- (NSString *)defaultValueFormula {
+
+- (NSString *)defaultValueFormula 
+{
 	return [self string:@"defaultValueFormula"];
 }
-- (BOOL)namePointing {
+
+- (BOOL)namePointing 
+{
 	return [self boolean:@"namePointing"];
 }
-- (BOOL)sortable {
+
+- (BOOL)sortable 
+{
 	return [self boolean:@"sortable"];
 }
-- (BOOL)unique {
+
+- (BOOL)unique 
+{
 	return [self boolean:@"unique"];
 }
-- (BOOL)idLookup {
+
+- (BOOL)idLookup 
+{
 	return [self boolean:@"idLookup"];
 }
-- (int)relationshipOrder {
+
+- (int)relationshipOrder 
+{
 	return [self integer:@"relationshipOrder"];
 }
-- (BOOL)writeRequiresMasterRead {
+
+- (BOOL)writeRequiresMasterRead 
+{
 	return [self boolean:@"writeRequiresMasterRead"];
 }
-- (NSString *)inlineHelpText {
+
+- (NSString *)inlineHelpText 
+{
 	return [self string:@"inlineHelpText"];
 }
+
 - (BOOL)groupable {
 	return [self boolean:@"groupable"];
 }

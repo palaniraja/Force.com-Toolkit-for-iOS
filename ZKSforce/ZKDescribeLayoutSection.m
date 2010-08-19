@@ -27,35 +27,50 @@
 
 @implementation ZKDescribeLayoutSection 
 
--(void)dealloc {
+-(void)dealloc 
+{
 	[layoutRows release];
 	[super dealloc];
 }
 
--(BOOL) useCollapsibleSection {
+-(BOOL) useCollapsibleSection 
+{
 	return [self boolean:@"useCollapsibleSection"];
 }
--(BOOL) useHeading {
+
+-(BOOL) useHeading 
+{
 	return [self boolean:@"useHeading"];
 }
--(NSString *) recordTypeId {
+
+-(NSString *) recordTypeId 
+{
 	return [self string:@"recordTypeId"];
 }
--(NSString *) heading {
+
+-(NSString *) heading 
+{
 	return [self string:@"heading"];
 }
--(NSInteger ) columns {
+
+-(NSInteger ) columns 
+{
 	return [self integer:@"columns"];
 }
--(NSInteger ) rows {
+
+-(NSInteger ) rows 
+{
 	return [self integer:@"rows"];
 }
 
-- (NSArray *) layoutRows {
-	if (layoutRows == nil) {
+- (NSArray *) layoutRows 
+{
+	if (layoutRows == nil) 
+    {
 		NSArray *rti = [node childElements:@"layoutRows"];
 		NSMutableArray *res = [NSMutableArray arrayWithCapacity:[rti count]];
-		for (ZKElement *rnode in rti) {
+		for (ZKElement *rnode in rti) 
+        {
 			ZKDescribeLayoutRow *r = [[ZKDescribeLayoutRow alloc] initWithXmlElement:rnode];
 			[res addObject:r];
 			[r release];

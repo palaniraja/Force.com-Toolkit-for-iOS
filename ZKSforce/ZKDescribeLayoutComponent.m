@@ -23,17 +23,24 @@
 
 @implementation ZKDescribeLayoutComponent
  
--(NSString *) value {
+-(NSString *) value 
+{
 	return [self string:@"value"];
 }
 
--(NSString *) type  {
+-(NSString *) type  
+{
 	return [self string:@"type"];
 }
--(NSInteger) tabOrder {
+
+-(NSInteger) tabOrder 
+{
 	return [self integer:@"tabOrder"];
 }
--(NSInteger) displayLines {
+
+-(NSInteger) displayLines 
+{
 	return [self integer:@"displayLines"];
 }
+
 @end

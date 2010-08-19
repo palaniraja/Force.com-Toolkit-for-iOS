@@ -20,9 +20,10 @@
 //
 
 
-#import "zkXmlDeserializer.h"
+#import "ZKXmlDeserializer.h"
 
 @interface ZKUserInfo : ZKXmlDeserializer  {
+    
 }
 
 // API v7.0

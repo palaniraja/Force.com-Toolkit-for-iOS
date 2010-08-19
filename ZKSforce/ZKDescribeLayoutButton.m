@@ -25,14 +25,18 @@
 
 @implementation ZKDescribeLayoutButton
 
--(BOOL)custom {
+-(BOOL)custom 
+{
 	return [self boolean:@"custom"];
 }
 
--(NSString *)label {
+-(NSString *)label 
+{
 	return [self string:@"label"];
 }
--(NSString *)name {
+
+-(NSString *)name 
+{
 	return [self string:@"name"];
 }
 

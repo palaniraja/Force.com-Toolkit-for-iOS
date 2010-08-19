@@ -27,20 +27,25 @@
 
 @implementation ZKDescribeLayoutResult 
 
-- (void)dealloc {
+- (void)dealloc 
+{
 	[recordTypeMappings release];
 	[layouts release];
 	[super dealloc];
 }
 
-- (BOOL) recordTypeSelectorRequired {
+- (BOOL) recordTypeSelectorRequired 
+{
 	return [self boolean:@"recordTypeSelectorRequired"];
 }
 
--(NSArray *) recordTypeMappings {
+- (NSArray *) recordTypeMappings 
+{
 	return recordTypeMappings;	
 }
-- (NSArray *) layouts {
+
+- (NSArray *) layouts 
+{
 	if (layouts == nil) 
 		layouts = [[self complexTypeArrayFromElements:@"layouts" cls:[ZKDescribeLayout class]] retain];
 

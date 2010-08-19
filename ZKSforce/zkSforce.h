@@ -24,11 +24,11 @@
 // it easy to pull in everything you might need. you can use this, or just
 // import the bits you care about.
 
-#import "zkSforceClient.h"
-#import "zkUserInfo.h"
-#import "zkSObject.h"
-#import "zkSoapException.h"
-#import "zkSaveResult.h"
-#import "zkQueryResult.h"
-#import "zkDescribeSObject.h"
-#import "zkDescribeField.h"
+#import "ZKSforceClient.h"
+#import "ZKUserInfo.h"
+#import "ZKSObject.h"
+#import "ZKSoapException.h"
+#import "ZKSaveResult.h"
+#import "ZKQueryResult.h"
+#import "ZKDescribeSObject.h"
+#import "ZKDescribeField.h"
