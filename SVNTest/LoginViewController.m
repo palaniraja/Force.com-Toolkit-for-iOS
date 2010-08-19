@@ -39,8 +39,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-    txtUsername.text = @"dcarroll@chatterbuzz.com";
-    txtPassword.text = @"test1234cUb3haNhsBVrhrj78F22V6wTO";
+
 }
 
 
