@@ -83,7 +83,6 @@
 - (ZKLoginResult *)login:(NSString *)username password:(NSString *)password;
 - (NSArray *)describeGlobal;
 - (ZKDescribeSObject *)describeSObject:(NSString *)sobjectName;
-- (ZKDescribeLayoutResult *)describeLayout:(NSString *)sobjectName;
 - (NSArray *)search:(NSString *)sosl;
 - (ZKQueryResult *)query:(NSString *)soql;
 //- (ZKQueryResult *)query:(NSString *)soql withContext:(id)context;
@@ -129,7 +128,6 @@
 
 - (void)sobjectsImplAsync:(NSArray *)objects name:(NSString *)elemName withDelegate:(id)delegate;
 
-- (void)describeLayoutAsync:(NSString *)sobjectName withDelegate:(id)delegate;
 
 // status info
 - (BOOL)loggedIn;

@@ -30,31 +30,10 @@
 #import "ZKDescribeSObject.h"
 #import "ZKLoginResult.h"
 #import "ZKDescribeGlobalSObject.h"
-#import "ZKDescribeLayoutResult.h"
 #import "ZKParser.h"
+#import "ZKSforceClient+Private.h"
 
-static const int MAX_SESSION_AGE = 25 * 60; // 25 minutes
-static const int SAVE_BATCH_SIZE = 25;
 
-@interface ZKSforceClient (Private)
-
-- (ZKQueryResult *)queryImpl:(NSString *)value operation:(NSString *)op name:(NSString *)elemName;
-- (void)queryImpl:(NSString *)value operation:(NSString *)op name:(NSString *)elemName withDelegate:(id)delegate;
-- (NSArray *)sobjectsImpl:(NSArray *)objects name:(NSString *)elemName;
-- (void)checkSession;
-- (ZKLoginResult *)startNewSession;
-
-- (void)startNewSessionAsync:(id)delegate;
-- (ZKLoginResult *) parseLogin:(ZKElement *)body withConnection:(ZKURLConnection *)conn;
-- (NSMutableArray *)parseDelete:(ZKElement *)cr withConnection:(ZKURLConnection *)conn;
-- (NSArray *)parseDescribeGlobal:(ZKElement *)rr withConnection:(ZKURLConnection *)conn;
-- (ZKDescribeSObject *)parseDescribeSObject:(ZKElement *)dr withConnection:(ZKURLConnection *)conn;
-- (NSDictionary *)parseRetrieve:(ZKElement *)rr withConnection:(ZKURLConnection *)conn;
-- (NSArray *)parseSaveResults:(ZKElement *)cr withConnection:(ZKURLConnection *)conn;
-- (NSArray *) parseSearch:(ZKElement *)sr withConnection:(ZKURLConnection *)conn;
-- (void)parseServerTimeStamp:(ZKElement *)res withCallBackData:(CallBackData *) conn;
-- (void)prepareQueryResult:(ZKElement *)queryResult withConnection:(ZKURLConnection *)conn;
-@end
 
 @implementation ZKSforceClient;
 
@@ -225,28 +204,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	[self startNewSessionAsync:delegate];	
 } 
 
-- (void)startNewSessionAsync:(id)delegate 
-{
-	[sessionExpiresAt release];
-	sessionExpiresAt = [[NSDate dateWithTimeIntervalSinceNow:MAX_SESSION_AGE] retain];
-	[sessionId release];
-	[endpointUrl release];
-	endpointUrl = [authEndpointUrl copy];
-	
-	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionHeader:nil clientId:clientId];
-	[env startElement:@"login"];
-	[env addElement:@"username" elemValue:username];
-	[env addElement:@"password" elemValue:password]; 
-	[env endElement:@"login"];
-	[env endElement:@"s:Body"];
-	NSString *xml = [env end];
-	
-	[self sendRequestAsync:xml 
-	  withResponseDelegate:self 
-	   andResponseSelector:@"parseLogin:withConnection:" withOperationName:@"login" withObjectName:nil withDelegate:delegate];
-	[env release];
-	
-}
+
 
 - (void)queryAsync:(NSString *)soql withDelegate:(id)delegate 
 {
@@ -270,15 +228,6 @@ static const int SAVE_BATCH_SIZE = 25;
 	[env release];
 }
 
-- (void)prepareQueryResult:(ZKElement *)queryResult withConnection:(ZKURLConnection *)conn 
-{
-	ZKQueryResult *result = [[ZKQueryResult alloc] initFromXmlNode:[[queryResult childElements] objectAtIndex:0]];
-	
-	if ([conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-		[conn.clientDelegate queryReady:result];
-	}
-	[result release];
-}
 
 - (void)describeGlobalAsync:(id)delegate 
 {
@@ -305,28 +254,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	}
 }
 
-- (NSArray *)parseDescribeGlobal:(ZKElement *)rr withConnection:(ZKURLConnection *)conn 
-{	
-	NSMutableArray *types = [NSMutableArray array]; 
-	NSArray *results = [[rr childElement:@"result"] childElements:@"sobjects"];
-	NSEnumerator * e = [results objectEnumerator];
-	while (rr = [e nextObject]) 
-    {
-		ZKDescribeGlobalSObject * d = [[ZKDescribeGlobalSObject alloc] initWithXmlElement:rr];
-		[types addObject:d];
-		[d release];
-	}
-	if (cacheDescribes) 
-    {
-		[describes setObject:types forKey:@"describe__global"];			
-	}
-	
-	if (conn.clientDelegate != nil && [conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) 
-    {
-		[conn.clientDelegate globalDescribesReady:types];
-	}
-	return types;
-}
+
 
 - (void)describeSObjectAsync:(NSString *)sobjectName withDelegate:(id)delegate 
 {
@@ -357,18 +285,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	}
 }
 
-- (ZKDescribeSObject *)parseDescribeSObject:(ZKElement *)dr withConnection:(ZKURLConnection *)conn 
-{
-	ZKElement *descResult = [dr childElement:@"result"];
-	ZKDescribeSObject *desc = [[[ZKDescribeSObject alloc] initWithXmlElement:descResult] autorelease];
-	if (cacheDescribes) {
-		[describes setObject:desc forKey:[[desc name] lowercaseString]];
-	}
-	if (conn.clientDelegate != nil && [conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-		[conn.clientDelegate describeSObjectReady:desc];
-	}
-	return desc;
-}
+
 
 - (void)searchAsync:(NSString *)sosl withDelegate:(id)delegate
 {
@@ -385,19 +302,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	}
 }
 
-- (NSArray *) parseSearch:(ZKElement *)sr withConnection:(ZKURLConnection *)conn 
-{
-	ZKElement *searchResult = [sr childElement:@"result"];
-	NSArray *records = [[searchResult childElement:@"searchRecords"] childElements:@"record"];
-	NSMutableArray *sobjects = [NSMutableArray array];
-	for (ZKElement *soNode in records) {
-		[sobjects addObject:[ZKSObject fromXmlNode:soNode]];
-	}
-	if (conn.clientDelegate != nil && [conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-		[conn.clientDelegate searchResultsReady:sobjects];
-	}
-	return sobjects;
-}
+
 
 - (void)queryAllAsync:(NSString *)soql withDelegate:(id)delegate 
 {
@@ -427,20 +332,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	[env release];
 }
 
-- (NSDictionary *)parseRetrieve:(ZKElement *)rr withConnection:(ZKURLConnection *)conn 
-{
-	NSMutableDictionary *sobjects = [NSMutableDictionary dictionary]; 
-	NSArray *results = [rr childElements:@"result"];
-	for (ZKElement *res in results) {
-		ZKSObject *o = [[ZKSObject alloc] initFromXmlNode:res];
-		[sobjects setObject:o forKey:[o fieldValue:@"Id"]];
-		[o release];
-	}
-	if (conn.clientDelegate != nil && [conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-		[conn.clientDelegate retrieveResultsReady:sobjects];
-	}
-	return sobjects;
-}
+
 
 - (void)createAsync:(NSArray *)objects withDelegate:(id)delegate 
 {
@@ -469,21 +361,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	[env release];
 }
 
-- (NSMutableArray *)parseDelete:(ZKElement *)cr withConnection:(ZKURLConnection *) conn 
-{
-	NSArray *resArr = [cr childElements:@"result"];
-	NSMutableArray *results = [NSMutableArray arrayWithCapacity:[resArr count]];
-	for (ZKElement *cr in resArr) {
-		ZKSaveResult *sr = [[ZKSaveResult alloc] initWithXmlElement:cr];
-		[results addObject:sr];
-		[sr release];
-	} 
-	
-	if (conn.clientDelegate != nil && [conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-		[conn.clientDelegate deleteResultsReady:results];
-	}
-	return results;
-}
+
 
 - (void)serverTimestampAsync:(id)delegate 
 {
@@ -500,15 +378,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	[env release];
 }
 
-- (NSString *)parseServerTimeStamp:(ZKElement *)res withConnection:(ZKURLConnection *)conn 
-{
-	ZKElement *timestamp = [res childElement:@"result"];
-	
-	if (conn.clientDelegate != nil != [conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-		[conn.clientDelegate serverTimestampReady:[timestamp stringValue]];
-	}
-	return [timestamp stringValue];	
-}
+
 
 - (void)setPasswordAsync:(NSString *)newPassword forUserId:(NSString *)userId withDelegate:(id)delegate 
 {
@@ -551,23 +421,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	[env release];
 }
 
-- (NSArray *)parseSaveResults:(ZKElement *)cr withConnection:(ZKURLConnection *)conn 
-{
-	
-	NSArray *resultsArr = [cr childElements:@"result"];
-	NSMutableArray *results = [NSMutableArray arrayWithCapacity:[resultsArr count]];
-	
-	for (ZKElement *cr in resultsArr) {
-		ZKSaveResult * sr = [[ZKSaveResult alloc] initWithXmlElement:cr];
-		[results addObject:sr];
-		[sr release];
-	}
-	
-	if (conn.clientDelegate != nil && [conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-		[conn.clientDelegate saveResultsReady:results];
-	}
-	return results;
-}
+
 
 #pragma mark synch implementation
 
@@ -582,73 +436,16 @@ static const int SAVE_BATCH_SIZE = 25;
 	return [self startNewSession];
 }
 
-- (void)saveLoginInKeychain 
-{
-	@try {
-		[usernameItem setObject:username forKey:(id)kSecAttrAccount];
-		[passwordItem setObject:password forKey:(id)kSecValueData];
-	} @catch (id theException) {
-		
-	} 
-}
 
-- (ZKLoginResult *)startNewSession 
-{
-	[sessionExpiresAt release];
-	sessionExpiresAt = [[NSDate dateWithTimeIntervalSinceNow:MAX_SESSION_AGE] retain];
-	[sessionId release];
-	[endpointUrl release];
-	endpointUrl = [authEndpointUrl copy];
-	
-	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionHeader:nil clientId:clientId];
-	[env startElement:@"login"];
-	[env addElement:@"username" elemValue:username];
-	[env addElement:@"password" elemValue:password];
-	[env endElement:@"login"];
-	[env endElement:@"s:Body"];
-	NSString *xml = [env end];
-	[env release];
-	
-	ZKElement *body = [self sendRequest:xml];
-	ZKLoginResult *lr = [self parseLogin:body withConnection:nil];
-	return lr;
-	
-}
 
-- (ZKLoginResult *) parseLogin:(ZKElement *)body withConnection:(ZKURLConnection *)conn 
-{
-	NSLog(@"Ok, we can parse this now.");
-	
-	ZKElement *result = [[body childElements:@"result"] objectAtIndex:0];
-	ZKLoginResult *lr = [[[ZKLoginResult alloc] initWithXmlElement:result] autorelease];
-	
-	[endpointUrl release];
-	endpointUrl = [[lr serverUrl] copy];
-	sessionId = [[lr sessionId] copy];
-	
-	userInfo = [[lr userInfo] retain];
-	
-	if (self.useKeyChain) {
-		[self saveLoginInKeychain];
-	}
-	if (conn.clientDelegate != nil) {
-		if ([conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-			[conn.clientDelegate loginSucceeded:lr];
-		}
-	} 
-	return lr;
-}
+
+
 
 - (BOOL)loggedIn 
 {
 	return [sessionId length] > 0;
 }
 
-- (void)checkSession 
-{
-	if ([sessionExpiresAt timeIntervalSinceNow] < 0)
-		[self startNewSession];
-}
 
 - (ZKUserInfo *)currentUserInfo 
 {
@@ -750,77 +547,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	return [self parseDescribeSObject:dr withConnection:nil];
 }
 
--(void)describeLayoutAsync:(NSString *)sobjectName withDelegate:(id)delegate 
-{
-	if (!sessionId) 
-        return;
-	NSString *cacheKey = [[sobjectName stringByAppendingString:@"layout" ] lowercaseString];
-	if (cacheDescribes) {
-		ZKDescribeLayoutResult * desc = [describes objectForKey:cacheKey];
-		if (desc != nil) {
-			if ([delegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-				[delegate describeLayoutResultsReady:desc];
-			}
-		}
-	}
-	[self checkSession];
-	
-	ZKEnvelope * env = [[ZKPartnerEnvelope alloc] initWithSessionHeader:sessionId clientId:clientId];
-	[env startElement:@"describeLayout"];
-	[env addElement:@"SobjectType" elemValue:sobjectName];
-	[env endElement:@"describeLayout"];
-	[env endElement:@"s:Body"];
-	
-	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseDescribeLayout:withConnection:" withOperationName:@"describeLayout" withObjectName:sobjectName withDelegate:delegate];
-	[env release];
-}
 
--(ZKDescribeLayoutResult *) parseDescribeLayout:(ZKElement *)dr withConnection:(ZKURLConnection *)conn 
-{
-	ZKElement *descResult = [dr childElement:@"result"];
-	ZKDescribeLayoutResult *desc = [[[ZKDescribeLayoutResult alloc] initWithXmlElement:descResult] autorelease];
-	NSString *cacheKey = [[conn.layoutObjectName stringByAppendingString:@"layout" ] lowercaseString];
-	
-	if (cacheDescribes) 
-		[describes setObject:desc forKey:cacheKey];
-	if (conn.responseDelegate != nil && [conn.clientDelegate conformsToProtocol:@protocol(ForceClientDelegate)]) {
-		[conn.clientDelegate describeLayoutResultsReady:desc];
-	}
-	return desc;	
-}
-
-- (ZKDescribeLayoutResult *)describeLayout:(NSString *)sobjectName 
-{
-	if (!sessionId) 
-        return nil;
-	NSString *cacheKey = [[sobjectName stringByAppendingString:@"layout" ] lowercaseString];
-	if (cacheDescribes) {
-		ZKDescribeLayoutResult * desc = [describes objectForKey:cacheKey];
-		if (desc != nil) 
-            return desc;
-	}
-	[self checkSession];
-	
-	ZKEnvelope * env = [[ZKPartnerEnvelope alloc] initWithSessionHeader:sessionId clientId:clientId];
-	[env startElement:@"describeLayout"];
-	[env addElement:@"SobjectType" elemValue:sobjectName];
-	[env endElement:@"describeLayout"];
-	[env endElement:@"s:Body"];
-	
-	ZKElement *dr = [self sendRequest:[env end]];
-	[env release];
-	ZKURLConnection *conn = [[ZKURLConnection alloc] init];
-	conn.layoutObjectName = sobjectName;
-	return [self parseDescribeLayout:dr withConnection:conn];
-	/*
-	 ZKElement *descResult = [dr childElement:@"result"];
-	 ZKDescribeLayoutResult *desc = [[[ZKDescribeLayoutResult alloc] initWithXmlElement:descResult] autorelease];
-	 [env release];
-	 
-	 if (cacheDescribes) 
-	 [describes setObject:desc forKey:cacheKey];
-	 return desc;*/
-}
 
 - (NSArray *)search:(NSString *)sosl 
 {
@@ -878,46 +605,7 @@ static const int SAVE_BATCH_SIZE = 25;
 {
 	return [self sobjectsImpl:objects name:@"update"];
 }
-/**
- TODO - Figure out how to make this work async
- **/
-- (NSArray *)sobjectsImpl:(NSArray *)objects name:(NSString *)elemName {
-	
-	if(!sessionId) 
-        return nil;
-	[self checkSession];
-	
-	// if more than we can do in one go, break it up.
-	if ([objects count] > SAVE_BATCH_SIZE) {
-		NSMutableArray *allResults = [NSMutableArray arrayWithCapacity:[objects count]];
-		NSRange rng = {0, MIN(SAVE_BATCH_SIZE, [objects count])};
-		while (rng.location < [objects count]) {
-			[allResults addObjectsFromArray:[self sobjectsImpl:[objects subarrayWithRange:rng] name:elemName]];
-			rng.location += rng.length;
-			rng.length = MIN(SAVE_BATCH_SIZE, [objects count] - rng.location);
-		}
-		return allResults;
-	}
-	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionAndMruHeaders:sessionId mru:updateMru clientId:clientId];
-	[env startElement:elemName];
-	NSEnumerator *e = [objects objectEnumerator];
-	ZKSObject *o;
-	while (o = [e nextObject])
-		[env addElement:@"sobject" elemValue:o];
-	[env endElement:elemName];
-	[env endElement:@"s:Body"];
-	
-	ZKElement *cr = [self sendRequest:[env end]];
-	NSArray *resultsArr = [cr childElements:@"result"];
-	NSMutableArray *results = [NSMutableArray arrayWithCapacity:[resultsArr count]];
-	for (ZKElement *cr in resultsArr) {
-		ZKSaveResult * sr = [[ZKSaveResult alloc] initWithXmlElement:cr];
-		[results addObject:sr];
-		[sr release];
-	}
-	[env release];
-	return results;
-}
+
 
 - (NSDictionary *)retrieve:(NSString *)fields sobject:(NSString *)sobjectType ids:(NSArray *)ids 
 {
@@ -964,24 +652,7 @@ static const int SAVE_BATCH_SIZE = 25;
 	 return results;*/
 }
 
-- (ZKQueryResult *)queryImpl:(NSString *)value operation:(NSString *)operation name:(NSString *)elemName 
-{
-	if(!sessionId) 
-        return nil;
-	[self checkSession];
-	
-	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionHeader:sessionId clientId:clientId];
-	[env startElement:operation];
-	[env addElement:elemName elemValue:value];
-	[env endElement:operation];
-	[env endElement:@"s:Body"];
-	
-	ZKElement *qr = [self sendRequest:[env end]];
-	
-	ZKQueryResult *result = [[ZKQueryResult alloc] initFromXmlNode:[[qr childElements] objectAtIndex:0]];
-	[env release];
-	return [result autorelease];
-}
+
 
 
 @end
