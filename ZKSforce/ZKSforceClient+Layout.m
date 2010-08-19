@@ -1,10 +1,24 @@
+// Copyright (c) 2010 Rick Fillion
 //
-//  ZKSforceClient+Layout.m
-//  SVNTest
+// Permission is hereby granted, free of charge, to any person obtaining a 
+// copy of this software and associated documentation files (the "Software"), 
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// and/or sell copies of the Software, and to permit persons to whom the 
+// Software is furnished to do so, subject to the following conditions:
 //
-//  Created by Rick Fillion on 8/18/10.
-//  Copyright 2010 Centrix.ca. All rights reserved.
+// The above copyright notice and this permission notice shall be included 
+// in all copies or substantial portions of the Software.
 //
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS 
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
+// THE SOFTWARE.
+//
+
 
 #import "ZKSforceClient+Layout.h"
 #import "ZKSforceClient+Private.h"
@@ -80,7 +94,7 @@
 	[env endElement:@"describeLayout"];
 	[env endElement:@"s:Body"];
 	
-	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseDescribeLayout:withConnection:" withOperationName:@"describeLayout" withObjectName:sobjectName withDelegate:delegate];
+	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(parseDescribeLayout:withConnection:) withOperationName:@"describeLayout" withObjectName:sobjectName withDelegate:delegate];
 	[env release];
 }
 

@@ -10,14 +10,14 @@
 
 @interface ZKURLConnection : NSURLConnection {
 	id responseDelegate;
-	NSString * responseSelector;
+	SEL responseSelector;
 	NSString *operationName;
 	NSString *layoutObjectName;
 	id clientDelegate;
 	NSMutableData *receivedData;
 }
 @property (retain, nonatomic) id responseDelegate;
-@property (retain, nonatomic) NSString * responseSelector;
+@property (assign, nonatomic) SEL responseSelector;
 @property (retain, nonatomic) NSString *operationName;
 @property (retain, nonatomic) NSString *layoutObjectName;
 @property (retain, nonatomic) id clientDelegate;
@@ -25,7 +25,7 @@
 
 -(id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate 
 withResponseDelegate:(id)responseDelegate 
-withResponseSelector:(NSString *)responseSelector
+withResponseSelector:(SEL)responseSelector
   withClientDelegate:(id)clientDelegate 
 withLayoutObjectName:(NSString *)layoutObjectName 
    withOperationName:(NSString *)operationName;

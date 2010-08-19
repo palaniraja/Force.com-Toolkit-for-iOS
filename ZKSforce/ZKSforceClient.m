@@ -51,18 +51,15 @@
 	@try {
 		ZKElement *resp = [self processResponse:conn.receivedData response:self.httpResponse error:&err];
 		
-		SEL mycallback;
-		mycallback = NSSelectorFromString(conn.responseSelector);
-		
 		inflightDelegate = conn.responseDelegate;
 		
-		if ([inflightDelegate respondsToSelector:mycallback]) 
+		if ([inflightDelegate respondsToSelector:conn.responseSelector]) 
         {
 			NSLog(@"We can respond to the selector.");
 			// This is an intermediate callback to the sforceClient
-			[inflightDelegate performSelector:mycallback withObject:resp withObject:conn];
+			[inflightDelegate performSelector:conn.responseSelector withObject:resp withObject:conn];
 		} else {
-			NSLog(@"We could not locate the selector.");
+			NSLog(@"We could not locate the selector. : %@", NSStringFromSelector(conn.responseSelector));
 		}
 		[resp retain];
 		
@@ -224,7 +221,7 @@
 	[env endElement:operation];
 	[env endElement:@"s:Body"]; 
 	
-	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"prepareQueryResult:withConnection:" withOperationName:@"query" withObjectName:nil withDelegate:delegate];
+	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(prepareQueryResult:withConnection:) withOperationName:@"query" withObjectName:nil withDelegate:delegate];
 	[env release];
 }
 
@@ -249,7 +246,7 @@
 		[env endElement:@"describeGlobal"];
 		[env endElement:@"s:Body"];
 		
-		[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseDescribeGlobal:withConnection" withOperationName:@"describeGlobal" withObjectName:nil withDelegate:delegate];
+		[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(parseDescribeGlobal:withConnection:) withOperationName:@"describeGlobal" withObjectName:nil withDelegate:delegate];
 		[env release];
 	}
 }
@@ -280,7 +277,7 @@
 		[env addElement:@"SobjectType" elemValue:sobjectName];
 		[env endElement:@"describeSObject"];
 		[env endElement:@"s:Body"];
-		[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseDescribeSObject:withConnection:" withOperationName:@"describeSObject" withObjectName:sobjectName	withDelegate:delegate];
+		[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(parseDescribeSObject:withConnection:) withOperationName:@"describeSObject" withObjectName:sobjectName	withDelegate:delegate];
 		[env release];
 	}
 }
@@ -297,7 +294,7 @@
 		[env addElement:@"searchString" elemValue:sosl];
 		[env endElement:@"search"];
 		[env endElement:@"s:Body"];
-		[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseSearch:withConnection" withOperationName:@"search" withObjectName:nil withDelegate:delegate];
+		[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(parseSearch:withConnection:) withOperationName:@"search" withObjectName:nil withDelegate:delegate];
 		[env release];
 	}
 }
@@ -328,7 +325,7 @@
 	[env addElementArray:@"ids" elemValue:ids];
 	[env endElement:@"retrieve"];
 	[env endElement:@"s:Body"];
-	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseRetrieve:withConnection:" withOperationName:@"retrieve" withObjectName:sobjectType withDelegate:delegate];
+	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(parseRetrieve:withConnection:) withOperationName:@"retrieve" withObjectName:sobjectType withDelegate:delegate];
 	[env release];
 }
 
@@ -357,7 +354,7 @@
 	[env endElement:@"delete"];
 	[env endElement:@"s:Body"];
 	
-	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseDelete:withConnection:" withOperationName:@"delete" withObjectName:nil withDelegate:delegate];
+	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(parseDelete:withConnection:) withOperationName:@"delete" withObjectName:nil withDelegate:delegate];
 	[env release];
 }
 
@@ -374,7 +371,7 @@
 	[env endElement:@"getServerTimestamp"];
 	[env endElement:@"s:Body"];
 	
-	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseServerTimestamp:withConnection:" withOperationName:@"serverTimestamp" withObjectName:nil withDelegate:delegate];
+	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(parseServerTimestamp:withConnection:) withOperationName:@"serverTimestamp" withObjectName:nil withDelegate:delegate];
 	[env release];
 }
 
@@ -393,7 +390,7 @@
 	[env endElement:@"setPassword"];
 	[env endElement:@"s:Body"];
 	
-	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseSetPassword:withConnection:" withOperationName:@"setPassword" withObjectName:nil withDelegate:delegate];
+	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(parseSetPassword:withConnection:) withOperationName:@"setPassword" withObjectName:nil withDelegate:delegate];
 	[env release];
 	
 }
@@ -417,7 +414,7 @@
 	[env endElement:elemName];
 	[env endElement:@"s:Body"];
 	
-	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@"parseSaveResults:withConnection:" withOperationName:elemName withObjectName:nil withDelegate:delegate];
+	[self sendRequestAsync:[env end] withResponseDelegate:self andResponseSelector:@selector(parseSaveResults:withConnection:) withOperationName:elemName withObjectName:nil withDelegate:delegate];
 	[env release];
 }
 

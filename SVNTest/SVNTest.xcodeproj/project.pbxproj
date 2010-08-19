@@ -250,10 +250,10 @@
 			isa = PBXGroup;
 			children = (
 				5C4E9CAF1213384D000C45AD /* ZKSforce */,
-				5C5815E612133454000BA324 /* RootViewController.m */,
 				5C5815E812133454000BA324 /* RootViewController.h */,
-				5C5815E912133454000BA324 /* LoginViewController.m */,
+				5C5815E612133454000BA324 /* RootViewController.m */,
 				5C5815EA12133454000BA324 /* LoginViewController.h */,
+				5C5815E912133454000BA324 /* LoginViewController.m */,
 				5C5815651213189E000BA324 /* SVNTestAppDelegate.h */,
 				5C5815661213189E000BA324 /* SVNTestAppDelegate.m */,
 				5C58156B1213189E000BA324 /* DetailViewController.h */,

@@ -60,7 +60,11 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	return request;
 }
 
-- (void) sendRequestAsync:(NSString *)payload withResponseDelegate:(id)responseDelegate andResponseSelector:(NSString *)responseSelector withOperationName:(NSString *)operation withObjectName:(NSString *)objectName withDelegate:(id)delegate 
+- (void) sendRequestAsync:(NSString *)payload withResponseDelegate:(id)responseDelegate 
+      andResponseSelector:(SEL)responseSelector 
+        withOperationName:(NSString *)operation 
+           withObjectName:(NSString *)objectName 
+             withDelegate:(id)delegate 
 {
 	
 	NSMutableURLRequest *request = [self makeRequest:payload] ;

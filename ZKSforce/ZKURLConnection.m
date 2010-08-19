@@ -14,20 +14,18 @@
 
 -(id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate 
 	  withResponseDelegate:(id)inResponseDelegate 
-	  withResponseSelector:(NSString *)inResponseSelector
+	  withResponseSelector:(SEL)inResponseSelector
 		withClientDelegate:(id)inClientDelegate 
 	  withLayoutObjectName:(NSString *)inLayoutObjectName 
 		withOperationName:(NSString *)inOperationName
 {
-	
-	self.responseDelegate = inResponseDelegate; 
-	self.responseSelector = inResponseSelector;
-	self.clientDelegate = inClientDelegate;
-	self.layoutObjectName = inLayoutObjectName;
-	self.operationName = inOperationName;
-	
 	if (self = [super initWithRequest:request delegate:delegate]) {
 		self.receivedData = [NSMutableData data];
+        self.responseDelegate = inResponseDelegate; 
+        self.responseSelector = inResponseSelector;
+        self.clientDelegate = inClientDelegate;
+        self.layoutObjectName = inLayoutObjectName;
+        self.operationName = inOperationName;
 	}
 	return self;
 }

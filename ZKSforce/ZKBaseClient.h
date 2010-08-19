@@ -45,7 +45,7 @@ extern NSString * const TEXTXML_CONTENTTYPE;
 
 - (ZKElement *)sendRequest:(NSString *)payload;
 - (ZKElement *)processResponse:(NSData *)respPayload response:(NSHTTPURLResponse *)resp error:(NSError **)err;
-- (void) sendRequestAsync:(NSString *)payload withResponseDelegate:(id)responseDelegate andResponseSelector:(NSString *)responseSelector withOperationName:(NSString *)operation withObjectName:(NSString *)objectName withDelegate:(id)delegate;
+- (void) sendRequestAsync:(NSString *)payload withResponseDelegate:(id)responseDelegate andResponseSelector:(SEL)responseSelector withOperationName:(NSString *)operation withObjectName:(NSString *)objectName withDelegate:(id)delegate;
 
 - (void)_stopReceiveWithStatus:(NSString *)statusString withConnection:(ZKURLConnection *)conn;
 - (NSString *)getConnectionHashString:(NSURLConnection *)conn;
