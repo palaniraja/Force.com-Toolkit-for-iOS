@@ -167,6 +167,7 @@
 		5C4E9CAF1213384D000C45AD /* ZKSforce */ = {
 			isa = PBXGroup;
 			children = (
+				5F8E3C2D121CD2C6001AF263 /* Layout */,
 				5C4E9CB01213384D000C45AD /* KeychainSupport */,
 				5C4E9CB31213384D000C45AD /* ZKBaseClient.h */,
 				5C4E9CB41213384D000C45AD /* ZKBaseClient.m */,
@@ -177,22 +178,6 @@
 				5C4E9CB91213384D000C45AD /* ZKDescribeField.m */,
 				5C4E9CBA1213384D000C45AD /* ZKDescribeGlobalSObject.h */,
 				5C4E9CBB1213384D000C45AD /* ZKDescribeGlobalSObject.m */,
-				5C4E9CBC1213384D000C45AD /* ZKDescribeLayout.h */,
-				5C4E9CBD1213384D000C45AD /* ZKDescribeLayout.m */,
-				5C4E9CBE1213384D000C45AD /* ZKDescribeLayoutButton.h */,
-				5C4E9CBF1213384D000C45AD /* ZKDescribeLayoutButton.m */,
-				5C4E9CC01213384D000C45AD /* ZKDescribeLayoutButtonSection.h */,
-				5C4E9CC11213384D000C45AD /* ZKDescribeLayoutButtonSection.m */,
-				5C4E9CC21213384D000C45AD /* ZKDescribeLayoutComponent.h */,
-				5C4E9CC31213384D000C45AD /* ZKDescribeLayoutComponent.m */,
-				5C4E9CC41213384D000C45AD /* ZKDescribeLayoutItem.h */,
-				5C4E9CC51213384D000C45AD /* ZKDescribeLayoutItem.m */,
-				5C4E9CC61213384D000C45AD /* ZKDescribeLayoutResult.h */,
-				5C4E9CC71213384D000C45AD /* ZKDescribeLayoutResult.m */,
-				5C4E9CC81213384D000C45AD /* ZKDescribeLayoutRow.h */,
-				5C4E9CC91213384D000C45AD /* ZKDescribeLayoutRow.m */,
-				5C4E9CCA1213384D000C45AD /* ZKDescribeLayoutSection.h */,
-				5C4E9CCB1213384D000C45AD /* ZKDescribeLayoutSection.m */,
 				5C4E9CCC1213384D000C45AD /* ZKDescribeSObject.h */,
 				5C4E9CCD1213384D000C45AD /* ZKDescribeSObject.m */,
 				5C4E9CCE1213384D000C45AD /* ZKEnvelope.h */,
@@ -205,22 +190,12 @@
 				5C4E9CD51213384D000C45AD /* ZKPartnerEnvelope.m */,
 				5C4E9CD61213384D000C45AD /* ZKPicklistEntry.h */,
 				5C4E9CD71213384D000C45AD /* ZKPicklistEntry.m */,
-				5C4E9CD81213384D000C45AD /* ZKPicklistForRecordType.h */,
-				5C4E9CD91213384D000C45AD /* ZKPicklistForRecordType.m */,
 				5C4E9CDA1213384D000C45AD /* ZKQueryResult.h */,
 				5C4E9CDB1213384D000C45AD /* ZKQueryResult.m */,
 				5C4E9CDC1213384D000C45AD /* ZKQueryResult_NSTableView.h */,
 				5C4E9CDD1213384D000C45AD /* ZKQueryResult_NSTableView.m */,
 				5C4E9CDE1213384D000C45AD /* ZKRecordTypeInfo.h */,
 				5C4E9CDF1213384D000C45AD /* ZKRecordTypeInfo.m */,
-				5C4E9CE01213384D000C45AD /* ZKRecordTypeMapping.h */,
-				5C4E9CE11213384D000C45AD /* ZKRecordTypeMapping.m */,
-				5C4E9CE21213384D000C45AD /* ZKRelatedList.h */,
-				5C4E9CE31213384D000C45AD /* ZKRelatedList.m */,
-				5C4E9CE41213384D000C45AD /* ZKRelatedListColumn.h */,
-				5C4E9CE51213384D000C45AD /* ZKRelatedListColumn.m */,
-				5C4E9CE61213384D000C45AD /* ZKRelatedListSort.h */,
-				5C4E9CE71213384D000C45AD /* ZKRelatedListSort.m */,
 				5C4E9CE81213384D000C45AD /* ZKSaveResult.h */,
 				5C4E9CE91213384D000C45AD /* ZKSaveResult.m */,
 				5C4E9CEA1213384D000C45AD /* ZKSforce.h */,
@@ -315,6 +290,39 @@
 				5C5815551213189E000BA324 /* SVNTest.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5F8E3C2D121CD2C6001AF263 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				5C4E9CBC1213384D000C45AD /* ZKDescribeLayout.h */,
+				5C4E9CBD1213384D000C45AD /* ZKDescribeLayout.m */,
+				5C4E9CBE1213384D000C45AD /* ZKDescribeLayoutButton.h */,
+				5C4E9CBF1213384D000C45AD /* ZKDescribeLayoutButton.m */,
+				5C4E9CC01213384D000C45AD /* ZKDescribeLayoutButtonSection.h */,
+				5C4E9CC11213384D000C45AD /* ZKDescribeLayoutButtonSection.m */,
+				5C4E9CC21213384D000C45AD /* ZKDescribeLayoutComponent.h */,
+				5C4E9CC31213384D000C45AD /* ZKDescribeLayoutComponent.m */,
+				5C4E9CC41213384D000C45AD /* ZKDescribeLayoutItem.h */,
+				5C4E9CC51213384D000C45AD /* ZKDescribeLayoutItem.m */,
+				5C4E9CC61213384D000C45AD /* ZKDescribeLayoutResult.h */,
+				5C4E9CC71213384D000C45AD /* ZKDescribeLayoutResult.m */,
+				5C4E9CC81213384D000C45AD /* ZKDescribeLayoutRow.h */,
+				5C4E9CC91213384D000C45AD /* ZKDescribeLayoutRow.m */,
+				5C4E9CCA1213384D000C45AD /* ZKDescribeLayoutSection.h */,
+				5C4E9CCB1213384D000C45AD /* ZKDescribeLayoutSection.m */,
+				5C4E9CD81213384D000C45AD /* ZKPicklistForRecordType.h */,
+				5C4E9CD91213384D000C45AD /* ZKPicklistForRecordType.m */,
+				5C4E9CE61213384D000C45AD /* ZKRelatedListSort.h */,
+				5C4E9CE71213384D000C45AD /* ZKRelatedListSort.m */,
+				5C4E9CE01213384D000C45AD /* ZKRecordTypeMapping.h */,
+				5C4E9CE11213384D000C45AD /* ZKRecordTypeMapping.m */,
+				5C4E9CE21213384D000C45AD /* ZKRelatedList.h */,
+				5C4E9CE31213384D000C45AD /* ZKRelatedList.m */,
+				5C4E9CE41213384D000C45AD /* ZKRelatedListColumn.h */,
+				5C4E9CE51213384D000C45AD /* ZKRelatedListColumn.m */,
+			);
+			name = Layout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
