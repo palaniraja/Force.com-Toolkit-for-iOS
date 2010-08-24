@@ -184,10 +184,12 @@
 		NSLog(@"ok");
 		ZKSObject *delObj = (ZKSObject *)[self.dataRows objectAtIndex:deleteIndexPath.row];
 		NSString *objectID = [delObj fieldValue:@"Id"];
-		[client deleteAsync:[NSArray arrayWithObjects:objectID,nil]	withDelegate:self];
+		//[client deleteAsync:[NSArray arrayWithObjects:objectID,nil]	withDelegate:self];
+        [[ZKServerSwitchboard switchboard] delete:[NSArray arrayWithObject:objectID] target:self selector:@selector(deleteResult:error:context:) context:nil];
 	}
 }
 
+// Old Method, see new one in Server Switchboard section
 -(void)deleteResultsReady:(NSMutableArray *)results {
 		ZKSaveResult *res = [results objectAtIndex:0];
 		
@@ -287,11 +289,35 @@
 
 - (void)queryResult:(ZKQueryResult *)result error:(NSError *)error context:(id)context
 {
-    NSLog(@"queryResult:%@ eror:%@ context:%@", result, error, context);
+    //NSLog(@"queryResult:%@ eror:%@ context:%@", result, error, context);
     if (result && !error)
     {
         self.dataRows = [NSMutableArray arrayWithArray:[result records]];
         [self.tableView reloadData];
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: [error domain]];
+    }
+}
+
+- (void)deleteResult:(NSArray *)results error:(NSError *)error context:(id)context
+{
+    //NSLog(@"deleteResult: %@ error: %@ context: %@", results, error, context);
+    if (results && !error)
+    {
+		ZKSaveResult *res = [results objectAtIndex:0];
+		
+		if ([res success]) {
+			[self.dataRows removeObjectAtIndex:deleteIndexPath.row];
+			[self.tableView beginUpdates];
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:deleteIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView endUpdates];
+		} else {
+			NSLog(@"%@", [res message]);
+			[self alertOKAction:@"Action Failed" withMessage:[res message]];
+			[self.tableView setEditing:NO animated:YES];
+		}
     }
     else if (error)
     {

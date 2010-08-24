@@ -54,5 +54,6 @@
 - (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context;
 - (void)create:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context;
 - (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context;
+- (void)delete:(NSArray *)objectIDs target:(id)target selector:(SEL)selector context:(id)context;
 
 @end

@@ -59,6 +59,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (ZKLoginResult *)_processLoginResponse:(ZKElement *)loginResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (ZKQueryResult *)_processQueryResponse:(ZKElement *)queryResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processSaveResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (NSArray *)_processDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
 
@@ -223,6 +224,20 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSaveResponse:error:context:) context: wrapperContext];
 }
+
+- (void)delete:(NSArray *)objectIDs target:(id)target selector:(SEL)selector context:(id)context
+{
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	[env startElement:@"delete"];
+	[env addElement:@"ids" elemValue:objectIDs];
+	[env endElement:@"delete"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
+	
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processDeleteResponse:error:context:) context: wrapperContext];
+}
+
 
 
 @end
@@ -448,7 +463,17 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     return results;
 }
 
-
+- (NSArray *)_processDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    NSArray *resArr = [saveResponseElement childElements:@"result"];
+	NSMutableArray *results = [NSMutableArray arrayWithCapacity:[resArr count]];
+	for (ZKElement *saveResultElement in resArr) {
+		ZKSaveResult *sr = [[[ZKSaveResult alloc] initWithXmlElement:saveResultElement] autorelease];
+		[results addObject:sr];
+	} 
+    [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
+	return results;
+}
 
 
 @end
