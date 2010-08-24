@@ -56,6 +56,8 @@
 		5C5815F112133454000BA324 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C5815EC12133454000BA324 /* MainWindow.xib */; };
 		5F8E3C35121CD3A6001AF263 /* ZKSforceClient+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8E3C34121CD3A6001AF263 /* ZKSforceClient+Layout.m */; };
 		5F8E3C40121CD4A7001AF263 /* ZKSforceClient+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8E3C3F121CD4A7001AF263 /* ZKSforceClient+Private.m */; };
+		5FB1A664122347CC00CEEDF1 /* ZKServerSwitchboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB1A663122347CC00CEEDF1 /* ZKServerSwitchboard.m */; };
+		5FB1A6C8122359CC00CEEDF1 /* NSObject+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB1A6C7122359CC00CEEDF1 /* NSObject+Additions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -153,6 +155,10 @@
 		5F8E3C34121CD3A6001AF263 /* ZKSforceClient+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKSforceClient+Layout.m"; sourceTree = "<group>"; };
 		5F8E3C3E121CD4A7001AF263 /* ZKSforceClient+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKSforceClient+Private.h"; sourceTree = "<group>"; };
 		5F8E3C3F121CD4A7001AF263 /* ZKSforceClient+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKSforceClient+Private.m"; sourceTree = "<group>"; };
+		5FB1A662122347CC00CEEDF1 /* ZKServerSwitchboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKServerSwitchboard.h; sourceTree = "<group>"; };
+		5FB1A663122347CC00CEEDF1 /* ZKServerSwitchboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKServerSwitchboard.m; sourceTree = "<group>"; };
+		5FB1A6C6122359CC00CEEDF1 /* NSObject+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Additions.h"; sourceTree = "<group>"; };
+		5FB1A6C7122359CC00CEEDF1 /* NSObject+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Additions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +227,10 @@
 				5C4E9CF41213384D000C45AD /* ZKUserInfo.m */,
 				5C4E9CF51213384D000C45AD /* ZKXmlDeserializer.h */,
 				5C4E9CF61213384D000C45AD /* ZKXmlDeserializer.m */,
+				5FB1A662122347CC00CEEDF1 /* ZKServerSwitchboard.h */,
+				5FB1A663122347CC00CEEDF1 /* ZKServerSwitchboard.m */,
+				5FB1A6C6122359CC00CEEDF1 /* NSObject+Additions.h */,
+				5FB1A6C7122359CC00CEEDF1 /* NSObject+Additions.m */,
 			);
 			name = ZKSforce;
 			path = ../ZKSforce;
@@ -436,6 +446,8 @@
 				5C4E9D181213384D000C45AD /* ZKXmlDeserializer.m in Sources */,
 				5F8E3C35121CD3A6001AF263 /* ZKSforceClient+Layout.m in Sources */,
 				5F8E3C40121CD4A7001AF263 /* ZKSforceClient+Private.m in Sources */,
+				5FB1A664122347CC00CEEDF1 /* ZKServerSwitchboard.m in Sources */,
+				5FB1A6C8122359CC00CEEDF1 /* NSObject+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

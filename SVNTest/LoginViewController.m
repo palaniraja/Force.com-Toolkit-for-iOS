@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "SVNTestAppDelegate.h"
+#import "ZKServerSwitchboard.h"
 
 @implementation LoginViewController
 
@@ -16,7 +17,8 @@
 -(IBAction)callLogin:(id)sender {
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
 	RootViewController *rvc = app.rootViewController;
-	[rvc.client loginAsync:txtUsername.text password:txtPassword.text withDelegate:rvc];
+	//[rvc.client loginAsync:txtUsername.text password:txtPassword.text withDelegate:rvc];
+    [[ZKServerSwitchboard switchboard] authenticateWithUsername:txtUsername.text password:txtPassword.text target:rvc selector:@selector(loginResult:error:)];
 }
 
 /*
@@ -68,6 +70,7 @@
 - (void)dealloc {
     [super dealloc];
 }
+
 
 
 @end

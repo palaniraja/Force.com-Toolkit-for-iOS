@@ -9,6 +9,8 @@
 #import "RootViewController.h"
 #import "DetailViewController.h"
 #import "SVNTestAppDelegate.h"
+#import "ZKLoginResult.h"
+#import "ZKServerSwitchboard.h"
 
 @implementation RootViewController
 
@@ -31,6 +33,7 @@
 												action:@selector(addItem:)] autorelease];
 }
 
+// Old Method, see Server Switchboard Results section.
 -(void)loginSucceeded:(ZKLoginResult *)results {
 	
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -47,9 +50,14 @@
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
 	[app popupActionSheet:err];
 }
+
 - (void)getRows {
-	[client queryAsync:@"Select Id, Name, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Phone, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Type, Website From Account" withDelegate:self];
+	NSString *queryString = @"Select Id, Name, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Phone, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Type, Website From Account";
+    //[client queryAsync:queryString withDelegate:self];
+    [[ZKServerSwitchboard switchboard] query:queryString target:self selector:@selector(queryResult:error:context:) context:nil];
 }
+
+// Old Method, see Server Switchboard Results section.
 -(void)queryReady:(ZKQueryResult *)results {
 	self.dataRows = [NSMutableArray arrayWithArray:[results records]];
 	[self.tableView reloadData];
@@ -256,6 +264,40 @@
     [super dealloc];
 }
 
+
+#pragma mark Server Switchboard Results
+
+- (void)loginResult:(ZKLoginResult *)result error:(NSError *)error
+{
+    if (result && !error)
+    {
+        NSLog(@"Hey, we logged in (with the new switchboard)!");
+        
+        [self getRows];
+        
+        // remove login dialog
+        SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
+        [app hideLogin];
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: [error domain]];
+    }
+}
+
+- (void)queryResult:(ZKQueryResult *)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"queryResult:%@ eror:%@ context:%@", result, error, context);
+    if (result && !error)
+    {
+        self.dataRows = [NSMutableArray arrayWithArray:[result records]];
+        [self.tableView reloadData];
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: [error domain]];
+    }
+}
 
 @end
 
