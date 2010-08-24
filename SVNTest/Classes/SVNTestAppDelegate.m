@@ -26,10 +26,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     // Override point for customization after app launch    
-	rootViewController.client = [[ZKSforceClient alloc] init];
-	
 	loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginView" bundle:nil];
-	[loginViewController setClient:rootViewController.client];
 	
 	BOOL showError = NO;
 	NSString *errorMsg;

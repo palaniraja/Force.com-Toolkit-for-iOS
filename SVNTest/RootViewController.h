@@ -11,22 +11,19 @@
 
 @class DetailViewController;
 
-@interface RootViewController : UITableViewController <UIActionSheetDelegate, ForceClientDelegate> {
+@interface RootViewController : UITableViewController <UIActionSheetDelegate> {
     DetailViewController *detailViewController;
-	ZKSforceClient *client;
 	
 	NSMutableArray *dataRows;
 	NSIndexPath *deleteIndexPath;
 }
 
 @property (nonatomic, retain) IBOutlet DetailViewController *detailViewController;
-@property (nonatomic, retain) ZKSforceClient *client;
 @property (nonatomic, retain) NSMutableArray *dataRows;
 @property (nonatomic, retain) NSIndexPath *deleteIndexPath;
 
 -(void)getRows;
 -(void)alertOKCancelAction:(NSString *)title withMessage:(NSString *)message;
 -(void)alertOKAction:(NSString *)title withMessage:(NSString *)message;
--(void)loginSucceeded:(ZKLoginResult *)results;
 
 @end

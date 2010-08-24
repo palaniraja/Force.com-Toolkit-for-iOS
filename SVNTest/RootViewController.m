@@ -15,7 +15,6 @@
 @implementation RootViewController
 
 @synthesize detailViewController;
-@synthesize client;
 @synthesize dataRows;
 @synthesize deleteIndexPath;
 
@@ -34,7 +33,7 @@
 }
 
 // Old Method, see Server Switchboard Results section.
--(void)loginSucceeded:(ZKLoginResult *)results {
+/*-(void)loginSucceeded:(ZKLoginResult *)results {
 	
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
 
@@ -44,7 +43,7 @@
 	
 	// remove login dialog
 	[app hideLogin];
-}
+}*/
 
 -(void)receivedErrorFromAPICall:(NSString *)err {
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -58,10 +57,10 @@
 }
 
 // Old Method, see Server Switchboard Results section.
--(void)queryReady:(ZKQueryResult *)results {
+/*-(void)queryReady:(ZKQueryResult *)results {
 	self.dataRows = [NSMutableArray arrayWithArray:[results records]];
 	[self.tableView reloadData];
-}
+} */
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
 	actionSheet.frame = CGRectMake(50, 50, 600.0, 600.0 ); 
@@ -190,7 +189,7 @@
 }
 
 // Old Method, see new one in Server Switchboard section
--(void)deleteResultsReady:(NSMutableArray *)results {
+/*-(void)deleteResultsReady:(NSMutableArray *)results {
 		ZKSaveResult *res = [results objectAtIndex:0];
 		
 		if ([res success]) {
@@ -203,7 +202,7 @@
 			[self alertOKAction:@"Action Failed" withMessage:[res message]];
 			[self.tableView setEditing:NO animated:YES];
 		}
-}
+}*/
 
 - (void)alertOKAction:(NSString *)title withMessage:(NSString *)message {
 	// open a alert with an OK and cancel button

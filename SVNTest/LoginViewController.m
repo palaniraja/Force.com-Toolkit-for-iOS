@@ -12,7 +12,7 @@
 
 @implementation LoginViewController
 
-@synthesize txtUsername, txtPassword, client;
+@synthesize txtUsername, txtPassword;
 
 -(IBAction)callLogin:(id)sender {
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
