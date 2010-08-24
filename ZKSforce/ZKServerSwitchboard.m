@@ -315,8 +315,9 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 {
     NSMutableDictionary * targetInfo = (id)CFDictionaryGetValue(connections, connection);
 
-    if(self.logXMLInOut) {
-		NSLog(@"ResponseStatus: %u\n", [response statusCode]);
+    if(self.logXMLInOut) 
+    {
+        NSLog(@"ResponseStatus: %u\n", [response statusCode]);
 		NSLog(@"ResponseHeaders:\n%@", [response allHeaderFields]);
 	}
 
@@ -361,7 +362,6 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
 - (void) _returnResponseForConnection: (NSURLConnection *)connection {
 	NSMutableDictionary * targetInfo = (id)CFDictionaryGetValue(connections, connection);
-	
 	NSMutableData * data = (id)CFDictionaryGetValue(connectionsData, connection);
 	
 	if (self.logXMLInOut) {
@@ -420,7 +420,8 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	if (![[root namespace] isEqualToString:SOAP_NS])
 		@throw [NSException exceptionWithName:@"Xml error" reason:[NSString stringWithFormat:@"response XML not valid SOAP, root namespace should be %@ but was %@", SOAP_NS, [root namespace]] userInfo:nil];
 	ZKElement *body = [root childElement:@"Body" ns:SOAP_NS];
-	if (500 == resp.statusCode) {
+	if (resp.statusCode == 500) 
+    {
 		// I don't believe this will work.  With our API we occaisionally return
 		// a 500, but not for operational errors such as bad username/password.  The 
 		// body of the response is generally a web page (HTML) not soap
@@ -451,7 +452,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [[wrapperContext valueForKey: @"selector"] getValue: &selector];
     id target = [wrapperContext valueForKey:@"target"];
     id context = [wrapperContext valueForKey:@"context"];
-    if (context == [NSNull null])
+    if ([context isEqual:[NSNull null]])
         context = nil;
     [target performSelector:selector withObject:response withObject:error withObject: context];
 }
