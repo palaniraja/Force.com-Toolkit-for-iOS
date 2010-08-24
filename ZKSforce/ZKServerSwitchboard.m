@@ -192,7 +192,19 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
 - (void)create:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
 {
+    // if more than we can do in one go, break it up. DC - Ignoring this case.
+	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionAndMruHeaders:sessionId mru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	[env startElement:@"create"];
+	for (ZKSObject *object in objects)
+    {
+        [env addElement:@"sobject" elemValue:object];
+    }
+	[env endElement:@"create"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
     
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processSaveResponse:error:context:) context: wrapperContext];
 }
 
 - (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context

@@ -135,11 +135,13 @@
 		[account setFieldValue:txtCountry.text field:@"ShippingCountry"];
 		
 		NSArray *objects = [[NSArray alloc] initWithObjects:account, nil];
-		SVNTestAppDelegate *app = (SVNTestAppDelegate *)[[UIApplication sharedApplication] delegate];
-		ZKSforceClient *client = app.rootViewController.client;
+		//SVNTestAppDelegate *app = (SVNTestAppDelegate *)[[UIApplication sharedApplication] delegate];
+		//ZKSforceClient *client = app.rootViewController.client;
 		if ([account fieldValue:@"Id"] == nil) {
-			[client createAsync:objects withDelegate:self];
+			//[client createAsync:objects withDelegate:self];
 			//saveResults = [client create:objects];
+            [[ZKServerSwitchboard switchboard] create:objects target:self selector:@selector(updateResults:error:context:) context:nil];
+
 		} else {
 			//[client updateAsync:objects withDelegate:self];
 			//saveResults = [client update:objects];
