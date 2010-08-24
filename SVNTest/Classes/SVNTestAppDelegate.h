@@ -35,5 +35,5 @@
 
 - (void)showLogin;
 - (void)hideLogin;
--(void)popupActionSheet:(NSString *)message;
+-(void)popupActionSheet:(NSError *)message;
 @end

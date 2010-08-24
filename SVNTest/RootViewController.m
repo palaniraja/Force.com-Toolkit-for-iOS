@@ -45,9 +45,9 @@
 	[app hideLogin];
 }*/
 
--(void)receivedErrorFromAPICall:(NSString *)err {
+-(void)receivedErrorFromAPICall:(NSError *)err {
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	[app popupActionSheet:err];
+	[app popupActionSheet:[[err userInfo] objectForKey:@"faultstring"]];
 }
 
 - (void)getRows {
@@ -282,7 +282,7 @@
     }
     else if (error)
     {
-        [self receivedErrorFromAPICall: [error domain]];
+        [self receivedErrorFromAPICall: error];
     }
 }
 

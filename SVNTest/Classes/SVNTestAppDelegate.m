@@ -28,19 +28,13 @@
     // Override point for customization after app launch    
 	loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginView" bundle:nil];
 	
-	BOOL showError = NO;
-	NSString *errorMsg;
-	
     // Add the split view controller's view to the window and display.
     [window addSubview:splitViewController.view];
     [window makeKeyAndVisible];
     
 	[self showLogin];
 	
-	if (showError) {
-		[self popupActionSheet:errorMsg];
-	}
-    return YES;
+   return YES;
 }
 
 - (void)showLogin {
@@ -52,15 +46,15 @@
 	[splitViewController dismissModalViewControllerAnimated:YES];
 }
 
--(void)popupActionSheet:(NSString *)message {
-    UIActionSheet *popupQuery = [[UIActionSheet alloc]
-								 initWithTitle:@"Unexpected Error"
+-(void)popupActionSheet:(NSError *)err {
+   UIActionSheet *popupQuery = [[UIActionSheet alloc]
+								 initWithTitle:[[err userInfo] objectForKey:@"faultcode"]
 								 delegate:rootViewController
 								 cancelButtonTitle:@"OK"
 								 destructiveButtonTitle:nil
 								 otherButtonTitles:nil];
 	
-	[popupQuery setMessage:message];
+	[popupQuery setMessage:[[err userInfo] objectForKey:@"faultstring"]];
 	popupQuery.actionSheetStyle = UIActionSheetStyleBlackOpaque;
 	[popupQuery showInView:loginViewController.view];
 	[popupQuery release];

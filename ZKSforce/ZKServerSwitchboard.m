@@ -71,6 +71,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 @synthesize userInfo;
 //@synthesize savesUsernameAndPasswordInKeychain;
 @synthesize updatesMostRecentlyUsed;
+@synthesize logXMLInOut;
 
 + (ZKServerSwitchboard *)switchboard
 {
@@ -124,6 +125,8 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
                                                 &kCFTypeDictionaryValueCallBacks);
     preferredApiVersion = 19;
 
+    self.logXMLInOut = NO;
+    
     return self;
 }
 
@@ -265,6 +268,12 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	[request addValue:@"\"\"" forHTTPHeaderField:@"SOAPAction"];
 	NSData *data = [payload dataUsingEncoding:NSUTF8StringEncoding];
 	[request setHTTPBody:data];
+
+	if(self.logXMLInOut) {
+		NSLog(@"OutputHeaders:\n%@", [request allHTTPHeaderFields]);
+		NSLog(@"OutputBody:\n%@", payload);
+	}
+    
     [self _sendRequest:request target:target selector:sel context:context];
 }
 
@@ -305,6 +314,12 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (void) connection: (NSURLConnection *)connection didReceiveResponse: (NSHTTPURLResponse *)response
 {
     NSMutableDictionary * targetInfo = (id)CFDictionaryGetValue(connections, connection);
+
+    if(self.logXMLInOut) {
+		NSLog(@"ResponseStatus: %u\n", [response statusCode]);
+		NSLog(@"ResponseHeaders:\n%@", [response allHeaderFields]);
+	}
+
     [targetInfo setValue: response forKey: @"response"];
 }
 
@@ -316,6 +331,10 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
 - (void) connection: (NSURLConnection *)connection didFailWithError: (NSError *)error
 {
+	if (self.logXMLInOut) {
+		NSLog(@"ResponseError:\n%@", error);
+	}
+
     NSMutableDictionary * targetInfo = (id)CFDictionaryGetValue(connections, connection);
     [targetInfo setValue: error forKey: @"error"];
     [self _returnResponseForConnection: connection];
@@ -340,35 +359,53 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
 
 
-- (void) _returnResponseForConnection: (NSURLConnection *)connection
-{
-    NSMutableDictionary * targetInfo = (id)CFDictionaryGetValue(connections, connection);
-    NSMutableData * data = (id)CFDictionaryGetValue(connectionsData, connection);
-    id target = [targetInfo valueForKey: @"target"];
-    SEL selector;
-    [[targetInfo valueForKey: @"selector"] getValue: &selector];
+- (void) _returnResponseForConnection: (NSURLConnection *)connection {
+	NSMutableDictionary * targetInfo = (id)CFDictionaryGetValue(connections, connection);
+	
+	NSMutableData * data = (id)CFDictionaryGetValue(connectionsData, connection);
+	
+	if (self.logXMLInOut) {
+		NSLog(@"ResponseBody:\n%@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+	}
+	
+	id target = [targetInfo valueForKey: @"target"];
+	SEL selector;
+	[[targetInfo valueForKey: @"selector"] getValue: &selector];
     
-    NSError *error = nil;
-    NSHTTPURLResponse * response = nil;
-    id errorObject = [targetInfo valueForKey: @"error"];
-    if (errorObject != [NSNull null] && [errorObject isKindOfClass:[NSError class]])
-    {
-        response = [targetInfo valueForKey: @"response"];
-        NSInteger status = [response statusCode];
-        if (status != 200) error = [NSError errorWithDomain: @"APIError" code: status userInfo: nil];
-    }
+	NSError *error = nil;
+	NSHTTPURLResponse * response = nil;
+	id errorObject = [targetInfo valueForKey: @"error"];
+	if (errorObject != [NSNull null] && [errorObject isKindOfClass:[NSError class]])
+	{
+		response = [targetInfo valueForKey: @"response"];
+		NSInteger status = [response statusCode];
+		if (status != 200) error = [NSError errorWithDomain: @"APIError" code: status userInfo: nil];
+	}
     
-    ZKElement *responseElement = nil;
-    if ([data length] && [error code] != 401) {
-        responseElement = [self _processHttpResponse:response data:data];
-    }
-    id context = [targetInfo valueForKey:@"context"];
-    if ([context isEqual: [NSNull null]])
-        context = nil;
+	ZKElement *responseElement = nil;
+	if ([data length] && [error code] != 401) {
+		responseElement = [self _processHttpResponse:response data:data];
+	}
+	
+		// In this case, a valid status code is returned meaning that the request was
+		// received and processed.  But, the result of the processing may be a SOAP
+		// Fault as defined by the service.  So we need to check every call to make sure
+		// that a fault wasn't returned, and if one was, to throw the error passing the 
+		// fault code and fault string
+		// Checking for SOAP Fault here now?
+	if ([responseElement childElement:@"faultcode"] != nil) {
+		NSDictionary *errorDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:[[responseElement childElement:@"faultcode"] stringValue],@"faultcode", [[responseElement childElement:@"faultstring"] stringValue], @"faultstring", nil];
+		error = [NSError errorWithDomain:@"APIError" code:0 userInfo:errorDictionary];
+	}
+	
+	id context = [targetInfo valueForKey:@"context"];
+	if ([context isEqual: [NSNull null]])
+		context = nil;
+	
+	[target performSelector:selector withObject:responseElement withObject:error withObject:context];
     
-    [target performSelector:selector withObject:responseElement withObject:error withObject:context];
-    CFDictionaryRemoveValue(connections, connection);
-    CFDictionaryRemoveValue(connectionsData, connection);
+	CFDictionaryRemoveValue(connections, connection);
+	CFDictionaryRemoveValue(connectionsData, connection);
 }
 
 
@@ -383,15 +420,18 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	if (![[root namespace] isEqualToString:SOAP_NS])
 		@throw [NSException exceptionWithName:@"Xml error" reason:[NSString stringWithFormat:@"response XML not valid SOAP, root namespace should be %@ but was %@", SOAP_NS, [root namespace]] userInfo:nil];
 	ZKElement *body = [root childElement:@"Body" ns:SOAP_NS];
-	if (500 == resp.statusCode) 
-    {
+	if (500 == resp.statusCode) {
+		// I don't believe this will work.  With our API we occaisionally return
+		// a 500, but not for operational errors such as bad username/password.  The 
+		// body of the response is generally a web page (HTML) not soap
 		ZKElement *fault = [body childElement:@"Fault" ns:SOAP_NS];
 		if (fault == nil)
 			@throw [NSException exceptionWithName:@"Xml error" reason:@"Fault status code returned, but unable to find soap:Fault element" userInfo:nil];
 		NSString *fc = [[fault childElement:@"faultcode"] stringValue];
 		NSString *fm = [[fault childElement:@"faultstring"] stringValue];
 		@throw [ZKSoapException exceptionWithFaultCode:fc faultString:fm];
-	}
+	} 
+
 	return [[body childElements] objectAtIndex:0];
 }
 

@@ -38,6 +38,7 @@
 	NSUInteger  preferredApiVersion;
     
     BOOL        updatesMostRecentlyUsed;
+    BOOL        logXMLInOut;
 }
 
 @property (nonatomic, copy) NSString *apiUrl;
@@ -46,6 +47,7 @@
 @property (nonatomic, retain) ZKUserInfo *userInfo;
 //@property (nonatomic, assign) BOOL savesUsernameAndPasswordInKeychain;
 @property (nonatomic, assign) BOOL updatesMostRecentlyUsed;
+@property (nonatomic, assign) BOOL logXMLInOut;
 
 + (NSString *)baseURL;
 + (ZKServerSwitchboard *)switchboard;
