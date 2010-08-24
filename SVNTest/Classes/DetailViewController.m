@@ -135,16 +135,13 @@
 		[account setFieldValue:txtCountry.text field:@"ShippingCountry"];
 		
 		NSArray *objects = [[NSArray alloc] initWithObjects:account, nil];
-		//SVNTestAppDelegate *app = (SVNTestAppDelegate *)[[UIApplication sharedApplication] delegate];
-		//ZKSforceClient *client = app.rootViewController.client;
-		if ([account fieldValue:@"Id"] == nil) {
-			//[client createAsync:objects withDelegate:self];
-			//saveResults = [client create:objects];
-            [[ZKServerSwitchboard switchboard] create:objects target:self selector:@selector(updateResults:error:context:) context:nil];
 
-		} else {
-			//[client updateAsync:objects withDelegate:self];
-			//saveResults = [client update:objects];
+		if ([account fieldValue:@"Id"] == nil) 
+        {
+            [[ZKServerSwitchboard switchboard] create:objects target:self selector:@selector(updateResults:error:context:) context:nil];
+		} 
+        else 
+        {
             [[ZKServerSwitchboard switchboard] update:objects target:self selector:@selector(updateResults:error:context:) context:nil];
 		}
 		[objects release];
@@ -155,35 +152,7 @@
 	}
 }
 
--(void)receivedErrorFromAPICall:(NSString *)results {
-	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	[app popupActionSheet:results];
-}
 
-// Old Method.  See new alternative under Server Switchboard Responses
--(void)saveResultsReady:(NSArray *)results {
-		ZKSaveResult *sr;
-		NSEnumerator *e = [results objectEnumerator];
-	SVNTestAppDelegate *app = (SVNTestAppDelegate *)[[UIApplication sharedApplication] delegate];
-		
-		while (sr = [e nextObject]) {
-			if ([sr success]) {
-				if ([app.rootViewController.dataRows indexOfObject:detailItem] == NSNotFound) {
-					// Need to add the new contact to the table.
-					[detailItem setFieldValue:[sr id] field:@"Id"];
-					[app.rootViewController.dataRows insertObject:detailItem atIndex:0];
-				} else {
-					// Need to pass the changes back to the table.
-					[app.rootViewController.dataRows replaceObjectAtIndex:[app.rootViewController.dataRows indexOfObject:detailItem] withObject:detailItem];
-				}
-				[app.rootViewController.tableView reloadData];
-			} else {
-				NSLog([sr message], "$@");
-			}
-		}
-		
-		[self hideEditView:nil];	
-}
 
 #pragma mark -
 #pragma mark Split view support
