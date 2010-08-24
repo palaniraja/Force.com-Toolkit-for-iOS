@@ -8,6 +8,7 @@
 
 #import "DetailViewController.h"
 #import "RootViewController.h"
+#import "ZKServerSwitchboard.h"
 
 
 @interface DetailViewController ()
@@ -140,8 +141,9 @@
 			[client createAsync:objects withDelegate:self];
 			//saveResults = [client create:objects];
 		} else {
-			[client updateAsync:objects withDelegate:self];
+			//[client updateAsync:objects withDelegate:self];
 			//saveResults = [client update:objects];
+            [[ZKServerSwitchboard switchboard] update:objects target:self selector:@selector(updateResults:error:context:) context:nil];
 		}
 		[objects release];
 	} else {
@@ -156,6 +158,7 @@
 	[app popupActionSheet:results];
 }
 
+// Old Method.  See new alternative under Server Switchboard Responses
 -(void)saveResultsReady:(NSArray *)results {
 		ZKSaveResult *sr;
 		NSEnumerator *e = [results objectEnumerator];
@@ -271,6 +274,38 @@
     [detailItem release];
     [detailDescriptionLabel release];
     [super dealloc];
+}
+
+#pragma mark Server Switchboard Responses
+
+- (void)updateResults:(NSArray *)results error:(NSError *)error context:(id)context
+{
+	SVNTestAppDelegate *app = (SVNTestAppDelegate *)[[UIApplication sharedApplication] delegate];
+    if (results && !error)
+    {
+        for (ZKSaveResult *saveResult in results)
+        {
+            if ([saveResult success]) {
+                if ([app.rootViewController.dataRows indexOfObject:detailItem] == NSNotFound) {
+                    // Need to add the new contact to the table.
+                    [detailItem setFieldValue:[saveResult id] field:@"Id"];
+                    [app.rootViewController.dataRows insertObject:detailItem atIndex:0];
+                } else {
+                    // Need to pass the changes back to the table.
+                    [app.rootViewController.dataRows replaceObjectAtIndex:[app.rootViewController.dataRows indexOfObject:detailItem] withObject:detailItem];
+                }
+                [app.rootViewController.tableView reloadData];
+            } else {
+                NSLog([saveResult message], "$@");
+            }
+        }
+        
+        [self hideEditView:nil];
+    }
+    else {
+        NSLog(@"Error: %@", [error domain]);
+        [app popupActionSheet:[error domain]];
+    }
 }
 
 @end

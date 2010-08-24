@@ -27,6 +27,7 @@
 #import "ZKSoapException.h"
 #import "ZKLoginResult.h"
 #import "NSObject+Additions.h"
+#import "ZKSaveResult.h"
 
 static const int MAX_SESSION_AGE = 25 * 60; // 25 minutes
 static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
@@ -55,9 +56,9 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection; 
 -(ZKElement *)_processHttpResponse:(NSHTTPURLResponse *)resp data:(NSData *)responseData;
 // Wrappers
-- (void)_processLoginResponse:(ZKElement *)loginResponseElement error:(NSError *)error context:(NSDictionary *)context;
-- (void)_processQueryResponse:(ZKElement *)queryResponseElement error:(NSError *)error context:(NSDictionary *)context;
-
+- (ZKLoginResult *)_processLoginResponse:(ZKElement *)loginResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (ZKQueryResult *)_processQueryResponse:(ZKElement *)queryResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (NSArray *)_processSaveResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
 
@@ -67,7 +68,8 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 @synthesize clientId;
 @synthesize sessionId;
 @synthesize userInfo;
-@synthesize savesUsernameAndPasswordInKeychain;
+//@synthesize savesUsernameAndPasswordInKeychain;
+@synthesize updatesMostRecentlyUsed;
 
 + (ZKServerSwitchboard *)switchboard
 {
@@ -188,6 +190,27 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
 }
 
+- (void)create:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
+{
+    
+}
+
+- (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
+{
+	// if more than we can do in one go, break it up. DC - Ignoring this case.
+	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionAndMruHeaders:sessionId mru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	[env startElement:@"update"];
+	for (ZKSObject *object in objects)
+    {
+        [env addElement:@"sobject" elemValue:object];
+    }
+	[env endElement:@"update"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processSaveResponse:error:context:) context: wrapperContext];
+}
 
 
 @end
@@ -369,7 +392,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
 #pragma mark Wrappers
 
-- (void)_processLoginResponse:(ZKElement *)loginResponseElement error:(NSError *)error context:(NSDictionary *)context
+- (ZKLoginResult *)_processLoginResponse:(ZKElement *)loginResponseElement error:(NSError *)error context:(NSDictionary *)context
 {
     ZKLoginResult *loginResult = nil;
     if (!error)
@@ -386,9 +409,10 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
         }*/
     }
     [self _unwrapContext:context andCallSelectorWithResponse:loginResult error:error];
+    return loginResult;
 }
 
-- (void)_processQueryResponse:(ZKElement *)queryResponseElement error:(NSError *)error context:(NSDictionary *)context
+- (ZKQueryResult *)_processQueryResponse:(ZKElement *)queryResponseElement error:(NSError *)error context:(NSDictionary *)context
 {
     ZKQueryResult *result = nil;
     if (!error)
@@ -396,6 +420,20 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
         result = [[[ZKQueryResult alloc] initFromXmlNode:[[queryResponseElement childElements] objectAtIndex:0]] autorelease];
     }
     [self _unwrapContext:context andCallSelectorWithResponse:result error:error];
+    return result;
+}
+
+- (NSArray *)_processSaveResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+	NSArray *resultsArr = [saveResponseElement childElements:@"result"];
+	NSMutableArray *results = [NSMutableArray arrayWithCapacity:[resultsArr count]];
+	
+	for (ZKElement *result in resultsArr) {
+		ZKSaveResult * saveResult = [[[ZKSaveResult alloc] initWithXmlElement:result] autorelease];
+		[results addObject:saveResult];
+	}
+    [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
+    return results;
 }
 
 
