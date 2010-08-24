@@ -348,7 +348,7 @@
 	
 	[self checkSession];
 	
-	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionAndMruHeaders:sessionId mru:updateMru clientId:clientId];
+	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:updateMru clientId:clientId];
 	[env startElement:@"delete"];
 	[env addElement:@"ids" elemValue:ids];
 	[env endElement:@"delete"];
@@ -402,7 +402,7 @@
 	} 
 	
 	// if more than we can do in one go, break it up. DC - Ignoring this case.
-	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionAndMruHeaders:sessionId mru:updateMru clientId:clientId];
+	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:updateMru clientId:clientId];
 	[env startElement:elemName];
 	
 	NSEnumerator *e = [objects objectEnumerator];
@@ -629,7 +629,7 @@
         return nil;
 	[self checkSession];
 	
-	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionAndMruHeaders:sessionId mru:updateMru clientId:clientId];
+	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:updateMru clientId:clientId];
 	[env startElement:@"delete"];
 	[env addElement:@"ids" elemValue:ids];
 	[env endElement:@"delete"];

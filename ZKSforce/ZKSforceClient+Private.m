@@ -73,7 +73,7 @@ static const int SAVE_BATCH_SIZE = 25;
 		}
 		return allResults;
 	}
-	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionAndMruHeaders:sessionId mru:updateMru clientId:clientId];
+	ZKEnvelope *env = [[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:updateMru clientId:clientId];
 	[env startElement:elemName];
 	NSEnumerator *e = [objects objectEnumerator];
 	ZKSObject *o;

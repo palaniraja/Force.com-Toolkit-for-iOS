@@ -25,10 +25,10 @@
 
 - (id)initWithSessionHeader:(NSString *)sessionId clientId:(NSString *)clientId 
 {
-	return [self initWithSessionAndMruHeaders:sessionId mru:NO clientId:clientId];
+	return [self initWithSessionId:sessionId updateMru:NO clientId:clientId];
 }
 
-- (id)initWithSessionAndMruHeaders:(NSString *)sessionId mru:(BOOL)mru clientId:(NSString *)clientId 
+- (id)initWithSessionId:(NSString *)sessionId updateMru:(BOOL)mru clientId:(NSString *)clientId 
 {
 	if (self = [super init])
     {

@@ -193,7 +193,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (void)create:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
 {
     // if more than we can do in one go, break it up. DC - Ignoring this case.
-	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionAndMruHeaders:sessionId mru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"create"];
 	for (ZKSObject *object in objects)
     {
@@ -210,7 +210,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
 {
 	// if more than we can do in one go, break it up. DC - Ignoring this case.
-	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionAndMruHeaders:sessionId mru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"update"];
 	for (ZKSObject *object in objects)
     {
