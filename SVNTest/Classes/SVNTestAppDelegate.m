@@ -47,17 +47,13 @@
 }
 
 -(void)popupActionSheet:(NSError *)err {
-   UIActionSheet *popupQuery = [[UIActionSheet alloc]
-								 initWithTitle:[[err userInfo] objectForKey:@"faultcode"]
-								 delegate:rootViewController
-								 cancelButtonTitle:@"OK"
-								 destructiveButtonTitle:nil
-								 otherButtonTitles:nil];
-	
-	[popupQuery setMessage:[[err userInfo] objectForKey:@"faultstring"]];
-	popupQuery.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-	[popupQuery showInView:loginViewController.view];
-	[popupQuery release];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[[err userInfo] objectForKey:@"faultcode"]
+                                                        message:[[err userInfo] objectForKey:@"faultstring"]
+                                                       delegate:rootViewController
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"OK", nil];
+    [alertView show];
+    [alertView autorelease];
 }
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Save data if appropriate

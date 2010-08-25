@@ -29,7 +29,7 @@
 #import "NSObject+Additions.h"
 #import "ZKSaveResult.h"
 
-static const int MAX_SESSION_AGE = 25 * 60; // 25 minutes
+static const int MAX_SESSION_AGE = 10 * 60; // 10 minutes.  15 minutes is the minimum length that you can set sessions to last to, so 10 should be safe.
 static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
 static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
@@ -54,7 +54,9 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection; 
--(ZKElement *)_processHttpResponse:(NSHTTPURLResponse *)resp data:(NSData *)responseData;
+- (ZKElement *)_processHttpResponse:(NSHTTPURLResponse *)resp data:(NSData *)responseData;
+- (void)_checkSession;
+- (void)_sessionResumed:(ZKLoginResult *)loginResult error:(NSError *)error;
 // Wrappers
 - (ZKLoginResult *)_processLoginResponse:(ZKElement *)loginResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (ZKQueryResult *)_processQueryResponse:(ZKElement *)queryResponseElement error:(NSError *)error context:(NSDictionary *)context;
@@ -69,7 +71,6 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 @synthesize clientId;
 @synthesize sessionId;
 @synthesize userInfo;
-//@synthesize savesUsernameAndPasswordInKeychain;
 @synthesize updatesMostRecentlyUsed;
 @synthesize logXMLInOut;
 
@@ -134,9 +135,19 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 {
     CFRelease(connections);
     connections = NULL;
-    
     CFRelease(connectionsData);
     connectionsData = NULL;
+    
+    // Properties
+    [apiUrl release];
+    [clientId release];	
+	[sessionId release];
+	[sessionExpiry release];
+    [userInfo release];
+    
+    // Private vars
+    [_username release];
+    [_password release];
     
     [super dealloc];
 }
@@ -163,11 +174,19 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     return url;
 }
 
-- (void)authenticateWithUsername:(NSString *)username password:(NSString *)password target:(id)target selector:(SEL)selector
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password target:(id)target selector:(SEL)selector
 {
+    // Save Username and Password for session management stuff
+    [username retain];
+    [_username release];
+    _username = username;
+    [password retain];
+    [_password release];
+    _password = password;
+    
+    // Reset session management stuff
     [sessionExpiry release];
 	sessionExpiry = [[NSDate dateWithTimeIntervalSinceNow:MAX_SESSION_AGE] retain];
-	[sessionId release];
 	
 	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:nil clientId:clientId] autorelease];
 	[env startElement:@"login"];
@@ -183,6 +202,8 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
 - (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
 {
+    [self _checkSession];
+    
     ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
 	[env startElement:@"query"];
 	[env addElement:@"queryString" elemValue:soqlQuery];
@@ -196,6 +217,8 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
 - (void)create:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
 {
+    [self _checkSession];
+    
     // if more than we can do in one go, break it up. DC - Ignoring this case.
 	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"create"];
@@ -213,6 +236,8 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
 - (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
 {
+    [self _checkSession];
+    
 	// if more than we can do in one go, break it up. DC - Ignoring this case.
 	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"update"];
@@ -230,6 +255,8 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 
 - (void)delete:(NSArray *)objectIDs target:(id)target selector:(SEL)selector context:(id)context
 {
+    [self _checkSession];
+    
     ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"delete"];
 	[env addElement:@"ids" elemValue:objectIDs];
@@ -408,7 +435,25 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	CFDictionaryRemoveValue(connectionsData, connection);
 }
 
+- (void)_checkSession
+{
+    if ([sessionExpiry timeIntervalSinceNow] < 0)
+		[self loginWithUsername:_username password:_password target:self selector:@selector(_sessionResumed:error:)];
+}
 
+- (void)_sessionResumed:(ZKLoginResult *)loginResult error:(NSError *)error
+{
+    if (error)
+    {
+        NSLog(@"There was an error resuming the session: %@", error);
+    }
+    else {
+        NSLog(@"Session Resumed Successfully!");
+    }
+
+}
+         
+        
 
 -(ZKElement *)_processHttpResponse:(NSHTTPURLResponse *)resp data:(NSData *)responseData
 {
@@ -470,12 +515,8 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
         self.apiUrl = [loginResult serverUrl];
         self.sessionId = [loginResult sessionId];
         self.userInfo = [loginResult userInfo];
-        // TODO: save to keychain.
-        /*if (self.savesUsernameAndPasswordInKeychain)
-        {
-            
-        }*/
     }
+
     [self _unwrapContext:context andCallSelectorWithResponse:loginResult error:error];
     return loginResult;
 }

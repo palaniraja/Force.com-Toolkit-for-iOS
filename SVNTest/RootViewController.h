@@ -11,7 +11,7 @@
 
 @class DetailViewController;
 
-@interface RootViewController : UITableViewController <UIActionSheetDelegate> {
+@interface RootViewController : UITableViewController <UIActionSheetDelegate, UIAlertViewDelegate> {
     DetailViewController *detailViewController;
 	
 	NSMutableArray *dataRows;

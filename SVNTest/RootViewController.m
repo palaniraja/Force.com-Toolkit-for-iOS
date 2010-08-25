@@ -62,15 +62,6 @@
 	[self.tableView reloadData];
 } */
 
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
-	actionSheet.frame = CGRectMake(50, 50, 600.0, 600.0 ); 
-}
-- (void)willPresentAlertView:(UIAlertView *)alertView {
-    alertView.frame = CGRectMake(50, 50, 600.0, 600.0 );
-}
-- (void)didPresentAlertView:(UIAlertView *)alertView {
-    alertView.frame = CGRectMake(50, 50, 600.0, 600.0 );
-}
 
 - (IBAction)addItem:(id)sender {
 	ZKSObject *cObj = [[ZKSObject alloc] initWithType:@"Account"];
@@ -324,6 +315,26 @@
         [self receivedErrorFromAPICall: error];
     }
 }
+
+#pragma mark UIActionSheetDelegate
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet 
+{
+	actionSheet.frame = CGRectMake(50, 50, 600.0, 600.0 ); 
+}
+
+#pragma mark UIActionViewDelegate
+
+- (void)willPresentAlertView:(UIAlertView *)alertView 
+{
+    alertView.frame = CGRectMake(50, 50, 600.0, 600.0 );
+}
+
+- (void)didPresentAlertView:(UIAlertView *)alertView 
+{
+    alertView.frame = CGRectMake(50, 50, 600.0, 600.0 );
+}
+
 
 @end
 

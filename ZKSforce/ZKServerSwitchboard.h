@@ -34,25 +34,27 @@
 	NSString	*sessionId;
 	NSDate		*sessionExpiry;
     ZKUserInfo	*userInfo;
-    //BOOL        savesUsernameAndPasswordInKeychain;
 	NSUInteger  preferredApiVersion;
     
     BOOL        updatesMostRecentlyUsed;
     BOOL        logXMLInOut;
+
+@private
+    NSString    *_username;
+    NSString    *_password;
 }
 
 @property (nonatomic, copy) NSString *apiUrl;
 @property (nonatomic, copy) NSString *clientId;
 @property (nonatomic, copy) NSString *sessionId;
 @property (nonatomic, retain) ZKUserInfo *userInfo;
-//@property (nonatomic, assign) BOOL savesUsernameAndPasswordInKeychain;
 @property (nonatomic, assign) BOOL updatesMostRecentlyUsed;
 @property (nonatomic, assign) BOOL logXMLInOut;
 
 + (NSString *)baseURL;
 + (ZKServerSwitchboard *)switchboard;
 - (NSString *)authenticationUrl;
-- (void)authenticateWithUsername:(NSString *)username password:(NSString *)password target:(id)target selector:(SEL)selector;
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password target:(id)target selector:(SEL)selector;
 - (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context;
 - (void)create:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context;
 - (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context;
