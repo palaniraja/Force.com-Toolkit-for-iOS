@@ -39,6 +39,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (ZKQueryResult *)_processQueryResponse:(ZKElement *)queryResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processSaveResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (NSArray *)_processSearchResponse:(ZKElement *)searchResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
 
@@ -177,21 +178,6 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [self _sendRequestWithData:xml target:self selector:@selector(_processLoginResponse:error:context:) context: wrapperContext];
 }
 
-- (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
-{
-    [self _checkSession];
-    
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
-	[env startElement:@"query"];
-	[env addElement:@"queryString" elemValue:soqlQuery];
-	[env endElement:@"query"];
-	[env endElement:@"s:Body"]; 
-    NSString *xml = [env end];
-
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
-    [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
-}
-
 - (void)create:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
 {
     [self _checkSession];
@@ -204,25 +190,6 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
         [env addElement:@"sobject" elemValue:object];
     }
 	[env endElement:@"create"];
-	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
-    
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
-    [self _sendRequestWithData:xml target:self selector:@selector(_processSaveResponse:error:context:) context: wrapperContext];
-}
-
-- (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
-{
-    [self _checkSession];
-    
-	// if more than we can do in one go, break it up. DC - Ignoring this case.
-	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
-	[env startElement:@"update"];
-	for (ZKSObject *object in objects)
-    {
-        [env addElement:@"sobject" elemValue:object];
-    }
-	[env endElement:@"update"];
 	[env endElement:@"s:Body"];
     NSString *xml = [env end];
     
@@ -244,6 +211,58 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processDeleteResponse:error:context:) context: wrapperContext];
 }
+
+- (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+	[env startElement:@"query"];
+	[env addElement:@"queryString" elemValue:soqlQuery];
+	[env endElement:@"query"];
+	[env endElement:@"s:Body"]; 
+    NSString *xml = [env end];
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
+}
+
+- (void)search:(NSString *)soslQuery target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+	[env startElement:@"search"];
+	[env addElement:@"searchString" elemValue:soslQuery];
+	[env endElement:@"search"];
+	[env endElement:@"s:Body"];
+    
+    NSString *xml = [env end];
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processSearchResponse:error:context:) context: wrapperContext];
+}
+
+- (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+	// if more than we can do in one go, break it up. DC - Ignoring this case.
+	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	[env startElement:@"update"];
+	for (ZKSObject *object in objects)
+    {
+        [env addElement:@"sobject" elemValue:object];
+    }
+	[env endElement:@"update"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processSaveResponse:error:context:) context: wrapperContext];
+}
+
+
 
 
 
@@ -303,5 +322,16 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	return results;
 }
 
+- (NSArray *)_processSearchResponse:(ZKElement *)searchResponseElement error:(NSError *)error context:(NSDictionary *)context;
+{
+    ZKElement *searchResult = [searchResponseElement childElement:@"result"];
+	NSArray *records = [[searchResult childElement:@"searchRecords"] childElements:@"record"];
+	NSMutableArray *results = [NSMutableArray array];
+	for (ZKElement *soNode in records) {
+		[results addObject:[ZKSObject fromXmlNode:soNode]];
+	}
+    [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
+	return results;
+}
 
 @end

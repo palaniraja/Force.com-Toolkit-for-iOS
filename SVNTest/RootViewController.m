@@ -11,6 +11,14 @@
 #import "SVNTestAppDelegate.h"
 #import "ZKLoginResult.h"
 
+@interface RootViewController (Private)
+
+-(void)getRows;
+- (void)searchTest;
+
+@end
+
+
 @implementation RootViewController
 
 @synthesize detailViewController;
@@ -39,11 +47,6 @@
 	[app popupActionSheet:err];
 }
 
-- (void)getRows 
-{
-	NSString *queryString = @"Select Id, Name, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Phone, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Type, Website From Account";
-    [[ZKServerSwitchboard switchboard] query:queryString target:self selector:@selector(queryResult:error:context:) context:nil];
-}
 
 
 - (IBAction)addItem:(id)sender 
@@ -246,10 +249,13 @@
         NSLog(@"Hey, we logged in (with the new switchboard)!");
         
         [self getRows];
+        [self searchTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
         [app hideLogin];
+        
+        
     }
     else if (error)
     {
@@ -295,6 +301,19 @@
     }
 }
 
+- (void)searchResult:(NSArray *)results error:(NSError *)error context:(id)context
+{
+    NSLog(@"searchResult: %@ error: %@ context: %@", results, error, context);
+    if (results && !error)
+    {
+
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 #pragma mark UIActionSheetDelegate
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet 
@@ -312,6 +331,20 @@
 - (void)didPresentAlertView:(UIAlertView *)alertView 
 {
     alertView.frame = CGRectMake(50, 50, 600.0, 600.0 );
+}
+
+#pragma mark Private
+
+- (void)getRows 
+{
+    NSString *queryString = @"Select Id, Name, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Phone, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Type, Website From Account";
+    [[ZKServerSwitchboard switchboard] query:queryString target:self selector:@selector(queryResult:error:context:) context:nil];
+}
+
+- (void)searchTest
+{
+    NSString *queryString = @"find {4159017000} in phone fields returning contact(id, phone, firstname, lastname), lead(id, phone, firstname, lastname), account(id, phone, name)";
+    [[ZKServerSwitchboard switchboard] search:queryString target:self selector:@selector(searchResult:error:context:) context:nil];
 }
 
 

@@ -22,7 +22,6 @@
 @property (nonatomic, retain) NSMutableArray *dataRows;
 @property (nonatomic, retain) NSIndexPath *deleteIndexPath;
 
--(void)getRows;
 -(void)alertOKCancelAction:(NSString *)title withMessage:(NSString *)message;
 -(void)alertOKAction:(NSString *)title withMessage:(NSString *)message;
 
