@@ -26,6 +26,11 @@
 
 @implementation ZKQueryResult
 
+@synthesize size;
+@synthesize done;
+@synthesize queryLocator;
+@synthesize records;
+
 - (id)initFromXmlNode:(ZKElement *)node 
 {
 	if (self = [super init])
@@ -56,14 +61,14 @@
 	return self;
 }
 
-- (id)initWithRecords:(NSArray *)r size:(int)s done:(BOOL)d queryLocator:(NSString *)ql 
+- (id)initWithRecords:(NSArray *)_records size:(int)_size done:(BOOL)_done queryLocator:(NSString *)_queryLocator 
 {
 	if (self = [super init])
     {
-        records = [r retain];
-        done = d;
-        size = s;
-        queryLocator = [ql retain];
+        records = [_records copy];
+        done = _done;
+        size = _size;
+        queryLocator = [_queryLocator copy];
     }
 
 	return self;
@@ -79,26 +84,6 @@
 	[queryLocator release];
 	[records release];
 	[super dealloc];
-}
-
-- (int)size 
-{
-	return size;
-}
-
-- (BOOL)done 
-{
-	return done;
-}
-
-- (NSString *)queryLocator 
-{
-	return queryLocator;
-}
-
-- (NSArray *)records 
-{
-	return records;
 }
 
 @end

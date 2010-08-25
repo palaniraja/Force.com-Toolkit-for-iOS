@@ -212,6 +212,21 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [self _sendRequestWithData:xml target:self selector:@selector(_processDeleteResponse:error:context:) context: wrapperContext];
 }
 
+- (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+	[env startElement:@"query"];
+	[env addElement:@"queryString" elemValue:soqlQuery];
+	[env endElement:@"query"];
+	[env endElement:@"s:Body"]; 
+    NSString *xml = [env end];
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
+}
+
 - (void)queryAll:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
 {
     [self _checkSession];
@@ -227,14 +242,14 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
 }
 
-- (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
+- (void)queryMore:(NSString *)queryLocator target:(id)target selector:(SEL)selector context:(id)context
 {
     [self _checkSession];
     
     ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
-	[env startElement:@"query"];
-	[env addElement:@"queryString" elemValue:soqlQuery];
-	[env endElement:@"query"];
+	[env startElement:@"queryMore"];
+	[env addElement:@"queryLocator" elemValue:queryLocator];
+	[env endElement:@"queryMore"];
 	[env endElement:@"s:Body"]; 
     NSString *xml = [env end];
     
@@ -251,7 +266,6 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	[env addElement:@"searchString" elemValue:soslQuery];
 	[env endElement:@"search"];
 	[env endElement:@"s:Body"];
-    
     NSString *xml = [env end];
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];

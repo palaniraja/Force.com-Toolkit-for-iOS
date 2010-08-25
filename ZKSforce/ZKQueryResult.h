@@ -22,18 +22,19 @@
 @class ZKElement;
 
 @interface ZKQueryResult : NSObject <NSCopying> {
-	int size;
+	NSUInteger size;
 	BOOL done;
 	NSString * queryLocator;
 	NSArray * records;
 }
 
+@property (readonly) NSUInteger size;
+@property (readonly) BOOL done;
+@property (readonly) NSString *queryLocator;
+@property (readonly) NSArray *records;
+
 - (id)initFromXmlNode:(ZKElement *)node;
 - (id)initWithRecords:(NSArray *)records size:(int)s done:(BOOL)d queryLocator:(NSString *)ql;
 
-- (int)size;
-- (BOOL)done;
-- (NSString *)queryLocator;
-- (NSArray *)records;
 
 @end

@@ -62,6 +62,7 @@
 - (void)delete:(NSArray *)objectIDs target:(id)target selector:(SEL)selector context:(id)context;
 - (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context;
 - (void)queryAll:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context;
+- (void)queryMore:(NSString *)queryLocator target:(id)target selector:(SEL)selector context:(id)context;
 - (void)search:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context;
 - (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context;
 

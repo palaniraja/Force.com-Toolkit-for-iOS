@@ -254,8 +254,6 @@
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
         [app hideLogin];
-        
-        
     }
     else if (error)
     {
