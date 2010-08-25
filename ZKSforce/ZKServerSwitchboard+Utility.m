@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -19,19 +19,45 @@
 // THE SOFTWARE.
 //
 
-
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
-
-#import "ZKSforceClient.h"
-#import "ZKUserInfo.h"
-#import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "ZKServerSwitchboard.h"
 #import "ZKServerSwitchboard+Utility.h"
-#import "ZKServerSwitchboard+Describe.h"
+
+@interface ZKServerSwitchboard (UtilityWrappers)
+
+@end
+
+
+@implementation ZKServerSwitchboard (Utility)
+
+- (void)emptyRecycleBin:(NSArray *)objectIDs target:(id)target selector:(SEL)selector context:(id)context
+{
+    NSLog(@"emptyRecycleBin not implemented yet");
+}
+
+- (void)getServerTimestampWithTarget:(id)target selector:(SEL)selector context:(id)context
+{
+    NSLog(@"getServerTimestampWithTarget not implemented yet");
+}
+
+- (void)resetPasswordForUserId:(NSString *)userId triggerUserEmail:(BOOL)triggerUserEmail target:(id)target selector:(SEL)selector context:(id)context
+{
+    NSLog(@"resetPasswordForUserId not implemented yet");
+}
+
+- (void)sendEmail:(NSArray *)emails target:(id)target selector:(SEL)selector context:(id)context
+{
+    NSLog(@"sendEmail not implemented yet");
+}
+
+- (void)setPassword:(NSString *)password forUserId:(NSString *)userId target:(id)target selector:(SEL)selector context:(id)context
+{
+    NSLog(@"setPassword not implemented yet");
+}
+
+
+@end
+
+
+@implementation ZKServerSwitchboard (UtilityWrappers)
+
+@end
+
