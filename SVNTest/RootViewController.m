@@ -47,7 +47,7 @@
 
 -(void)receivedErrorFromAPICall:(NSError *)err {
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	[app popupActionSheet:[[err userInfo] objectForKey:@"faultstring"]];
+	[app popupActionSheet:err];
 }
 
 - (void)getRows {
@@ -270,6 +270,7 @@
 
 - (void)loginResult:(ZKLoginResult *)result error:(NSError *)error
 {
+    //NSLog(@"loginResult: %@ error: %@", result, error);
     if (result && !error)
     {
         NSLog(@"Hey, we logged in (with the new switchboard)!");
@@ -296,7 +297,7 @@
     }
     else if (error)
     {
-        [self receivedErrorFromAPICall: [error domain]];
+        [self receivedErrorFromAPICall: error];
     }
 }
 
@@ -320,7 +321,7 @@
     }
     else if (error)
     {
-        [self receivedErrorFromAPICall: [error domain]];
+        [self receivedErrorFromAPICall: error];
     }
 }
 

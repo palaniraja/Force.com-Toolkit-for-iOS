@@ -101,10 +101,10 @@ enum envState {
 
 - (void) addElementArray:(NSString *)elemName elemValue:(NSArray *)elemValues 
 {
-	NSEnumerator *e = [elemValues objectEnumerator];
-	id o;
-	while(o = [e nextObject])
-		[self addElement:elemName elemValue:o];
+    for (id o in elemValues)
+    {
+        [self addElement:elemName elemValue:o];
+    }
 }
 
 - (void) addElementString:(NSString *)elemName elemValue:(NSString *)elemValue 

@@ -274,8 +274,7 @@
         [self hideEditView:nil];
     }
     else {
-        NSLog(@"Error: %@", [error domain]);
-        [app popupActionSheet:[error domain]];
+        [app popupActionSheet:error];
     }
 }
 
