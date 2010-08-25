@@ -212,6 +212,21 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [self _sendRequestWithData:xml target:self selector:@selector(_processDeleteResponse:error:context:) context: wrapperContext];
 }
 
+- (void)queryAll:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+	[env startElement:@"queryAll"];
+	[env addElement:@"queryString" elemValue:soqlQuery];
+	[env endElement:@"queryAll"];
+	[env endElement:@"s:Body"]; 
+    NSString *xml = [env end];
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
+}
+
 - (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
 {
     [self _checkSession];
