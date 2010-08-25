@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "zkSforce.h"
 
 @class RootViewController;
 @class DetailViewController;
@@ -22,7 +21,6 @@
     RootViewController *rootViewController;
     DetailViewController *detailViewController;
     LoginViewController *loginViewController;
-	UIAlertView *alert;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -35,5 +33,6 @@
 
 - (void)showLogin;
 - (void)hideLogin;
--(void)popupActionSheet:(NSError *)message;
+- (void)popupActionSheet:(NSError *)message;
+
 @end

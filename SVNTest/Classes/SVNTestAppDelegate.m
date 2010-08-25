@@ -7,8 +7,6 @@
 //
 
 #import "SVNTestAppDelegate.h"
-
-
 #import "RootViewController.h"
 #import "DetailViewController.h"
 #import "LoginViewController.h"
@@ -23,8 +21,8 @@
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+{    
     // Override point for customization after app launch    
 	loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginView" bundle:nil];
 	
@@ -37,16 +35,19 @@
    return YES;
 }
 
-- (void)showLogin {
+- (void)showLogin 
+{
 	loginViewController.modalPresentationStyle = UIModalPresentationFormSheet;
 	[splitViewController presentModalViewController:loginViewController animated:YES];
 }
 
-- (void)hideLogin {
+- (void)hideLogin 
+{
 	[splitViewController dismissModalViewControllerAnimated:YES];
 }
 
--(void)popupActionSheet:(NSError *)err {
+-(void)popupActionSheet:(NSError *)err 
+{
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[[err userInfo] objectForKey:@"faultcode"]
                                                         message:[[err userInfo] objectForKey:@"faultstring"]
                                                        delegate:rootViewController
@@ -55,7 +56,9 @@
     [alertView show];
     [alertView autorelease];
 }
-- (void)applicationWillTerminate:(UIApplication *)application {
+
+- (void)applicationWillTerminate:(UIApplication *)application 
+{
     // Save data if appropriate
 }
 
@@ -63,7 +66,8 @@
 #pragma mark -
 #pragma mark Memory management
 
-- (void)dealloc {
+- (void)dealloc 
+{
     [splitViewController release];
     [window release];
     [super dealloc];

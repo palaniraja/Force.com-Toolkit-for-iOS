@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SVNTestAppDelegate.h"
 
-@interface DetailViewController : UIViewController <UIPopoverControllerDelegate, UISplitViewControllerDelegate, ForceClientDelegate> {
+@class ZKSObject;
+
+@interface DetailViewController : UIViewController <UIPopoverControllerDelegate, UISplitViewControllerDelegate> {
     
     UIPopoverController *popoverController;
     UIToolbar *toolbar;

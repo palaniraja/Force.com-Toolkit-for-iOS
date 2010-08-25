@@ -8,18 +8,18 @@
 
 #import "LoginViewController.h"
 #import "SVNTestAppDelegate.h"
-#import "ZKServerSwitchboard.h"
+#import "ZKSforce.h"
 
 @implementation LoginViewController
 
-@synthesize txtUsername, txtPassword;
+@synthesize usernameTextField, passwordTextField;
 
--(IBAction)callLogin:(id)sender {
+- (IBAction)login:(id)sender 
+{
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	RootViewController *rvc = app.rootViewController;
-	//[rvc.client loginAsync:txtUsername.text password:txtPassword.text withDelegate:rvc];
+	RootViewController *rootViewController = app.rootViewController;
     [ZKServerSwitchboard switchboard].logXMLInOut = YES;
-    [[ZKServerSwitchboard switchboard] loginWithUsername:txtUsername.text password:txtPassword.text target:rvc selector:@selector(loginResult:error:)];
+    [[ZKServerSwitchboard switchboard] loginWithUsername:usernameTextField.text password:passwordTextField.text target:rootViewController selector:@selector(loginResult:error:)];
 }
 
 /*
@@ -40,20 +40,23 @@
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
 
 }
 
 
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
     // Overriden to allow any orientation.
     return YES;
 }
 
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning 
+{
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
@@ -61,14 +64,16 @@
 }
 
 
-- (void)viewDidUnload {
+- (void)viewDidUnload 
+{
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
 
-- (void)dealloc {
+- (void)dealloc 
+{
     [super dealloc];
 }
 

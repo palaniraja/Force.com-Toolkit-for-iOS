@@ -12,8 +12,10 @@
 
 
 @interface DetailViewController ()
+
 @property (nonatomic, retain) UIPopoverController *popoverController;
 - (void)configureView;
+
 @end
 
 
@@ -26,7 +28,8 @@
 @synthesize lblAccountName, lblStreet, lblCity, lblZip, lblState, lblCountry;
 @synthesize txtAccountName, txtStreet, txtCity, txtZip, txtState, txtCountry;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
 	// Initial view toolbar (read only)
 	UIBarButtonItem *editBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(showEditView:)];
 	UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -41,14 +44,17 @@
 	[editBtn release];
 	[cancelBtn release];
 }
+
 #pragma mark -
 #pragma mark Managing the detail item
 
 /*
  When setting the detail item, update the view and dismiss the popover controller if it's showing.
  */
-- (void)setDetailItem:(id)newDetailItem {
-    if (detailItem != newDetailItem) {
+- (void)setDetailItem:(id)newDetailItem 
+{
+    if (detailItem != newDetailItem) 
+    {
         [detailItem release];
         detailItem = [newDetailItem retain];
         
@@ -56,13 +62,15 @@
         [self configureView];
     }
 
-    if (popoverController != nil) {
+    if (popoverController != nil) 
+    {
         [popoverController dismissPopoverAnimated:YES];
     }        
 }
 
 
-- (void)configureView {
+- (void)configureView 
+{
     // Update the user interface for the detail item.
 	ZKSObject *sobject = (ZKSObject *)detailItem;
 
@@ -101,18 +109,23 @@
 	[UIView commitAnimations];
 }
 
--(IBAction)saveData:(id)sender {
+-(IBAction)saveData:(id)sender 
+{
 	[self setEditing:NO];
-	return;
 }
-- (void)failed:(id)err {
+
+- (void)failed:(id)err 
+{
 	NSLog(@"Error", "%@");
 }
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
 	
 }
 
-- (void) setEditing:(BOOL) editing animated:(BOOL) animated {
+- (void) setEditing:(BOOL) editing animated:(BOOL) animated 
+{
 	[super setEditing:editing animated:animated];
 	
 	if (!editing) {
@@ -150,6 +163,7 @@
 		self.editButtonItem.title = @"Save";
 		[self showEditView:nil];
 	}
+
 }
 
 
@@ -157,7 +171,11 @@
 #pragma mark -
 #pragma mark Split view support
 
-- (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc {
+- (void)splitViewController: (UISplitViewController*)svc 
+     willHideViewController:(UIViewController *)aViewController 
+          withBarButtonItem:(UIBarButtonItem*)barButtonItem 
+       forPopoverController: (UIPopoverController*)pc 
+{
     
     barButtonItem.title = @"Root List";
     NSMutableArray *items = [[toolbar items] mutableCopy];
@@ -169,8 +187,10 @@
 
 
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
-- (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
-    
+- (void)splitViewController: (UISplitViewController*)svc 
+     willShowViewController:(UIViewController *)aViewController 
+  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem 
+{
     NSMutableArray *items = [[toolbar items] mutableCopy];
     [items removeObjectAtIndex:0];
     [toolbar setItems:items animated:YES];
@@ -183,7 +203,8 @@
 #pragma mark Rotation support
 
 // Ensure that the view controller supports rotation and that the split view can therefore show in both portrait and landscape.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
     return YES;
 }
 
@@ -219,7 +240,8 @@
 }
 */
 
-- (void)viewDidUnload {
+- (void)viewDidUnload 
+{
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.popoverController = nil;
@@ -238,7 +260,8 @@
 }
 */
 
-- (void)dealloc {
+- (void)dealloc 
+{
     [popoverController release];
     [toolbar release];
     

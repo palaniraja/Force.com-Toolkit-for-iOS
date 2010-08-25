@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "zkSforce.h"
+#import "ZKSforce.h"
 
 @class DetailViewController;
 

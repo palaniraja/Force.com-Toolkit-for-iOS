@@ -7,17 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "zkSforce.h"
 #import "RootViewController.h"
 
 @interface LoginViewController : UIViewController  {    
-	UITextField *txtUsername;
-	UITextField	*txtPassword;
+	UITextField *usernameTextField;
+	UITextField	*passwordTextField;
 }
 
-@property (nonatomic, retain) IBOutlet UITextField *txtUsername;
-@property (nonatomic, retain) IBOutlet UITextField *txtPassword;
+@property (nonatomic, retain) IBOutlet UITextField *usernameTextField;
+@property (nonatomic, retain) IBOutlet UITextField *passwordTextField;
 
--(IBAction)callLogin:(id)sender;
+- (IBAction)login:(id)sender;
+
 @end
 

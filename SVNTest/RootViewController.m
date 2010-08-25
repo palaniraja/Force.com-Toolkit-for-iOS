@@ -10,7 +10,6 @@
 #import "DetailViewController.h"
 #import "SVNTestAppDelegate.h"
 #import "ZKLoginResult.h"
-#import "ZKServerSwitchboard.h"
 
 @implementation RootViewController
 
@@ -21,7 +20,8 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
     self.clearsSelectionOnViewWillAppear = NO;
     self.contentSizeForViewInPopover = CGSizeMake(420.0, 800.0);
@@ -32,46 +32,29 @@
 												action:@selector(addItem:)] autorelease];
 }
 
-// Old Method, see Server Switchboard Results section.
-/*-(void)loginSucceeded:(ZKLoginResult *)results {
-	
-	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
 
-	NSLog(@"Hey, we logged in!");
-	
-	[self getRows];
-	
-	// remove login dialog
-	[app hideLogin];
-}*/
-
--(void)receivedErrorFromAPICall:(NSError *)err {
+-(void)receivedErrorFromAPICall:(NSError *)err 
+{
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
 	[app popupActionSheet:err];
 }
 
-- (void)getRows {
+- (void)getRows 
+{
 	NSString *queryString = @"Select Id, Name, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Phone, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Type, Website From Account";
-    //[client queryAsync:queryString withDelegate:self];
     [[ZKServerSwitchboard switchboard] query:queryString target:self selector:@selector(queryResult:error:context:) context:nil];
 }
 
-// Old Method, see Server Switchboard Results section.
-/*-(void)queryReady:(ZKQueryResult *)results {
-	self.dataRows = [NSMutableArray arrayWithArray:[results records]];
-	[self.tableView reloadData];
-} */
 
-
-- (IBAction)addItem:(id)sender {
-	ZKSObject *cObj = [[ZKSObject alloc] initWithType:@"Account"];
+- (IBAction)addItem:(id)sender 
+{
+	ZKSObject *newObject = [[[ZKSObject alloc] initWithType:@"Account"] autorelease];
 	
-	[self.detailViewController setDetailItem:cObj];
+	[self.detailViewController setDetailItem:newObject];
 	[self.detailViewController setEditing:YES];
 	[self.detailViewController showEditView:sender];
-	
-	[cObj release];
 }
+
 /*
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -94,7 +77,8 @@
 */
 
 // Ensure that the view controller supports rotation and that the split view can therefore show in both portrait and landscape.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
     return YES;
 }
 
@@ -102,19 +86,22 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView 
+{
     // Return the number of sections.
     return 1;
 }
 
 
-- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
+{
     // Return the number of rows in the section.
     return [dataRows count];
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     
     static NSString *CellIdentifier = @"CellIdentifier";
     
@@ -144,7 +131,8 @@
 
 
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
+{
 	
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		// Delete the row from the data source
@@ -156,14 +144,16 @@
 	}   
 }
 
-- (void)alertOKCancelAction:(NSString *)title withMessage:(NSString *)message {
+- (void)alertOKCancelAction:(NSString *)title withMessage:(NSString *)message 
+{
 	// open a alert with an OK and cancel button
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	[alert show];
 	[alert release];
 }
 
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex 
+{
 	// the user clicked one of the OK/Cancel buttons
 	if (buttonIndex == 0)
 	{
@@ -179,21 +169,7 @@
 	}
 }
 
-// Old Method, see new one in Server Switchboard section
-/*-(void)deleteResultsReady:(NSMutableArray *)results {
-		ZKSaveResult *res = [results objectAtIndex:0];
-		
-		if ([res success]) {
-			[self.dataRows removeObjectAtIndex:deleteIndexPath.row];
-			[self.tableView beginUpdates];
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:deleteIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-			[self.tableView endUpdates];
-		} else {
-			NSLog([res message], "%");
-			[self alertOKAction:@"Action Failed" withMessage:[res message]];
-			[self.tableView setEditing:NO animated:YES];
-		}
-}*/
+
 
 - (void)alertOKAction:(NSString *)title withMessage:(NSString *)message {
 	// open a alert with an OK and cancel button
@@ -226,8 +202,8 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     /*
      When a row is selected, set the detail view controller's detail item to the item associated with the selected row.
      */
@@ -238,20 +214,23 @@
 #pragma mark -
 #pragma mark Memory management
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning 
+{
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
     // Relinquish ownership any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload 
+{
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
 }
 
 
-- (void)dealloc {
+- (void)dealloc 
+{
     [detailViewController release];
     [super dealloc];
 }
