@@ -16,6 +16,7 @@
 - (void)getRows;
 - (void)searchTest;
 - (void)getDeletedTest;
+- (void)getServerTimestampTest;
 
 @end
 
@@ -251,6 +252,7 @@
         [self getRows];
         //[self searchTest];
         //[self getDeletedTest];
+        //[self getServerTimestampTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -326,6 +328,18 @@
     }
 }
 
+- (void)getServerTimestampResult:(NSDate *)timestamp error:(NSError *)error context:(id)context
+{
+    //NSLog(@"getServerTimestampResult: %@ error: %@ context: %@", timestamp, error, context);
+    if (timestamp && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 #pragma mark UIActionSheetDelegate
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet 
@@ -364,6 +378,10 @@
     [[ZKServerSwitchboard switchboard] getDeleted:@"Account" fromDate:nil toDate:nil target:self selector:@selector(getDeletedResult:error:context:) context:nil];
 }
 
+- (void)getServerTimestampTest
+{
+    [[ZKServerSwitchboard switchboard] getServerTimestampWithTarget:self selector:@selector(getServerTimestampResult:error:context:) context:nil];
+}
 
 @end
 
