@@ -20,8 +20,17 @@
 //
 
 #import "ZKServerSwitchboard+Utility.h"
+#import "ZKServerSwitchboard+Private.h"
+#import "ZKParser.h"
+#import "ZKEnvelope.h"
+#import "ZKPartnerEnvelope.h"
+#import "ZKSoapException.h"
+#import "NSObject+Additions.h"
+#import "ZKSaveResult.h"
 
 @interface ZKServerSwitchboard (UtilityWrappers)
+
+- (ZKElement *)_processSetPasswordResponse:(ZKElement *)setPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
 
@@ -50,7 +59,19 @@
 
 - (void)setPassword:(NSString *)password forUserId:(NSString *)userId target:(id)target selector:(SEL)selector context:(id)context
 {
-    NSLog(@"setPassword not implemented yet");
+    
+    [self _checkSession];
+    
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+	[env startElement:@"setPassword"];
+	[env addElement:@"userId" elemValue:userId];
+	[env addElement:@"password" elemValue:password];
+	[env endElement:@"setPassword"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processSearchResponse:error:context:) context: wrapperContext];
 }
 
 
@@ -58,6 +79,14 @@
 
 
 @implementation ZKServerSwitchboard (UtilityWrappers)
+
+- (ZKElement *)_processSetPasswordResponse:(ZKElement *)setPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    // TODO : might want to process this more?  Documentation seems sparse here.
+    ZKElement *searchResult = [setPasswordResponseElement childElement:@"result"];
+    [self _unwrapContext:context andCallSelectorWithResponse:searchResult error:error];
+	return searchResult;
+}
 
 @end
 

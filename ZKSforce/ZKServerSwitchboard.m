@@ -29,6 +29,8 @@
 #import "ZKLoginResult.h"
 #import "NSObject+Additions.h"
 #import "ZKSaveResult.h"
+#import "ZKGetDeletedResult.h"
+#import "NSDate+Additions.h"
 
 static const int MAX_SESSION_AGE = 10 * 60; // 10 minutes.  15 minutes is the minimum length that you can set sessions to last to, so 10 should be safe.
 static ZKServerSwitchboard * sharedSwitchboard =  nil;
@@ -39,6 +41,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (ZKQueryResult *)_processQueryResponse:(ZKElement *)queryResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processSaveResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (ZKGetDeletedResult *)_processGetDeletedResponse:(ZKElement *)getDeletedResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processSearchResponse:(ZKElement *)searchResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
@@ -212,6 +215,29 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [self _sendRequestWithData:xml target:self selector:@selector(_processDeleteResponse:error:context:) context: wrapperContext];
 }
 
+- (void)getDeleted:(NSString *)sObjectType fromDate:(NSDate *)startDate toDate:(NSDate *)endDate target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    if (!startDate)
+        startDate = [NSDate dateWithTimeIntervalSinceNow: - (29 * 60 * 60 * 24)];
+    if (!endDate)
+        endDate = [NSDate date];
+    
+    
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	[env startElement:@"getDeleted"];
+	[env addElement:@"sObjectType" elemValue:sObjectType];
+    [env addElement:@"startDate" elemValue:[startDate longFormatString]];
+	[env addElement:@"endDate" elemValue:[endDate longFormatString]];
+	[env endElement:@"getDeleted"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
+	
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processGetDeletedResponse:error:context:) context: wrapperContext];
+}
+
 - (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
 {
     [self _checkSession];
@@ -361,6 +387,17 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	}
     [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
 	return results;
+}
+
+- (ZKGetDeletedResult *)_processGetDeletedResponse:(ZKElement *)getDeletedResponseElement error:(NSError *)error context:(NSDictionary *)context;
+{
+    ZKGetDeletedResult *result = nil;
+    if (!error)
+    {
+        result = [[[ZKGetDeletedResult alloc] initFromXmlNode:[[getDeletedResponseElement childElements] objectAtIndex:0]] autorelease];
+    }
+    [self _unwrapContext:context andCallSelectorWithResponse:result error:error];
+    return result;
 }
 
 @end

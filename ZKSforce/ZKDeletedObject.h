@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -19,21 +19,16 @@
 // THE SOFTWARE.
 //
 
+#import <Foundation/Foundation.h>
 
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
+@interface ZKDeletedObject : NSObject {
+    NSString *Id;
+    NSDate *deletedDate;
+}
 
-#import "ZKSforceClient.h"
-#import "ZKUserInfo.h"
-#import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "ZKServerSwitchboard.h"
-#import "ZKServerSwitchboard+Utility.h"
-#import "ZKServerSwitchboard+Describe.h"
-#import "ZKGetDeletedResult.h"
-#import "ZKDeletedObject.h"
+@property (readonly) NSString *Id;
+@property (readonly) NSDate *deletedDate;
+
+- (ZKDeletedObject *)initWithId:(NSString *)objectId deletedDate:(NSDate *)date;
+
+@end

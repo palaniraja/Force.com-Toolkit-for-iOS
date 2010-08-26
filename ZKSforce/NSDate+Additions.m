@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -19,21 +19,31 @@
 // THE SOFTWARE.
 //
 
+#import "NSDate+Additions.h"
 
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
 
-#import "ZKSforceClient.h"
-#import "ZKUserInfo.h"
-#import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "ZKServerSwitchboard.h"
-#import "ZKServerSwitchboard+Utility.h"
-#import "ZKServerSwitchboard+Describe.h"
-#import "ZKGetDeletedResult.h"
-#import "ZKDeletedObject.h"
+@implementation NSDate (Additions)
+
+#define kLongFormat @"yyyy-MM-dd'T'HH:mm:ss.SSSSZ"
+#define kLongFormatZulu @"yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"
+
++ (NSDate *)dateWithLongFormatString:(NSString *)string
+{
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFormatter setDateFormat:kLongFormat];
+    NSDate *nonZuluDate = [dateFormatter dateFromString:string];
+    if (nonZuluDate)
+        return nonZuluDate;
+    [dateFormatter setDateFormat:kLongFormatZulu];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+    return [dateFormatter dateFromString:string];
+}
+
+- (NSString *)longFormatString
+{
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFormatter setDateFormat:kLongFormat];
+    return [dateFormatter stringFromDate:self];
+}
+
+@end

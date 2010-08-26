@@ -13,8 +13,9 @@
 
 @interface RootViewController (Private)
 
--(void)getRows;
+- (void)getRows;
 - (void)searchTest;
+- (void)getDeletedTest;
 
 @end
 
@@ -167,7 +168,6 @@
 		NSLog(@"ok");
 		ZKSObject *delObj = (ZKSObject *)[self.dataRows objectAtIndex:deleteIndexPath.row];
 		NSString *objectID = [delObj fieldValue:@"Id"];
-		//[client deleteAsync:[NSArray arrayWithObjects:objectID,nil]	withDelegate:self];
         [[ZKServerSwitchboard switchboard] delete:[NSArray arrayWithObject:objectID] target:self selector:@selector(deleteResult:error:context:) context:nil];
 	}
 }
@@ -249,7 +249,8 @@
         NSLog(@"Hey, we logged in (with the new switchboard)!");
         
         [self getRows];
-        [self searchTest];
+        //[self searchTest];
+        //[self getDeletedTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -301,10 +302,23 @@
 
 - (void)searchResult:(NSArray *)results error:(NSError *)error context:(id)context
 {
-    NSLog(@"searchResult: %@ error: %@ context: %@", results, error, context);
+    //NSLog(@"searchResult: %@ error: %@ context: %@", results, error, context);
     if (results && !error)
     {
 
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
+- (void)getDeletedResult:(ZKGetDeletedResult *)result error:(NSError *)error context:(id)context
+{
+    //NSLog(@"getDeletedResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+        NSLog(@"deleted records: %@", result.records);
     }
     else if (error)
     {
@@ -343,6 +357,11 @@
 {
     NSString *queryString = @"find {4159017000} in phone fields returning contact(id, phone, firstname, lastname), lead(id, phone, firstname, lastname), account(id, phone, name)";
     [[ZKServerSwitchboard switchboard] search:queryString target:self selector:@selector(searchResult:error:context:) context:nil];
+}
+
+- (void)getDeletedTest
+{
+    [[ZKServerSwitchboard switchboard] getDeleted:@"Account" fromDate:nil toDate:nil target:self selector:@selector(getDeletedResult:error:context:) context:nil];
 }
 
 

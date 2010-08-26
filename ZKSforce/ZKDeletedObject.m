@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -20,20 +20,34 @@
 //
 
 
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
-
-#import "ZKSforceClient.h"
-#import "ZKUserInfo.h"
-#import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "ZKServerSwitchboard.h"
-#import "ZKServerSwitchboard+Utility.h"
-#import "ZKServerSwitchboard+Describe.h"
-#import "ZKGetDeletedResult.h"
 #import "ZKDeletedObject.h"
+
+
+@implementation ZKDeletedObject
+
+@synthesize Id;
+@synthesize deletedDate;
+
+- (ZKDeletedObject *)initWithId:(NSString *)objectId deletedDate:(NSDate *)date;
+{
+    if (self = [super init])
+    {
+        Id = [objectId copy];
+        deletedDate = [date retain];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [Id release];
+    [deletedDate release];
+    [super dealloc];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@ {Id: %@, deletedDate: %@}", [super description], Id, deletedDate];
+}
+
+@end

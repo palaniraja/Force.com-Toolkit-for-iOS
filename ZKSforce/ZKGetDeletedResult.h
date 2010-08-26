@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -18,22 +18,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 // THE SOFTWARE.
 //
+#import <Foundation/Foundation.h>
 
+@class ZKElement;
 
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
+@interface ZKGetDeletedResult : NSObject <NSCopying> {
+    NSDate *earliestDateAvailable;
+    NSDate *latestDateCovered;
+    NSArray *records;
+}
 
-#import "ZKSforceClient.h"
-#import "ZKUserInfo.h"
-#import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "ZKServerSwitchboard.h"
-#import "ZKServerSwitchboard+Utility.h"
-#import "ZKServerSwitchboard+Describe.h"
-#import "ZKGetDeletedResult.h"
-#import "ZKDeletedObject.h"
+@property (readonly) NSDate *earliestDateAvailable;
+@property (readonly) NSDate *latestDateCovered;
+@property (readonly) NSArray *records;
+
+- (id)initFromXmlNode:(ZKElement *)node;
+- (id)initWithRecords:(NSArray *)records earliestDateAvailable:(NSDate *)earliestDate latestDateCovered:(NSDate *)latestDate;
+
+@end

@@ -54,6 +54,9 @@
 		5C5815EF12133454000BA324 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5815E912133454000BA324 /* LoginViewController.m */; };
 		5C5815F012133454000BA324 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C5815EB12133454000BA324 /* DetailView.xib */; };
 		5C5815F112133454000BA324 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C5815EC12133454000BA324 /* MainWindow.xib */; };
+		5F0B85D01225EAAA00D767DA /* ZKGetDeletedResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B85CF1225EAAA00D767DA /* ZKGetDeletedResult.m */; };
+		5F0B85DC1225F58C00D767DA /* NSDate+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B85DB1225F58C00D767DA /* NSDate+Additions.m */; };
+		5F0B864D1225FE1900D767DA /* ZKDeletedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B864C1225FE1900D767DA /* ZKDeletedObject.m */; };
 		5F1F34641224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34631224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m */; };
 		5F1F34ED1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34EC1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m */; };
 		5F1F34F21224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */; };
@@ -154,6 +157,12 @@
 		5C5815EA12133454000BA324 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = SOURCE_ROOT; };
 		5C5815EB12133454000BA324 /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		5C5815EC12133454000BA324 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		5F0B85CE1225EAAA00D767DA /* ZKGetDeletedResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKGetDeletedResult.h; sourceTree = "<group>"; };
+		5F0B85CF1225EAAA00D767DA /* ZKGetDeletedResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKGetDeletedResult.m; sourceTree = "<group>"; };
+		5F0B85DA1225F58C00D767DA /* NSDate+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Additions.h"; sourceTree = "<group>"; };
+		5F0B85DB1225F58C00D767DA /* NSDate+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Additions.m"; sourceTree = "<group>"; };
+		5F0B864B1225FE1900D767DA /* ZKDeletedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKDeletedObject.h; sourceTree = "<group>"; };
+		5F0B864C1225FE1900D767DA /* ZKDeletedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKDeletedObject.m; sourceTree = "<group>"; };
 		5F1F34621224AE5100B8F6B1 /* ZKServerSwitchboard+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+Private.h"; sourceTree = "<group>"; };
 		5F1F34631224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+Private.m"; sourceTree = "<group>"; };
 		5F1F34EB1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+Utility.h"; sourceTree = "<group>"; };
@@ -190,6 +199,7 @@
 			children = (
 				5F8E3C2D121CD2C6001AF263 /* Layout */,
 				5C4E9CB01213384D000C45AD /* KeychainSupport */,
+				5F0B869B122602B000D767DA /* Results */,
 				5C4E9CB31213384D000C45AD /* ZKBaseClient.h */,
 				5C4E9CB41213384D000C45AD /* ZKBaseClient.m */,
 				5C4E9CB51213384D000C45AD /* ZKChildRelationship.h */,
@@ -203,18 +213,12 @@
 				5C4E9CCD1213384D000C45AD /* ZKDescribeSObject.m */,
 				5C4E9CCE1213384D000C45AD /* ZKEnvelope.h */,
 				5C4E9CCF1213384D000C45AD /* ZKEnvelope.m */,
-				5C4E9CD01213384D000C45AD /* ZKLoginResult.h */,
-				5C4E9CD11213384D000C45AD /* ZKLoginResult.m */,
 				5C4E9CD21213384D000C45AD /* ZKParser.h */,
 				5C4E9CD31213384D000C45AD /* ZKParser.m */,
 				5C4E9CD41213384D000C45AD /* ZKPartnerEnvelope.h */,
 				5C4E9CD51213384D000C45AD /* ZKPartnerEnvelope.m */,
 				5C4E9CD61213384D000C45AD /* ZKPicklistEntry.h */,
 				5C4E9CD71213384D000C45AD /* ZKPicklistEntry.m */,
-				5C4E9CDA1213384D000C45AD /* ZKQueryResult.h */,
-				5C4E9CDB1213384D000C45AD /* ZKQueryResult.m */,
-				5C4E9CDC1213384D000C45AD /* ZKQueryResult_NSTableView.h */,
-				5C4E9CDD1213384D000C45AD /* ZKQueryResult_NSTableView.m */,
 				5C4E9CDE1213384D000C45AD /* ZKRecordTypeInfo.h */,
 				5C4E9CDF1213384D000C45AD /* ZKRecordTypeInfo.m */,
 				5C4E9CE81213384D000C45AD /* ZKSaveResult.h */,
@@ -246,6 +250,10 @@
 				5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */,
 				5FB1A6C6122359CC00CEEDF1 /* NSObject+Additions.h */,
 				5FB1A6C7122359CC00CEEDF1 /* NSObject+Additions.m */,
+				5F0B85DA1225F58C00D767DA /* NSDate+Additions.h */,
+				5F0B85DB1225F58C00D767DA /* NSDate+Additions.m */,
+				5F0B864B1225FE1900D767DA /* ZKDeletedObject.h */,
+				5F0B864C1225FE1900D767DA /* ZKDeletedObject.m */,
 			);
 			name = ZKSforce;
 			path = ../ZKSforce;
@@ -325,6 +333,21 @@
 				5C5815551213189E000BA324 /* SVNTest.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5F0B869B122602B000D767DA /* Results */ = {
+			isa = PBXGroup;
+			children = (
+				5C4E9CD01213384D000C45AD /* ZKLoginResult.h */,
+				5C4E9CD11213384D000C45AD /* ZKLoginResult.m */,
+				5C4E9CDA1213384D000C45AD /* ZKQueryResult.h */,
+				5C4E9CDB1213384D000C45AD /* ZKQueryResult.m */,
+				5C4E9CDC1213384D000C45AD /* ZKQueryResult_NSTableView.h */,
+				5C4E9CDD1213384D000C45AD /* ZKQueryResult_NSTableView.m */,
+				5F0B85CE1225EAAA00D767DA /* ZKGetDeletedResult.h */,
+				5F0B85CF1225EAAA00D767DA /* ZKGetDeletedResult.m */,
+			);
+			name = Results;
 			sourceTree = "<group>";
 		};
 		5F8E3C2D121CD2C6001AF263 /* Layout */ = {
@@ -466,6 +489,9 @@
 				5F1F34641224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m in Sources */,
 				5F1F34ED1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m in Sources */,
 				5F1F34F21224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m in Sources */,
+				5F0B85D01225EAAA00D767DA /* ZKGetDeletedResult.m in Sources */,
+				5F0B85DC1225F58C00D767DA /* NSDate+Additions.m in Sources */,
+				5F0B864D1225FE1900D767DA /* ZKDeletedObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
