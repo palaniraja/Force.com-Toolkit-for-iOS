@@ -31,7 +31,7 @@
 
 @interface ZKServerSwitchboard (UtilityWrappers)
 
-- (ZKElement *)_processSetPasswordResponse:(ZKElement *)setPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (NSNumber *)_processSetPasswordResponse:(ZKElement *)setPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSDate *)_processGetServerTimestampResponse:(ZKElement *)getServerTimestampResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
@@ -90,12 +90,12 @@
 
 @implementation ZKServerSwitchboard (UtilityWrappers)
 
-- (ZKElement *)_processSetPasswordResponse:(ZKElement *)setPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context
+- (NSNumber *)_processSetPasswordResponse:(ZKElement *)setPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context
 {
-    // TODO : might want to process this more?  Documentation seems sparse here.
-    ZKElement *searchResult = [setPasswordResponseElement childElement:@"result"];
-    [self _unwrapContext:context andCallSelectorWithResponse:searchResult error:error];
-	return searchResult;
+    // A fault would happen (and an error prepped) if it wasn't successful.
+    NSNumber *response = [NSNumber numberWithBool: (error ? NO : YES)];
+    [self _unwrapContext:context andCallSelectorWithResponse:response error:error];
+	return response;
 }
 
 - (NSDate *)_processGetServerTimestampResponse:(ZKElement *)getServerTimestampResponseElement error:(NSError *)error context:(NSDictionary *)context
