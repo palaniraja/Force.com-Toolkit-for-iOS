@@ -33,6 +33,7 @@
 
 - (NSNumber *)_processSetPasswordResponse:(ZKElement *)setPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSDate *)_processGetServerTimestampResponse:(ZKElement *)getServerTimestampResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (NSArray *)_processEmptyRecycleBinResponse:(ZKElement *)emptyRecycleBinResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
 
@@ -41,7 +42,17 @@
 
 - (void)emptyRecycleBin:(NSArray *)objectIDs target:(id)target selector:(SEL)selector context:(id)context
 {
-    NSLog(@"emptyRecycleBin not implemented yet");
+    [self _checkSession];
+    
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	[env startElement:@"emptyRecycleBin"];
+	[env addElement:@"ids" elemValue:objectIDs];
+	[env endElement:@"emptyRecycleBin"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
+	
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processEmptyRecycleBinResponse:error:context:) context: wrapperContext];
 }
 
 - (void)getServerTimestampWithTarget:(id)target selector:(SEL)selector context:(id)context
@@ -106,6 +117,18 @@
     NSDate *timestamp = [NSDate dateWithLongFormatString:timestampString];
     [self _unwrapContext:context andCallSelectorWithResponse:timestamp error:error];
 	return timestamp;
+}
+
+- (NSArray *)_processEmptyRecycleBinResponse:(ZKElement *)emptyRecycleBinResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    NSArray *resArr = [emptyRecycleBinResponseElement childElements:@"result"];
+	NSMutableArray *results = [NSMutableArray arrayWithCapacity:[resArr count]];
+	for (ZKElement *saveResultElement in resArr) {
+		ZKSaveResult *sr = [[[ZKSaveResult alloc] initWithXmlElement:saveResultElement] autorelease];
+		[results addObject:sr];
+	} 
+    [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
+	return results;
 }
 
 @end

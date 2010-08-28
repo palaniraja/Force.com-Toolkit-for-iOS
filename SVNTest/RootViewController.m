@@ -17,6 +17,7 @@
 - (void)searchTest;
 - (void)getDeletedTest;
 - (void)getServerTimestampTest;
+- (void)emptyRecycleBinTest;
 
 @end
 
@@ -253,6 +254,7 @@
         //[self searchTest];
         //[self getDeletedTest];
         //[self getServerTimestampTest];
+        //[self emptyRecycleBinTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -317,7 +319,7 @@
 
 - (void)getDeletedResult:(ZKGetDeletedResult *)result error:(NSError *)error context:(id)context
 {
-    //NSLog(@"getDeletedResult: %@ error: %@ context: %@", result, error, context);
+    NSLog(@"getDeletedResult: %@ error: %@ context: %@", result, error, context);
     if (result && !error)
     {
         NSLog(@"deleted records: %@", result.records);
@@ -339,6 +341,19 @@
         [self receivedErrorFromAPICall: error];
     }
 }
+
+- (void)emptyRecycleBinResult:(NSArray *)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"emptyRecycleBinResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 
 #pragma mark UIActionSheetDelegate
 
@@ -381,6 +396,12 @@
 - (void)getServerTimestampTest
 {
     [[ZKServerSwitchboard switchboard] getServerTimestampWithTarget:self selector:@selector(getServerTimestampResult:error:context:) context:nil];
+}
+
+- (void)emptyRecycleBinTest
+{
+    NSArray *objectIDs = [NSArray arrayWithObject:@"001A000000KKopAIAT"];
+    [[ZKServerSwitchboard switchboard] emptyRecycleBin:objectIDs target:self selector:@selector(emptyRecycleBinResult:error:context:) context:nil];    
 }
 
 @end
