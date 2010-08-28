@@ -60,6 +60,7 @@
 		5F1F34641224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34631224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m */; };
 		5F1F34ED1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34EC1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m */; };
 		5F1F34F21224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */; };
+		5F6E90991229A369006EF146 /* ZKEmailMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E90981229A369006EF146 /* ZKEmailMessage.m */; };
 		5F8E3C35121CD3A6001AF263 /* ZKSforceClient+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8E3C34121CD3A6001AF263 /* ZKSforceClient+Layout.m */; };
 		5F8E3C40121CD4A7001AF263 /* ZKSforceClient+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8E3C3F121CD4A7001AF263 /* ZKSforceClient+Private.m */; };
 		5FB1A664122347CC00CEEDF1 /* ZKServerSwitchboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB1A663122347CC00CEEDF1 /* ZKServerSwitchboard.m */; };
@@ -169,6 +170,8 @@
 		5F1F34EC1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+Utility.m"; sourceTree = "<group>"; };
 		5F1F34F01224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+Describe.h"; sourceTree = "<group>"; };
 		5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+Describe.m"; sourceTree = "<group>"; };
+		5F6E90971229A369006EF146 /* ZKEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKEmailMessage.h; sourceTree = "<group>"; };
+		5F6E90981229A369006EF146 /* ZKEmailMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKEmailMessage.m; sourceTree = "<group>"; };
 		5F8E3C33121CD3A6001AF263 /* ZKSforceClient+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKSforceClient+Layout.h"; sourceTree = "<group>"; };
 		5F8E3C34121CD3A6001AF263 /* ZKSforceClient+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKSforceClient+Layout.m"; sourceTree = "<group>"; };
 		5F8E3C3E121CD4A7001AF263 /* ZKSforceClient+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKSforceClient+Private.h"; sourceTree = "<group>"; };
@@ -197,6 +200,7 @@
 		5C4E9CAF1213384D000C45AD /* ZKSforce */ = {
 			isa = PBXGroup;
 			children = (
+				5F6E90D71229A890006EF146 /* ZKSObjects */,
 				5F8E3C2D121CD2C6001AF263 /* Layout */,
 				5C4E9CB01213384D000C45AD /* KeychainSupport */,
 				5F0B869B122602B000D767DA /* Results */,
@@ -232,8 +236,6 @@
 				5F8E3C3F121CD4A7001AF263 /* ZKSforceClient+Private.m */,
 				5C4E9CED1213384D000C45AD /* ZKSoapException.h */,
 				5C4E9CEE1213384D000C45AD /* ZKSoapException.m */,
-				5C4E9CEF1213384D000C45AD /* ZKSObject.h */,
-				5C4E9CF01213384D000C45AD /* ZKSObject.m */,
 				5C4E9CF11213384D000C45AD /* ZKURLConnection.h */,
 				5C4E9CF21213384D000C45AD /* ZKURLConnection.m */,
 				5C4E9CF31213384D000C45AD /* ZKUserInfo.h */,
@@ -348,6 +350,17 @@
 				5F0B85CF1225EAAA00D767DA /* ZKGetDeletedResult.m */,
 			);
 			name = Results;
+			sourceTree = "<group>";
+		};
+		5F6E90D71229A890006EF146 /* ZKSObjects */ = {
+			isa = PBXGroup;
+			children = (
+				5C4E9CEF1213384D000C45AD /* ZKSObject.h */,
+				5C4E9CF01213384D000C45AD /* ZKSObject.m */,
+				5F6E90971229A369006EF146 /* ZKEmailMessage.h */,
+				5F6E90981229A369006EF146 /* ZKEmailMessage.m */,
+			);
+			name = ZKSObjects;
 			sourceTree = "<group>";
 		};
 		5F8E3C2D121CD2C6001AF263 /* Layout */ = {
@@ -492,6 +505,7 @@
 				5F0B85D01225EAAA00D767DA /* ZKGetDeletedResult.m in Sources */,
 				5F0B85DC1225F58C00D767DA /* NSDate+Additions.m in Sources */,
 				5F0B864D1225FE1900D767DA /* ZKDeletedObject.m in Sources */,
+				5F6E90991229A369006EF146 /* ZKEmailMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

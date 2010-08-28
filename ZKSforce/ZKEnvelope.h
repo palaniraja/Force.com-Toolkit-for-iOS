@@ -34,6 +34,7 @@
 
 - (void) moveToBody;
 - (void) startElement:(NSString *)elemName;
+- (void) startElement:(NSString *)elemName withParameters:(NSDictionary *)parameters;
 - (void) endElement:(NSString *)elemName;
 - (void) writeText:(NSString *)text;
 - (void) addElement:(NSString *)elemName elemValue:(id)elemValue;
@@ -41,6 +42,7 @@
 
 - (void) addElementArray:(NSString *)elemName   elemValue:(NSArray *)elemValues;
 - (void) addElementSObject:(NSString *)elemName elemValue:(ZKSObject *)sobject;
+- (void) addSObjectFields: (ZKSObject *) sobject;
 - (void) addElementString:(NSString *)elemName  elemValue:(NSString *)elemValue;
 
 @end

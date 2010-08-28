@@ -114,18 +114,24 @@ enum envState {
 	[self endElement:elemName];
 }
 
+- (void) addSObjectFields: (ZKSObject *) sobject  
+{
+    NSEnumerator *e = [[sobject fields] keyEnumerator];
+	NSString *key;
+	while(key = [e nextObject]) 
+    {
+		[self addElement:key elemValue:[[sobject fields] valueForKey:key]];
+	}
+}
+
 - (void) addElementSObject:(NSString *)elemName elemValue:(ZKSObject *)sobject 
 {
 	[self startElement:elemName];
 	[self addElement:@"type" elemValue:[sobject type]];
 	[self addElement:@"fieldsToNull" elemValue:[sobject fieldsToNull]];
 
-	NSEnumerator *e = [[sobject fields] keyEnumerator];
-	NSString *key;
-	while(key = [e nextObject]) 
-    {
-		[self addElement:key elemValue:[[sobject fields] valueForKey:key]];
-	}
+	[self addSObjectFields: sobject];
+
 	[self endElement:elemName];
 }
 
@@ -149,6 +155,17 @@ enum envState {
 - (void )startElement:(NSString *)elemName 
 {
 	[env appendFormat:@"<%@>", elemName];
+}
+
+- (void) startElement:(NSString *)elemName withParameters:(NSDictionary *)parameters
+{
+    NSMutableArray *parameterStrings = [NSMutableArray array];
+    for (NSString *key in [parameters allKeys])
+    {
+        NSString *value = [parameters objectForKey:key];
+        [parameterStrings addObject:[NSString stringWithFormat:@"%@=\"%@\"", key, value]];
+    }
+    [env appendFormat:@"<%@ %@>", elemName, [parameterStrings componentsJoinedByString:@" "]];
 }
 
 - (void )endElement:(NSString *)elemName 

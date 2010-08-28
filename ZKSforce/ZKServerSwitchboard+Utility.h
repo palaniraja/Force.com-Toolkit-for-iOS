@@ -28,7 +28,7 @@
 - (void)emptyRecycleBin:(NSArray *)objectIDs target:(id)target selector:(SEL)selector context:(id)context;
 - (void)getServerTimestampWithTarget:(id)target selector:(SEL)selector context:(id)context;
 - (void)resetPasswordForUserId:(NSString *)userId triggerUserEmail:(BOOL)triggerUserEmail target:(id)target selector:(SEL)selector context:(id)context;
-- (void)sendEmail:(NSArray *)emails target:(id)target selector:(SEL)selector context:(id)context; // Create a wrapper around that email object
+- (void)sendEmail:(NSArray *)emails target:(id)target selector:(SEL)selector context:(id)context;
 - (void)setPassword:(NSString *)password forUserId:(NSString *)userId target:(id)target selector:(SEL)selector context:(id)context;
 
 

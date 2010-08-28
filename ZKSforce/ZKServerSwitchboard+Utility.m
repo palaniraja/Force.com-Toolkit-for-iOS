@@ -28,13 +28,14 @@
 #import "NSObject+Additions.h"
 #import "NSDate+Additions.h"
 #import "ZKSaveResult.h"
+#import "ZKEmailMessage.h"
 
 @interface ZKServerSwitchboard (UtilityWrappers)
 
 - (NSNumber *)_processSetPasswordResponse:(ZKElement *)setPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSDate *)_processGetServerTimestampResponse:(ZKElement *)getServerTimestampResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processEmptyRecycleBinResponse:(ZKElement *)emptyRecycleBinResponseElement error:(NSError *)error context:(NSDictionary *)context;
-
+- (NSNumber *)_processSendEmailResponse:(ZKElement *)sendEmailResponseElement error:(NSError *)error context:(NSDictionary *)context;
 @end
 
 
@@ -76,7 +77,24 @@
 
 - (void)sendEmail:(NSArray *)emails target:(id)target selector:(SEL)selector context:(id)context
 {
-    NSLog(@"sendEmail not implemented yet");
+    NSLog(@"Warning sendEmail doesn't seem to work just yet.");
+    [self _checkSession];
+    
+	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+    NSDictionary *messageElementParameters = [NSDictionary dictionaryWithObject:@"urn:SingleEmailMessage" forKey:@"type"];
+	[env startElement:@"sendEmail"];
+	for (ZKSObject *message in emails)
+    {
+        [env startElement:@"messages" withParameters:messageElementParameters];
+        [env addSObjectFields: message];
+        [env endElement:@"messages"];
+    }
+	[env endElement:@"sendEmail"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processSendEmailResponse:error:context:) context: wrapperContext];
 }
 
 - (void)setPassword:(NSString *)password forUserId:(NSString *)userId target:(id)target selector:(SEL)selector context:(id)context
@@ -129,6 +147,14 @@
 	} 
     [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
 	return results;
+}
+
+- (NSNumber *)_processSendEmailResponse:(ZKElement *)sendEmailResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    // A fault would happen (and an error prepped) if it wasn't successful.
+    NSNumber *response = [NSNumber numberWithBool: (error ? NO : YES)];
+    [self _unwrapContext:context andCallSelectorWithResponse:response error:error];
+	return response;
 }
 
 @end

@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -20,21 +20,27 @@
 //
 
 
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
-
-#import "ZKSforceClient.h"
-#import "ZKUserInfo.h"
+#import <Foundation/Foundation.h>
 #import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "ZKServerSwitchboard.h"
-#import "ZKServerSwitchboard+Utility.h"
-#import "ZKServerSwitchboard+Describe.h"
-#import "ZKGetDeletedResult.h"
-#import "ZKDeletedObject.h"
-#import "ZKEmailMessage.h"
+
+enum _ZKEmailMessagePriority {
+    ZKEmailMessagePriorityLow = 1,
+    ZKEmailMessagePriorityNormal = 2,
+    ZKEmailMessagePriorityHigh = 3
+};
+typedef NSUInteger ZKEmailMessagePriority;
+
+@interface ZKEmailMessage : ZKSObject {
+
+    
+}
+
+@property (nonatomic, assign) BOOL bccSender;
+@property (nonatomic, assign) ZKEmailMessagePriority priority;
+@property (nonatomic, copy) NSString *subject;
+@property (nonatomic, assign) BOOL useSignature;
+@property (nonatomic, copy) NSString *targetObjectId;
+@property (nonatomic, copy) NSString *plainTextBody;
+
+
+@end

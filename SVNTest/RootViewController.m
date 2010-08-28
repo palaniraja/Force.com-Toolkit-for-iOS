@@ -11,6 +11,7 @@
 #import "SVNTestAppDelegate.h"
 #import "ZKLoginResult.h"
 
+
 @interface RootViewController (Private)
 
 - (void)getRows;
@@ -18,6 +19,7 @@
 - (void)getDeletedTest;
 - (void)getServerTimestampTest;
 - (void)emptyRecycleBinTest;
+- (void)sendEmailTest;
 
 @end
 
@@ -255,6 +257,7 @@
         //[self getDeletedTest];
         //[self getServerTimestampTest];
         //[self emptyRecycleBinTest];
+        //[self sendEmailTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -354,6 +357,18 @@
     }
 }
 
+- (void)sendEmailResult:(NSNumber *)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"sendEmailResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 
 #pragma mark UIActionSheetDelegate
 
@@ -402,6 +417,15 @@
 {
     NSArray *objectIDs = [NSArray arrayWithObject:@"001A000000KKopAIAT"];
     [[ZKServerSwitchboard switchboard] emptyRecycleBin:objectIDs target:self selector:@selector(emptyRecycleBinResult:error:context:) context:nil];    
+}
+
+- (void)sendEmailTest
+{
+    ZKEmailMessage *message = [[[ZKEmailMessage alloc] init] autorelease];
+    message.plainTextBody = @"This is a test message from the sendEmail function via the iOS toolkit.";
+    message.targetObjectId = @"005A0000000h8tgIAA";
+    NSArray *messages = [NSArray arrayWithObject: message];
+    [[ZKServerSwitchboard switchboard] sendEmail:messages target:self selector:@selector(sendEmailResult:error:context:) context:nil];
 }
 
 @end
