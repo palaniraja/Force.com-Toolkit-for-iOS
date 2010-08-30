@@ -110,7 +110,7 @@
     NSString *xml = [env end];
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
-    [self _sendRequestWithData:xml target:self selector:@selector(_processSearchResponse:error:context:) context: wrapperContext];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processSetPasswordResponse:error:context:) context: wrapperContext];
 }
 
 

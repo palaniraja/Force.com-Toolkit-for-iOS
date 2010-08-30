@@ -24,9 +24,11 @@
 #import "ZKSObject.h"
 
 enum _ZKEmailMessagePriority {
+    ZKEmailMessagePriorityLowest = 0,
     ZKEmailMessagePriorityLow = 1,
     ZKEmailMessagePriorityNormal = 2,
-    ZKEmailMessagePriorityHigh = 3
+    ZKEmailMessagePriorityHigh = 3,
+    ZKEmailMessagePriorityHighest = 4
 };
 typedef NSUInteger ZKEmailMessagePriority;
 

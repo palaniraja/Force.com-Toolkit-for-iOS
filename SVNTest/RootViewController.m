@@ -20,6 +20,7 @@
 - (void)getServerTimestampTest;
 - (void)emptyRecycleBinTest;
 - (void)sendEmailTest;
+- (void)setPasswordTest;
 
 @end
 
@@ -252,12 +253,13 @@
     {
         NSLog(@"Hey, we logged in (with the new switchboard)!");
         
-        [self getRows];
+        //[self getRows];
         //[self searchTest];
         //[self getDeletedTest];
         //[self getServerTimestampTest];
         //[self emptyRecycleBinTest];
         //[self sendEmailTest];
+        //[self setPasswordTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -369,6 +371,18 @@
     }
 }
 
+- (void)setPasswordResult:(NSNumber *)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"setPasswordResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 
 #pragma mark UIActionSheetDelegate
 
@@ -426,6 +440,13 @@
     message.targetObjectId = @"005A0000000h8tgIAA";
     NSArray *messages = [NSArray arrayWithObject: message];
     [[ZKServerSwitchboard switchboard] sendEmail:messages target:self selector:@selector(sendEmailResult:error:context:) context:nil];
+}
+
+- (void)setPasswordTest
+{
+    NSString *userId = @"005A0000000h8tgIAA";
+    NSString *newPassword = @"test1234";
+    [[ZKServerSwitchboard switchboard] setPassword:newPassword forUserId:userId target:self selector:@selector(setPasswordResult:error:context:) context:nil];    
 }
 
 @end

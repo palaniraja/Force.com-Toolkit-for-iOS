@@ -116,22 +116,14 @@
 
 - (NSString *)_priorityStringForValue:(ZKEmailMessagePriority)priority
 {
-    if (priority == ZKEmailMessagePriorityLow)
-        return @"Low";
-    else if (priority == ZKEmailMessagePriorityNormal)
-        return @"Normal";
-    else 
-        return @"High";
+    NSArray *names = [NSArray arrayWithObjects:@"Lowest", @"Low", @"Normal", @"High", @"Highest", nil];
+    return [names objectAtIndex:priority];
 }
 
 - (ZKEmailMessagePriority)_priorityValueForName:(NSString *)name
 {
-    if ([name isEqualToString:@"Low"])
-        return ZKEmailMessagePriorityLow;
-    else if ([name isEqualToString:@"Normal"])
-        return ZKEmailMessagePriorityNormal;
-    else 
-        return ZKEmailMessagePriorityHigh;
+    NSArray *names = [NSArray arrayWithObjects:@"Lowest", @"Low", @"Normal", @"High", @"Highest", nil];
+    return [names indexOfObject:name];
 }
 
 @end
