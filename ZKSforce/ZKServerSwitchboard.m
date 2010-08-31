@@ -43,6 +43,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (NSArray *)_processDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (ZKGetDeletedResult *)_processGetDeletedResponse:(ZKElement *)getDeletedResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processSearchResponse:(ZKElement *)searchResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (NSArray *)_processUnDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
 
@@ -298,6 +299,21 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [self _sendRequestWithData:xml target:self selector:@selector(_processSearchResponse:error:context:) context: wrapperContext];
 }
 
+- (void)unDelete:(NSArray *)objectIDs target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	[env startElement:@"undelete"];
+	[env addElement:@"ids" elemValue:objectIDs];
+	[env endElement:@"undelete"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
+	
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processUnDeleteResponse:error:context:) context: wrapperContext];
+}
+
 - (void)update:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
 {
     [self _checkSession];
@@ -398,6 +414,11 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     }
     [self _unwrapContext:context andCallSelectorWithResponse:result error:error];
     return result;
+}
+
+- (NSArray *)_processUnDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    return [self _processDeleteResponse:saveResponseElement error:error context:context];
 }
 
 @end

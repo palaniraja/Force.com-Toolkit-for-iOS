@@ -22,6 +22,7 @@
 - (void)sendEmailTest;
 - (void)setPasswordTest;
 - (void)resetPasswordTest;
+- (void)unDeleteTest;
 
 @end
 
@@ -254,7 +255,7 @@
     {
         NSLog(@"Hey, we logged in (with the new switchboard)!");
         
-        //[self getRows];
+        [self getRows];
         //[self searchTest];
         //[self getDeletedTest];
         //[self getServerTimestampTest];
@@ -262,6 +263,7 @@
         //[self sendEmailTest];
         //[self setPasswordTest];
         //[self resetPasswordTest];
+        //[self unDeleteTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -385,9 +387,9 @@
     }
 }
 
-- (void)resetPasswordResult:(NSString *)result error:(NSError *)error context:(id)context
+- (void)unDeleteResult:(NSString *)result error:(NSError *)error context:(id)context
 {
-    NSLog(@"resetPasswordResult: %@ error: %@ context: %@", result, error, context);
+    NSLog(@"unDeleteResult: %@ error: %@ context: %@", result, error, context);
     if (result && !error)
     {
     }
@@ -433,7 +435,8 @@
 
 - (void)getDeletedTest
 {
-    [[ZKServerSwitchboard switchboard] getDeleted:@"Account" fromDate:nil toDate:nil target:self selector:@selector(getDeletedResult:error:context:) context:nil];
+    NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow: - (60*60*24)];
+    [[ZKServerSwitchboard switchboard] getDeleted:@"Account" fromDate:startDate toDate:nil target:self selector:@selector(getDeletedResult:error:context:) context:nil];
 }
 
 - (void)getServerTimestampTest
@@ -467,6 +470,12 @@
 {
     NSString *userId = @"005A0000000rP0UIAU";
     [[ZKServerSwitchboard switchboard] resetPasswordForUserId:userId triggerUserEmail:YES target:self selector:@selector(resetPasswordResult:error:context:) context:nil];
+}
+
+- (void)unDeleteTest
+{
+    NSArray *objectIds = [NSArray arrayWithObjects:@"001A000000KRQpMIAX", nil];
+    [[ZKServerSwitchboard switchboard] unDelete:objectIds target:self selector:@selector(unDeleteResult:error:context:) context:nil];
 }
 
 @end
