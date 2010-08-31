@@ -28,6 +28,19 @@
 	return [self initWithSessionId:sessionId updateMru:NO clientId:clientId];
 }
 
+- (id)initWithSessionHeader:(NSString *)sessionId clientId:(NSString *)clientId triggerUserEmail:(BOOL)triggerEmail
+{
+    if (self = [super init])
+    {
+        [self start:@"urn:partner.soap.sforce.com"];
+        [self writeSessionHeader:sessionId];
+        [self writeCallOptionsHeader:clientId];
+        [self writeEmailHeader:triggerEmail];
+        [self moveToBody];
+    }
+	return self;
+}
+
 - (id)initWithSessionId:(NSString *)sessionId updateMru:(BOOL)mru clientId:(NSString *)clientId 
 {
 	if (self = [super init])

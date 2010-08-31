@@ -57,6 +57,16 @@ enum envState {
 	[self endElement:@"SessionHeader"];
 }
 
+- (void)writeEmailHeader:(BOOL)triggerUserEmail;
+{
+    if (!triggerUserEmail) 
+        return;
+	[self moveToHeaders];
+	[self startElement:@"EmailHeader"];
+	[self addElement:@"triggerUserEmail" elemValue:@"true"];
+	[self endElement:@"EmailHeader"];
+}
+
 - (void)writeCallOptionsHeader:(NSString *)clientId 
 {
 	if ([clientId length] == 0) 

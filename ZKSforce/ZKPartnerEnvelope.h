@@ -25,6 +25,7 @@
 }
 
 - (id)initWithSessionHeader:(NSString *)sessionId clientId:(NSString *)clientId;
+- (id)initWithSessionHeader:(NSString *)sessionId clientId:(NSString *)clientId triggerUserEmail:(BOOL)triggerEmail;
 - (id)initWithSessionId:(NSString *)sessionId updateMru:(BOOL)mru clientId:(NSString *)clientId;
 
 @end

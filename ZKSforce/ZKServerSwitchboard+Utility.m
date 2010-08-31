@@ -36,6 +36,8 @@
 - (NSDate *)_processGetServerTimestampResponse:(ZKElement *)getServerTimestampResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processEmptyRecycleBinResponse:(ZKElement *)emptyRecycleBinResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSNumber *)_processSendEmailResponse:(ZKElement *)sendEmailResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (NSString *)_processResetPasswordResponse:(ZKElement *)resetPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context;
+
 @end
 
 
@@ -72,7 +74,17 @@
 
 - (void)resetPasswordForUserId:(NSString *)userId triggerUserEmail:(BOOL)triggerUserEmail target:(id)target selector:(SEL)selector context:(id)context
 {
-    NSLog(@"resetPasswordForUserId not implemented yet");
+    [self _checkSession];
+    
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId triggerUserEmail:triggerUserEmail] autorelease];
+	[env startElement:@"resetPassword"];
+    [env addElement:@"userId" elemValue:userId];
+	[env endElement:@"resetPassword"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end];
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processResetPasswordResponse:error:context:) context: wrapperContext];
 }
 
 - (void)sendEmail:(NSArray *)emails target:(id)target selector:(SEL)selector context:(id)context
@@ -155,6 +167,15 @@
     NSNumber *response = [NSNumber numberWithBool: (error ? NO : YES)];
     [self _unwrapContext:context andCallSelectorWithResponse:response error:error];
 	return response;
+}
+
+- (NSString *)_processResetPasswordResponse:(ZKElement *)resetPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    ZKElement *result = [resetPasswordResponseElement childElement:@"result"];
+    ZKElement *passwordElement = [result childElement:@"password"];
+    NSString *password = [passwordElement stringValue];
+    [self _unwrapContext:context andCallSelectorWithResponse:password error:error];
+	return password;
 }
 
 @end

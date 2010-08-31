@@ -31,6 +31,7 @@
 - (void)writeSessionHeader:(NSString *)sessionId;
 - (void)writeCallOptionsHeader:(NSString *)callOptions;
 - (void)writeMruHeader:(BOOL)updateMru;
+- (void)writeEmailHeader:(BOOL)triggerUserEmail;
 
 - (void) moveToBody;
 - (void) startElement:(NSString *)elemName;

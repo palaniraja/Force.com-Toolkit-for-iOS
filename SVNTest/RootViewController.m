@@ -21,6 +21,7 @@
 - (void)emptyRecycleBinTest;
 - (void)sendEmailTest;
 - (void)setPasswordTest;
+- (void)resetPasswordTest;
 
 @end
 
@@ -260,6 +261,7 @@
         //[self emptyRecycleBinTest];
         //[self sendEmailTest];
         //[self setPasswordTest];
+        //[self resetPasswordTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -383,6 +385,18 @@
     }
 }
 
+- (void)resetPasswordResult:(NSString *)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"resetPasswordResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 
 #pragma mark UIActionSheetDelegate
 
@@ -444,9 +458,15 @@
 
 - (void)setPasswordTest
 {
-    NSString *userId = @"005A0000000h8tgIAA";
+    NSString *userId = @"005A0000000rP0UIAU";
     NSString *newPassword = @"test1234";
     [[ZKServerSwitchboard switchboard] setPassword:newPassword forUserId:userId target:self selector:@selector(setPasswordResult:error:context:) context:nil];    
+}
+
+- (void)resetPasswordTest
+{
+    NSString *userId = @"005A0000000rP0UIAU";
+    [[ZKServerSwitchboard switchboard] resetPasswordForUserId:userId triggerUserEmail:YES target:self selector:@selector(resetPasswordResult:error:context:) context:nil];
 }
 
 @end
