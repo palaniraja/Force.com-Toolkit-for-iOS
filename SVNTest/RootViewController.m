@@ -24,6 +24,8 @@
 - (void)resetPasswordTest;
 - (void)unDeleteTest;
 - (void)getUpdatedTest;
+- (void)describeGlobalTest;
+- (void)describeSObjectTest;
 
 @end
 
@@ -256,7 +258,7 @@
     {
         NSLog(@"Hey, we logged in (with the new switchboard)!");
         
-        [self getRows];
+        //[self getRows];
         //[self searchTest];
         //[self getDeletedTest];
         //[self getServerTimestampTest];
@@ -266,6 +268,8 @@
         //[self resetPasswordTest];
         //[self unDeleteTest];
         //[self getUpdatedTest];
+        //[self describeGlobalTest];
+        [self describeSObjectTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -413,6 +417,30 @@
     }
 }
 
+- (void)describeGlobalResult:(id)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"describeGlobalResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
+- (void)describeSObjectResult:(id)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"describeSObjectResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 #pragma mark UIActionSheetDelegate
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet 
@@ -497,6 +525,16 @@
     NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow: + (60*60*12)];
 
     [[ZKServerSwitchboard switchboard] getUpdated:@"Account" fromDate:startDate toDate:endDate target:self selector:@selector(getUpdatedResult:error:context:) context:nil];
+}
+
+- (void)describeGlobalTest
+{
+    [[ZKServerSwitchboard switchboard] describeGlobalWithTarget:self selector:@selector(describeGlobalResult:error:context:) context:nil];
+}
+
+- (void)describeSObjectTest
+{
+    [[ZKServerSwitchboard switchboard] describeSObject:@"Account" target:self selector:@selector(describeSObjectResult:error:context:) context:nil];
 }
 
 @end

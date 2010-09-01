@@ -20,18 +20,72 @@
 //
 
 #import "ZKServerSwitchboard+Utility.h"
+#import "ZKServerSwitchboard+Private.h"
+#import "ZKMessageEnvelope.h"
+#import "ZKMessageElement.h"
+#import "ZKParser.h"
+#import "ZKDescribeGlobalSObject.h"
+#import "ZKDescribeSObject.h"
 
 @interface ZKServerSwitchboard (DescribeWrappers)
+
+- (NSArray *)_processDescribeGlobalResponse:(ZKElement *)describeGlobalResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (ZKDescribeSObject *)_processDescribeSObjectResponse:(ZKElement *)describeSObjectResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
 
 
 @implementation ZKServerSwitchboard (Describe)
 
+- (void)describeGlobalWithTarget:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElement:[ZKMessageElement elementWithName:@"describeGlobal" value:nil]];
+    NSString *xml = [envelope stringRepresentation];  
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeGlobalResponse:error:context:) context: wrapperContext];
+}
+
+- (void)describeSObject:(NSString *)sObjectType target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElementNamed:@"describeSObject" withChildNamed:@"sObjectType" value:sObjectType];
+    NSString *xml = [envelope stringRepresentation];  
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeSObjectResponse:error:context:) context: wrapperContext];
+}
+
 @end
 
 
 @implementation ZKServerSwitchboard (DescribeWrappers)
+
+- (NSArray *)_processDescribeGlobalResponse:(ZKElement *)describeGlobalResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    NSMutableArray *types = [NSMutableArray array]; 
+	NSArray *results = [[describeGlobalResponseElement childElement:@"result"] childElements:@"sobjects"];
+    for (ZKElement *object in results)
+    {
+        ZKDescribeGlobalSObject * describe = [[[ZKDescribeGlobalSObject alloc] initWithXmlElement:object] autorelease];
+		[types addObject:describe];
+    }
+    [self _unwrapContext:context andCallSelectorWithResponse:types error:error];
+	return types;
+}
+
+- (ZKDescribeSObject *)_processDescribeSObjectResponse:(ZKElement *)describeSObjectResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    ZKElement *result = [describeSObjectResponseElement childElement:@"result"];
+	ZKDescribeSObject *describe = [[[ZKDescribeSObject alloc] initWithXmlElement:result] autorelease];
+    [self _unwrapContext:context andCallSelectorWithResponse:describe error:error];
+	return describe;
+}
 
 @end
 
