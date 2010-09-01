@@ -206,6 +206,7 @@
 		5C4E9CAF1213384D000C45AD /* ZKSforce */ = {
 			isa = PBXGroup;
 			children = (
+				5F6E9547122DD63F006EF146 /* Deprecated */,
 				5F6E93B4122C8EF4006EF146 /* Message Envelope */,
 				5F6E90D71229A890006EF146 /* ZKSObjects */,
 				5F8E3C2D121CD2C6001AF263 /* Layout */,
@@ -213,10 +214,6 @@
 				5F0B869B122602B000D767DA /* Results */,
 				5C4E9CB31213384D000C45AD /* ZKBaseClient.h */,
 				5C4E9CB41213384D000C45AD /* ZKBaseClient.m */,
-				5C4E9CD41213384D000C45AD /* ZKPartnerEnvelope.h */,
-				5C4E9CD51213384D000C45AD /* ZKPartnerEnvelope.m */,
-				5C4E9CCE1213384D000C45AD /* ZKEnvelope.h */,
-				5C4E9CCF1213384D000C45AD /* ZKEnvelope.m */,
 				5C4E9CB51213384D000C45AD /* ZKChildRelationship.h */,
 				5C4E9CB61213384D000C45AD /* ZKChildRelationship.m */,
 				5C4E9CB71213384D000C45AD /* ZKDescribeButtonSection.h */,
@@ -235,12 +232,6 @@
 				5C4E9CE81213384D000C45AD /* ZKSaveResult.h */,
 				5C4E9CE91213384D000C45AD /* ZKSaveResult.m */,
 				5C4E9CEA1213384D000C45AD /* ZKSforce.h */,
-				5C4E9CEB1213384D000C45AD /* ZKSforceClient.h */,
-				5C4E9CEC1213384D000C45AD /* ZKSforceClient.m */,
-				5F8E3C33121CD3A6001AF263 /* ZKSforceClient+Layout.h */,
-				5F8E3C34121CD3A6001AF263 /* ZKSforceClient+Layout.m */,
-				5F8E3C3E121CD4A7001AF263 /* ZKSforceClient+Private.h */,
-				5F8E3C3F121CD4A7001AF263 /* ZKSforceClient+Private.m */,
 				5C4E9CED1213384D000C45AD /* ZKSoapException.h */,
 				5C4E9CEE1213384D000C45AD /* ZKSoapException.m */,
 				5C4E9CF11213384D000C45AD /* ZKURLConnection.h */,
@@ -379,6 +370,23 @@
 				5F6E93B9122C8F18006EF146 /* ZKMessageElement.m */,
 			);
 			name = "Message Envelope";
+			sourceTree = "<group>";
+		};
+		5F6E9547122DD63F006EF146 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				5C4E9CEB1213384D000C45AD /* ZKSforceClient.h */,
+				5C4E9CEC1213384D000C45AD /* ZKSforceClient.m */,
+				5F8E3C33121CD3A6001AF263 /* ZKSforceClient+Layout.h */,
+				5F8E3C34121CD3A6001AF263 /* ZKSforceClient+Layout.m */,
+				5F8E3C3E121CD4A7001AF263 /* ZKSforceClient+Private.h */,
+				5F8E3C3F121CD4A7001AF263 /* ZKSforceClient+Private.m */,
+				5C4E9CD41213384D000C45AD /* ZKPartnerEnvelope.h */,
+				5C4E9CD51213384D000C45AD /* ZKPartnerEnvelope.m */,
+				5C4E9CCE1213384D000C45AD /* ZKEnvelope.h */,
+				5C4E9CCF1213384D000C45AD /* ZKEnvelope.m */,
+			);
+			name = Deprecated;
 			sourceTree = "<group>";
 		};
 		5F8E3C2D121CD2C6001AF263 /* Layout */ = {
