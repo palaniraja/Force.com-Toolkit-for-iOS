@@ -26,12 +26,14 @@
 #import "ZKParser.h"
 #import "ZKDescribeGlobalSObject.h"
 #import "ZKDescribeSObject.h"
+#import "ZKDescribeLayoutResult.h"
 
 @interface ZKServerSwitchboard (DescribeWrappers)
 
 - (NSArray *)_processDescribeGlobalResponse:(ZKElement *)describeGlobalResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (ZKDescribeSObject *)_processDescribeSObjectResponse:(ZKElement *)describeSObjectResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processDescribeSObjectsResponse:(ZKElement *)describeSObjectsResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (ZKDescribeLayoutResult *)_processDescribeLayoutResponse:(ZKElement *)describeLayoutResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
 
@@ -74,6 +76,18 @@
     [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeSObjectsResponse:error:context:) context: wrapperContext];
 }
 
+- (void)describeLayout:(NSString *)sObjectType target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElementNamed:@"describeLayout" withChildNamed:@"sObjectType" value:sObjectType];
+    NSString *xml = [envelope stringRepresentation];  
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeLayoutResponse:error:context:) context: wrapperContext];
+}
+
 @end
 
 
@@ -111,6 +125,14 @@
     }
     [self _unwrapContext:context andCallSelectorWithResponse:describes error:error];
 	return describes;
+}
+
+- (ZKDescribeLayoutResult *)_processDescribeLayoutResponse:(ZKElement *)describeLayoutResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    ZKElement *result = [describeLayoutResponseElement childElement:@"result"];
+	ZKDescribeLayoutResult *describe = [[[ZKDescribeLayoutResult alloc] initWithXmlElement:result] autorelease];
+    [self _unwrapContext:context andCallSelectorWithResponse:describe error:error];
+	return describe;	
 }
 
 @end

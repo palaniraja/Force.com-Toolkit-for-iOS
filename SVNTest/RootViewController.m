@@ -27,6 +27,7 @@
 - (void)describeGlobalTest;
 - (void)describeSObjectTest;
 - (void)describeSObjectsTest;
+- (void)describeLayoutTest;
 
 @end
 
@@ -272,6 +273,7 @@
         //[self describeGlobalTest];
         //[self describeSObjectTest];
         //[self describeSObjectsTest];
+        //[self describeLayoutTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -455,6 +457,18 @@
     }
 }
 
+- (void)describeLayoutResult:(id)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"describeLayoutResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 #pragma mark UIActionSheetDelegate
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet 
@@ -555,6 +569,11 @@
 {
     NSArray *sObjectTypes = [NSArray arrayWithObjects:@"Account", @"Contact", nil];
     [[ZKServerSwitchboard switchboard] describeSObjects:sObjectTypes target:self selector:@selector(describeSObjectsResult:error:context:) context:nil];
+}
+
+- (void)describeLayoutTest
+{
+    [[ZKServerSwitchboard switchboard] describeLayout:@"Account" target:self selector:@selector(describeLayoutResult:error:context:) context:nil];
 }
 
 @end

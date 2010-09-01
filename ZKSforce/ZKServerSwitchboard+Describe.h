@@ -27,6 +27,7 @@
 - (void)describeGlobalWithTarget:(id)target selector:(SEL)selector context:(id)context;
 - (void)describeSObject:(NSString *)sObjectType target:(id)target selector:(SEL)selector context:(id)context;
 - (void)describeSObjects:(NSArray *)sObjectTypes target:(id)target selector:(SEL)selector context:(id)context;
+- (void)describeLayout:(NSString *)sObjectType target:(id)target selector:(SEL)selector context:(id)context;
 
 
 @end
