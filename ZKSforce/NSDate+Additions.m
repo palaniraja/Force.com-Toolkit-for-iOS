@@ -39,11 +39,15 @@
     return [dateFormatter dateFromString:string];
 }
 
+#define kLongFormatStringFormat @"yyyy-MM-dd'T'HH:mm:ss.SSSSZZZZ"
+
 - (NSString *)longFormatString
 {
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-    [dateFormatter setDateFormat:kLongFormat];
-    return [dateFormatter stringFromDate:self];
+    [dateFormatter setDateFormat:kLongFormatStringFormat];
+    NSString *longFormatString = [dateFormatter stringFromDate:self];  
+    longFormatString = [longFormatString stringByReplacingOccurrencesOfString:@"GMT" withString:@""];
+    return longFormatString;
 }
 
 @end
