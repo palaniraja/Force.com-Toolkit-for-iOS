@@ -343,7 +343,7 @@
 
 - (void)getServerTimestampResult:(NSDate *)timestamp error:(NSError *)error context:(id)context
 {
-    //NSLog(@"getServerTimestampResult: %@ error: %@ context: %@", timestamp, error, context);
+    NSLog(@"getServerTimestampResult: %@ error: %@ context: %@", timestamp, error, context);
     if (timestamp && !error)
     {
     }

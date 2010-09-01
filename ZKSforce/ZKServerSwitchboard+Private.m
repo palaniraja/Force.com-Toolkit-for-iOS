@@ -256,6 +256,7 @@ static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
     id context = [wrapperContext valueForKey:@"context"];
     if ([context isEqual:[NSNull null]])
         context = nil;
+    
     [target performSelector:selector withObject:response withObject:error withObject: context];
 }
 

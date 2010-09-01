@@ -35,6 +35,9 @@
 
 + (ZKMessageEnvelope *)envelopeWithSessionId:(NSString *)sessionId clientId:(NSString *)clientId;
 
+- (void)addSessionHeader:(NSString *)sessionId;
+- (void)addCallOptions:(NSString *)clientId;
+- (void)addEmailHeader;
 - (void)addHeaderElement:(ZKMessageElement *)element;
 - (void)addBodyElement:(ZKMessageElement *)element;
 - (void)addBodyElementNamed:(NSString *)elementName withChildNamed:(NSString *)childElementName value:(id)childValue;

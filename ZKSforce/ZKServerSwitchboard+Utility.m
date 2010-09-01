@@ -22,13 +22,16 @@
 #import "ZKServerSwitchboard+Utility.h"
 #import "ZKServerSwitchboard+Private.h"
 #import "ZKParser.h"
-#import "ZKEnvelope.h"
-#import "ZKPartnerEnvelope.h"
+//#import "ZKEnvelope.h"
+//#import "ZKPartnerEnvelope.h"
 #import "ZKSoapException.h"
 #import "NSObject+Additions.h"
 #import "NSDate+Additions.h"
 #import "ZKSaveResult.h"
 #import "ZKEmailMessage.h"
+#import "ZKMessageEnvelope.h"
+#import "ZKMessageElement.h"
+
 
 @interface ZKServerSwitchboard (UtilityWrappers)
 
@@ -47,12 +50,16 @@
 {
     [self _checkSession];
     
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+    /*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"emptyRecycleBin"];
 	[env addElement:@"ids" elemValue:objectIDs];
 	[env endElement:@"emptyRecycleBin"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElementNamed:@"emptyRecycleBin" withChildNamed:@"ids" value:objectIDs];
+    NSString *xml = [envelope stringRepresentation];  
 	
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processEmptyRecycleBinResponse:error:context:) context: wrapperContext];
@@ -62,11 +69,15 @@
 {
     [self _checkSession];
     
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+    /*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
 	[env startElement:@"getServerTimestamp"];
 	[env endElement:@"getServerTimestamp"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElement:[ZKMessageElement elementWithName:@"getServerTimestamp" value:nil]];
+    NSString *xml = [envelope stringRepresentation];  
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processGetServerTimestampResponse:error:context:) context: wrapperContext];
@@ -76,12 +87,19 @@
 {
     [self _checkSession];
     
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId triggerUserEmail:triggerUserEmail] autorelease];
+    /*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId triggerUserEmail:triggerUserEmail] autorelease];
 	[env startElement:@"resetPassword"];
     [env addElement:@"userId" elemValue:userId];
 	[env endElement:@"resetPassword"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+   
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    if (triggerUserEmail)
+        [envelope addEmailHeader];
+    [envelope addBodyElementNamed:@"resetPassword" withChildNamed:@"userId" value:userId];
+    NSString *xml = [envelope stringRepresentation];  
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processResetPasswordResponse:error:context:) context: wrapperContext];
@@ -92,6 +110,7 @@
     NSLog(@"Warning sendEmail doesn't seem to work just yet.");
     [self _checkSession];
     
+    /*
 	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
     NSDictionary *messageElementParameters = [NSDictionary dictionaryWithObject:@"urn:SingleEmailMessage" forKey:@"type"];
 	[env startElement:@"sendEmail"];
@@ -103,7 +122,24 @@
     }
 	[env endElement:@"sendEmail"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:self.sessionId clientId:self.clientId];
+    ZKMessageElement *sendEmailElement = [ZKMessageElement elementWithName:@"sendEmail" value:nil];
+    for (ZKSObject *message in emails)
+    {
+        ZKMessageElement *messageElement = [ZKMessageElement elementWithName:@"messages" value:nil];
+        [messageElement addAttribute:@"urn:SingleEmailMessage" value:@"type"];
+        for (NSString *key in [[message fields] allKeys])
+        {
+            id value = [[message fields] valueForKey:key];
+            [messageElement addChildElement:[ZKMessageElement elementWithName:key value:value]];
+        }
+        [sendEmailElement addChildElement:messageElement];
+    }
+    [envelope addBodyElement:sendEmailElement];
+    NSString *xml = [envelope stringRepresentation]; 
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSendEmailResponse:error:context:) context: wrapperContext];
@@ -113,13 +149,20 @@
 {
     [self _checkSession];
     
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+    /*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
 	[env startElement:@"setPassword"];
 	[env addElement:@"userId" elemValue:userId];
 	[env addElement:@"password" elemValue:password];
 	[env endElement:@"setPassword"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:self.sessionId clientId:self.clientId];
+    ZKMessageElement *setPasswordElement = [ZKMessageElement elementWithName:@"setPassword" value:nil];
+    [setPasswordElement addChildElement:[ZKMessageElement elementWithName:@"userId" value:userId]];
+    [setPasswordElement addChildElement:[ZKMessageElement elementWithName:@"password" value:password]];
+    [envelope addBodyElement:setPasswordElement];
+    NSString *xml = [envelope stringRepresentation];  
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSetPasswordResponse:error:context:) context: wrapperContext];

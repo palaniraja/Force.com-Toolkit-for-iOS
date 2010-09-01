@@ -91,7 +91,7 @@
 
 - (void)addAttribute:(NSString *)attributeName value:(NSString *)aValue
 {
-    [attributeName setValue:aValue forKey:attributeName];
+    [attributes setValue:aValue forKey:attributeName];
 }
 
 #pragma mark Methods

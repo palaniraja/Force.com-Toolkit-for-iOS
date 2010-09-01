@@ -33,15 +33,11 @@
     ZKMessageEnvelope *envelope = [[[ZKMessageEnvelope alloc] init] autorelease];
     if (sessionId)
     {
-        ZKMessageElement *sessionHeaderElement = [ZKMessageElement elementWithName:@"SessionHeader" value:nil];
-        [sessionHeaderElement addChildElement:[ZKMessageElement elementWithName:@"sessionId" value:sessionId]];
-        [envelope addHeaderElement:sessionHeaderElement];
+        [envelope addSessionHeader:sessionId];
     }
     if (clientId)
     {
-        ZKMessageElement *sessionHeaderElement = [ZKMessageElement elementWithName:@"CallOptions" value:nil];
-        [sessionHeaderElement addChildElement:[ZKMessageElement elementWithName:@"client" value:clientId]];
-        [envelope addHeaderElement:sessionHeaderElement];
+        [envelope addCallOptions:clientId];
     }
          
     return envelope;
@@ -87,6 +83,27 @@
 }
 
 #pragma mark  Methods
+
+- (void)addSessionHeader:(NSString *)sessionId
+{
+    ZKMessageElement *sessionHeaderElement = [ZKMessageElement elementWithName:@"SessionHeader" value:nil];
+    [sessionHeaderElement addChildElement:[ZKMessageElement elementWithName:@"sessionId" value:sessionId]];
+    [self addHeaderElement:sessionHeaderElement];
+}
+
+- (void)addCallOptions:(NSString *)clientId
+{
+    ZKMessageElement *sessionHeaderElement = [ZKMessageElement elementWithName:@"CallOptions" value:nil];
+    [sessionHeaderElement addChildElement:[ZKMessageElement elementWithName:@"client" value:clientId]];
+    [self addHeaderElement:sessionHeaderElement];
+}
+
+- (void)addEmailHeader
+{
+    ZKMessageElement *sessionHeaderElement = [ZKMessageElement elementWithName:@"EmailHeader" value:nil];
+    [sessionHeaderElement addChildElement:[ZKMessageElement elementWithName:@"triggerUserEmail" value:@"true"]];
+    [self addHeaderElement:sessionHeaderElement];
+}
 
 - (void)addHeaderElement:(ZKMessageElement *)element
 {
