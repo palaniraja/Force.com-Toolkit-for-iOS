@@ -37,4 +37,5 @@
 #import "ZKServerSwitchboard+Describe.h"
 #import "ZKGetDeletedResult.h"
 #import "ZKDeletedObject.h"
+#import "ZKGetUpdatedResult.h"
 #import "ZKEmailMessage.h"

@@ -19,38 +19,31 @@
 // THE SOFTWARE.
 //
 
-#import "ZKGetDeletedResult.h"
+#import "ZKGetUpdatedResult.h"
 #import "ZKSObject.h"
 #import "ZKParser.h"
 #import "NSDate+Additions.h"
 #import "ZKDeletedObject.h"
 
-@implementation ZKGetDeletedResult
+@implementation ZKGetUpdatedResult
 
-@synthesize earliestDateAvailable;
-
-
+@synthesize latestDateCovered;
+@synthesize records;
 
 - (id)initFromXmlNode:(ZKElement *)node
 {
     if (self = [super init])
     {
-        NSString *earliestDateString = [[node childElement:@"earliestDateAvailable"] stringValue];
         NSString *latestDateString = [[node childElement:@"latestDateCovered"] stringValue];
-        earliestDateAvailable = [[NSDate dateWithLongFormatString:earliestDateString] retain];
         latestDateCovered = [[NSDate dateWithLongFormatString:latestDateString] retain];
         
-		
-        NSArray * deletedRecordNodes = [node childElements:@"deletedRecords"];
-        NSMutableArray * recArray = [NSMutableArray arrayWithCapacity:[deletedRecordNodes count]];
-       
-        for (ZKElement * deletedRecordNode in deletedRecordNodes)
+        NSArray * updatedRecordIds = [node childElements:@"ids"];
+        NSMutableArray * recArray = [NSMutableArray arrayWithCapacity:[updatedRecordIds count]];
+        
+        for (ZKElement * updatedRecordId in updatedRecordIds)
         {
-            NSString *objectId = [[deletedRecordNode childElement:@"id"] stringValue];
-            NSString *deletedDateString = [[deletedRecordNode childElement:@"deletedDate"] stringValue];
-            NSDate *deletedDate = [NSDate dateWithLongFormatString:deletedDateString];
-            ZKDeletedObject * object = [[[ZKDeletedObject alloc] initWithId:objectId deletedDate:deletedDate] autorelease];
-            [recArray addObject:object];
+            NSString *objectId = [updatedRecordId stringValue];
+            [recArray addObject:objectId];
         }	
         records = [recArray retain];
     }
@@ -58,12 +51,11 @@
 	return self;
 }
 
-- (id)initWithRecords:(NSArray *)someRecords earliestDateAvailable:(NSDate *)earliestDate latestDateCovered:(NSDate *)latestDate
+- (id)initWithRecords:(NSArray *)someRecords latestDateCovered:(NSDate *)latestDate
 {
     if (self = [super init])
     {
         records = [someRecords copy];
-        earliestDateAvailable = [earliestDate retain];
         latestDateCovered = [latestDate retain];
     }
     return self;
@@ -71,12 +63,14 @@
 
 - (id)copyWithZone:(NSZone *)zone 
 {
-	return [[ZKGetDeletedResult alloc] initWithRecords:records earliestDateAvailable:earliestDateAvailable latestDateCovered:latestDateCovered];
+	return [[ZKGetUpdatedResult alloc] initWithRecords:records latestDateCovered:latestDateCovered];
 }
+
 
 - (void)dealloc 
 {
-	[earliestDateAvailable release];
+    [latestDateCovered release];
+	[records release];
 	[super dealloc];
 }
 

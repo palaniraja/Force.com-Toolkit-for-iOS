@@ -32,6 +32,7 @@
 #import "NSObject+Additions.h"
 #import "ZKSaveResult.h"
 #import "ZKGetDeletedResult.h"
+#import "ZKGetUpdatedResult.h"
 #import "NSDate+Additions.h"
 #import "ZKMessageEnvelope.h"
 #import "ZKMessageElement.h"
@@ -46,7 +47,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (NSArray *)_processSaveResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (ZKGetDeletedResult *)_processGetDeletedResponse:(ZKElement *)getDeletedResponseElement error:(NSError *)error context:(NSDictionary *)context;
-- (void)_processGetUpdatedResponse:(ZKElement *)getUpdatedResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (ZKGetUpdatedResult *)_processGetUpdatedResponse:(ZKElement *)getUpdatedResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processSearchResponse:(ZKElement *)searchResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processUnDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
@@ -511,9 +512,15 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     return result;
 }
 
-- (void)_processGetUpdatedResponse:(ZKElement *)getUpdatedResponseElement error:(NSError *)error context:(NSDictionary *)context
+- (ZKGetUpdatedResult *)_processGetUpdatedResponse:(ZKElement *)getUpdatedResponseElement error:(NSError *)error context:(NSDictionary *)context
 {
-    
+    ZKGetUpdatedResult *result = nil;
+    if (!error)
+    {
+        result = [[[ZKGetUpdatedResult alloc] initFromXmlNode:[[getUpdatedResponseElement childElements] objectAtIndex:0]] autorelease];
+    }
+    [self _unwrapContext:context andCallSelectorWithResponse:result error:error];
+    return result;
 }
 
 - (NSArray *)_processUnDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context

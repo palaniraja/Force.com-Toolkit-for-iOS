@@ -261,7 +261,7 @@
     {
         NSLog(@"Hey, we logged in (with the new switchboard)!");
         
-        //[self getRows];
+        [self getRows];
         //[self searchTest];
         //[self getDeletedTest];
         //[self getServerTimestampTest];
@@ -275,7 +275,7 @@
         //[self describeSObjectTest];
         //[self describeSObjectsTest];
         //[self describeLayoutTest];
-        [self getUserInfoTest];
+        //[self getUserInfoTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -411,11 +411,13 @@
     }
 }
 
-- (void)getUpdatedResult:(id)result error:(NSError *)error context:(id)context
+- (void)getUpdatedResult:(ZKGetUpdatedResult *)result error:(NSError *)error context:(id)context
 {
     NSLog(@"getUpdatedResult: %@ error: %@ context: %@", result, error, context);
     if (result && !error)
     {
+        NSLog(@"records = %@", result.records);
+        NSLog(@"latestDate = %@", result.latestDateCovered);
     }
     else if (error)
     {
@@ -563,7 +565,7 @@
 
 - (void)getUpdatedTest
 {
-    NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow: - (60*60*12)];
+    NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow: - (60*60*24)];
     NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow: + (60*60*12)];
 
     [[ZKServerSwitchboard switchboard] getUpdated:@"Account" fromDate:startDate toDate:endDate target:self selector:@selector(getUpdatedResult:error:context:) context:nil];

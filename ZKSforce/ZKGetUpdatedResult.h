@@ -18,20 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 // THE SOFTWARE.
 //
+
 #import <Foundation/Foundation.h>
-#import "ZKGetUpdatedResult.h"
 
 @class ZKElement;
 
-@interface ZKGetDeletedResult : ZKGetUpdatedResult <NSCopying> {
-    NSDate *earliestDateAvailable;
-
+@interface ZKGetUpdatedResult : NSObject  <NSCopying> {
+    NSDate *latestDateCovered;
+    NSArray *records;
 }
 
-@property (readonly) NSDate *earliestDateAvailable;
-
+@property (readonly) NSDate *latestDateCovered;
+@property (readonly) NSArray *records;
 
 - (id)initFromXmlNode:(ZKElement *)node;
-- (id)initWithRecords:(NSArray *)records earliestDateAvailable:(NSDate *)earliestDate latestDateCovered:(NSDate *)latestDate;
+- (id)initWithRecords:(NSArray *)records latestDateCovered:(NSDate *)latestDate;
 
 @end
