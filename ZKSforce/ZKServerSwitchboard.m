@@ -31,6 +31,8 @@
 #import "ZKSaveResult.h"
 #import "ZKGetDeletedResult.h"
 #import "NSDate+Additions.h"
+#import "ZKMessageEnvelope.h"
+#import "ZKMessageElement.h"
 
 static const int MAX_SESSION_AGE = 10 * 60; // 10 minutes.  15 minutes is the minimum length that you can set sessions to last to, so 10 should be safe.
 static ZKServerSwitchboard * sharedSwitchboard =  nil;
@@ -42,6 +44,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (NSArray *)_processSaveResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (ZKGetDeletedResult *)_processGetDeletedResponse:(ZKElement *)getDeletedResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (void)_processGetUpdatedResponse:(ZKElement *)getUpdatedResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processSearchResponse:(ZKElement *)searchResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processUnDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
@@ -170,16 +173,24 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [sessionExpiry release];
 	sessionExpiry = [[NSDate dateWithTimeIntervalSinceNow:MAX_SESSION_AGE] retain];
 	
+    /*
 	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:nil clientId:clientId] autorelease];
 	[env startElement:@"login"];
 	[env addElement:@"username" elemValue:username];
 	[env addElement:@"password" elemValue:password]; 
 	[env endElement:@"login"];
 	[env endElement:@"s:Body"];
-	NSString *xml = [env end];
+	NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelop = [ZKMessageEnvelope envelopeWithSessionId:nil clientId:clientId];
+    ZKMessageElement *loginElement = [ZKMessageElement elementWithName:@"login" value:nil];
+    [loginElement addChildElement:[ZKMessageElement elementWithName:@"username" value:username]];
+    [loginElement addChildElement:[ZKMessageElement elementWithName:@"password" value:password]];
+    [envelop addBodyElement:loginElement];
+    NSString *alternativeXML = [envelop stringRepresentation];    
 	
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:nil];
-    [self _sendRequestWithData:xml target:self selector:@selector(_processLoginResponse:error:context:) context: wrapperContext];
+    [self _sendRequestWithData:alternativeXML target:self selector:@selector(_processLoginResponse:error:context:) context: wrapperContext];
 }
 
 - (void)create:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context
@@ -187,6 +198,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [self _checkSession];
     
     // if more than we can do in one go, break it up. DC - Ignoring this case.
+    /*
 	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"create"];
 	for (ZKSObject *object in objects)
@@ -195,7 +207,13 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     }
 	[env endElement:@"create"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    if (self.updatesMostRecentlyUsed)
+        [envelope addUpdatesMostRecentlyUsedHeader];
+    [envelope addBodyElementNamed:@"create" withChildNamed:@"sobject" value:objects];
+    NSString *xml = [envelope stringRepresentation]; 
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSaveResponse:error:context:) context: wrapperContext];
@@ -204,13 +222,19 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (void)delete:(NSArray *)objectIDs target:(id)target selector:(SEL)selector context:(id)context
 {
     [self _checkSession];
-    
+    /*
     ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"delete"];
 	[env addElement:@"ids" elemValue:objectIDs];
 	[env endElement:@"delete"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    if (self.updatesMostRecentlyUsed)
+        [envelope addUpdatesMostRecentlyUsedHeader];
+    [envelope addBodyElementNamed:@"delete" withChildNamed:@"ids" value:objectIDs];
+    NSString *xml = [envelope stringRepresentation]; 
 	
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processDeleteResponse:error:context:) context: wrapperContext];
@@ -225,7 +249,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     if (!endDate)
         endDate = [NSDate date];
     
-    
+    /*
     ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"getDeleted"];
 	[env addElement:@"sObjectType" elemValue:sObjectType];
@@ -233,22 +257,67 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	[env addElement:@"endDate" elemValue:[endDate longFormatString]];
 	[env endElement:@"getDeleted"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    if (self.updatesMostRecentlyUsed)
+        [envelope addUpdatesMostRecentlyUsedHeader];
+    ZKMessageElement *getDeletedElement = [ZKMessageElement elementWithName:@"getDeleted" value:nil];
+    [getDeletedElement addChildElement:[ZKMessageElement elementWithName:@"sObjectType" value:sObjectType]];
+    [getDeletedElement addChildElement:[ZKMessageElement elementWithName:@"startDate" value:[startDate longFormatString]]];
+    [getDeletedElement addChildElement:[ZKMessageElement elementWithName:@"endDate" value:[endDate longFormatString]]];
+    [envelope addBodyElement:getDeletedElement];
+    NSString *xml = [envelope stringRepresentation]; 
 	
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processGetDeletedResponse:error:context:) context: wrapperContext];
+}
+
+- (void)getUpdated:(NSString *)sObjectType fromDate:(NSDate *)startDate toDate:(NSDate *)endDate target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    if (!startDate)
+        startDate = [NSDate dateWithTimeIntervalSinceNow: - (29 * 60 * 60 * 24)];
+    if (!endDate)
+        endDate = [NSDate date];
+    
+    /*
+    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:sessionId clientId:clientId] autorelease];
+	[env startElement:@"getUpdated"];
+	[env addElement:@"sObjectType" elemValue:sObjectType];
+    [env addElement:@"startDate" elemValue:[startDate longFormatString]];
+	[env addElement:@"endDate" elemValue:[endDate longFormatString]];
+	[env endElement:@"getUpdated"];
+	[env endElement:@"s:Body"];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    ZKMessageElement *getUpdatedElement = [ZKMessageElement elementWithName:@"getUpdated" value:nil];
+    [getUpdatedElement addChildElement:[ZKMessageElement elementWithName:@"sObjectType" value:sObjectType]];
+    [getUpdatedElement addChildElement:[ZKMessageElement elementWithName:@"startDate" value:[startDate longFormatString]]];
+    [getUpdatedElement addChildElement:[ZKMessageElement elementWithName:@"endDate" value:[endDate longFormatString]]];
+    [envelope addBodyElement:getUpdatedElement];
+    NSString *xml = [envelope stringRepresentation]; 
+	
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processGetUpdatedResponse:error:context:) context: wrapperContext];
 }
 
 - (void)query:(NSString *)soqlQuery target:(id)target selector:(SEL)selector context:(id)context
 {
     [self _checkSession];
     
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+    /*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
 	[env startElement:@"query"];
 	[env addElement:@"queryString" elemValue:soqlQuery];
 	[env endElement:@"query"];
 	[env endElement:@"s:Body"]; 
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElementNamed:@"query" withChildNamed:@"queryString" value:soqlQuery];
+    NSString *xml = [envelope stringRepresentation]; 
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
@@ -258,12 +327,16 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 {
     [self _checkSession];
     
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+    /*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
 	[env startElement:@"queryAll"];
 	[env addElement:@"queryString" elemValue:soqlQuery];
 	[env endElement:@"queryAll"];
 	[env endElement:@"s:Body"]; 
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElementNamed:@"queryAll" withChildNamed:@"queryString" value:soqlQuery];
+    NSString *xml = [envelope stringRepresentation]; 
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
@@ -273,12 +346,16 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 {
     [self _checkSession];
     
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+    /*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
 	[env startElement:@"queryMore"];
 	[env addElement:@"queryLocator" elemValue:queryLocator];
 	[env endElement:@"queryMore"];
 	[env endElement:@"s:Body"]; 
-    NSString *xml = [env end];
+    NSString *xml = [env end];*/
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElementNamed:@"queryMore" withChildNamed:@"queryLocator" value:queryLocator];
+    NSString *xml = [envelope stringRepresentation]; 
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
@@ -288,12 +365,16 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 {
     [self _checkSession];
     
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
+    /*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionHeader:self.sessionId clientId:self.clientId] autorelease];
 	[env startElement:@"search"];
 	[env addElement:@"searchString" elemValue:soslQuery];
 	[env endElement:@"search"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElementNamed:@"search" withChildNamed:@"searchString" value:soslQuery];
+    NSString *xml = [envelope stringRepresentation]; 
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSearchResponse:error:context:) context: wrapperContext];
@@ -303,12 +384,18 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 {
     [self _checkSession];
     
-    ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+    /*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"undelete"];
 	[env addElement:@"ids" elemValue:objectIDs];
 	[env endElement:@"undelete"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end]; */
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    if (self.updatesMostRecentlyUsed)
+        [envelope addUpdatesMostRecentlyUsedHeader];
+    [envelope addBodyElementNamed:@"undelete" withChildNamed:@"ids" value:objectIDs];
+    NSString *xml = [envelope stringRepresentation]; 
 	
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processUnDeleteResponse:error:context:) context: wrapperContext];
@@ -319,7 +406,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [self _checkSession];
     
 	// if more than we can do in one go, break it up. DC - Ignoring this case.
-	ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
+	/*ZKEnvelope *env = [[[ZKPartnerEnvelope alloc] initWithSessionId:sessionId updateMru:self.updatesMostRecentlyUsed clientId:clientId] autorelease];
 	[env startElement:@"update"];
 	for (ZKSObject *object in objects)
     {
@@ -327,7 +414,13 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     }
 	[env endElement:@"update"];
 	[env endElement:@"s:Body"];
-    NSString *xml = [env end];
+    NSString *xml = [env end];*/
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    if (self.updatesMostRecentlyUsed)
+        [envelope addUpdatesMostRecentlyUsedHeader];
+    [envelope addBodyElementNamed:@"update" withChildNamed:@"sobject" value:objects];
+    NSString *xml = [envelope stringRepresentation]; 
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSaveResponse:error:context:) context: wrapperContext];
@@ -414,6 +507,11 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     }
     [self _unwrapContext:context andCallSelectorWithResponse:result error:error];
     return result;
+}
+
+- (void)_processGetUpdatedResponse:(ZKElement *)getUpdatedResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    
 }
 
 - (NSArray *)_processUnDeleteResponse:(ZKElement *)saveResponseElement error:(NSError *)error context:(NSDictionary *)context

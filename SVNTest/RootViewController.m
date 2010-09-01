@@ -23,6 +23,7 @@
 - (void)setPasswordTest;
 - (void)resetPasswordTest;
 - (void)unDeleteTest;
+- (void)getUpdatedTest;
 
 @end
 
@@ -264,6 +265,7 @@
         //[self setPasswordTest];
         //[self resetPasswordTest];
         //[self unDeleteTest];
+        //[self getUpdatedTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -399,6 +401,17 @@
     }
 }
 
+- (void)getUpdatedResult:(id)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"getUpdatedResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
 
 #pragma mark UIActionSheetDelegate
 
@@ -474,8 +487,16 @@
 
 - (void)unDeleteTest
 {
-    NSArray *objectIds = [NSArray arrayWithObjects:@"001A000000KRQpMIAX", nil];
+    NSArray *objectIds = [NSArray arrayWithObjects:@"001A000000KRgJ1IAL", nil];
     [[ZKServerSwitchboard switchboard] unDelete:objectIds target:self selector:@selector(unDeleteResult:error:context:) context:nil];
+}
+
+- (void)getUpdatedTest
+{
+    NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow: - (60*60*12)];
+    NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow: + (60*60*12)];
+
+    [[ZKServerSwitchboard switchboard] getUpdated:@"Account" fromDate:startDate toDate:endDate target:self selector:@selector(getUpdatedResult:error:context:) context:nil];
 }
 
 @end
