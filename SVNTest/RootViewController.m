@@ -26,6 +26,7 @@
 - (void)getUpdatedTest;
 - (void)describeGlobalTest;
 - (void)describeSObjectTest;
+- (void)describeSObjectsTest;
 
 @end
 
@@ -258,7 +259,7 @@
     {
         NSLog(@"Hey, we logged in (with the new switchboard)!");
         
-        //[self getRows];
+        [self getRows];
         //[self searchTest];
         //[self getDeletedTest];
         //[self getServerTimestampTest];
@@ -269,7 +270,8 @@
         //[self unDeleteTest];
         //[self getUpdatedTest];
         //[self describeGlobalTest];
-        [self describeSObjectTest];
+        //[self describeSObjectTest];
+        //[self describeSObjectsTest];
         
         // remove login dialog
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
@@ -441,6 +443,18 @@
     }
 }
 
+- (void)describeSObjectsResult:(id)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"describeSObjectsResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 #pragma mark UIActionSheetDelegate
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet 
@@ -535,6 +549,12 @@
 - (void)describeSObjectTest
 {
     [[ZKServerSwitchboard switchboard] describeSObject:@"Account" target:self selector:@selector(describeSObjectResult:error:context:) context:nil];
+}
+
+- (void)describeSObjectsTest
+{
+    NSArray *sObjectTypes = [NSArray arrayWithObjects:@"Account", @"Contact", nil];
+    [[ZKServerSwitchboard switchboard] describeSObjects:sObjectTypes target:self selector:@selector(describeSObjectsResult:error:context:) context:nil];
 }
 
 @end

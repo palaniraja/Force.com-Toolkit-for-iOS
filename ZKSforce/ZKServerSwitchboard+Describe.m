@@ -31,6 +31,7 @@
 
 - (NSArray *)_processDescribeGlobalResponse:(ZKElement *)describeGlobalResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (ZKDescribeSObject *)_processDescribeSObjectResponse:(ZKElement *)describeSObjectResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (NSArray *)_processDescribeSObjectsResponse:(ZKElement *)describeSObjectsResponseElement error:(NSError *)error context:(NSDictionary *)context;
 
 @end
 
@@ -61,6 +62,18 @@
     [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeSObjectResponse:error:context:) context: wrapperContext];
 }
 
+- (void)describeSObjects:(NSArray *)sObjectTypes target:(id)target selector:(SEL)selector context:(id)context
+{
+    [self _checkSession];
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElementNamed:@"describeSObjects" withChildNamed:@"sObjectType" value:sObjectTypes];
+    NSString *xml = [envelope stringRepresentation];  
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeSObjectsResponse:error:context:) context: wrapperContext];
+}
+
 @end
 
 
@@ -85,6 +98,19 @@
 	ZKDescribeSObject *describe = [[[ZKDescribeSObject alloc] initWithXmlElement:result] autorelease];
     [self _unwrapContext:context andCallSelectorWithResponse:describe error:error];
 	return describe;
+}
+
+- (NSArray *)_processDescribeSObjectsResponse:(ZKElement *)describeSObjectsResponseElement error:(NSError *)error context:(NSDictionary *)context;
+{
+    NSMutableArray *describes = [NSMutableArray array]; 
+	NSArray *results = [describeSObjectsResponseElement childElements:@"result"];
+    for (ZKElement *result in results)
+    {
+        ZKDescribeSObject *describe = [[[ZKDescribeSObject alloc] initWithXmlElement:result] autorelease];
+		[describes addObject:describe];
+    }
+    [self _unwrapContext:context andCallSelectorWithResponse:describes error:error];
+	return describes;
 }
 
 @end
