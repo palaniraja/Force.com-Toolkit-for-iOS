@@ -31,12 +31,13 @@
 #import "ZKEmailMessage.h"
 #import "ZKMessageEnvelope.h"
 #import "ZKMessageElement.h"
-
+#import "ZKUserInfo.h"
 
 @interface ZKServerSwitchboard (UtilityWrappers)
 
 - (NSNumber *)_processSetPasswordResponse:(ZKElement *)setPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSDate *)_processGetServerTimestampResponse:(ZKElement *)getServerTimestampResponseElement error:(NSError *)error context:(NSDictionary *)context;
+- (ZKUserInfo *)_processGetUserInfoResponse:(ZKElement *)getUserInfoResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSArray *)_processEmptyRecycleBinResponse:(ZKElement *)emptyRecycleBinResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSNumber *)_processSendEmailResponse:(ZKElement *)sendEmailResponseElement error:(NSError *)error context:(NSDictionary *)context;
 - (NSString *)_processResetPasswordResponse:(ZKElement *)resetPasswordResponseElement error:(NSError *)error context:(NSDictionary *)context;
@@ -81,6 +82,19 @@
     
     NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processGetServerTimestampResponse:error:context:) context: wrapperContext];
+}
+
+- (void)getUserInfoWithTarget:(id)target selector:(SEL)selector context:(id)context
+{
+    
+    [self _checkSession];
+    
+    ZKMessageEnvelope *envelope = [ZKMessageEnvelope envelopeWithSessionId:sessionId clientId:clientId];
+    [envelope addBodyElement:[ZKMessageElement elementWithName:@"getUserInfo" value:nil]];
+    NSString *xml = [envelope stringRepresentation];  
+    
+    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    [self _sendRequestWithData:xml target:self selector:@selector(_processGetUserInfoResponse:error:context:) context: wrapperContext];
 }
 
 - (void)resetPasswordForUserId:(NSString *)userId triggerUserEmail:(BOOL)triggerUserEmail target:(id)target selector:(SEL)selector context:(id)context
@@ -190,6 +204,14 @@
     NSDate *timestamp = [NSDate dateWithLongFormatString:timestampString];
     [self _unwrapContext:context andCallSelectorWithResponse:timestamp error:error];
 	return timestamp;
+}
+
+- (ZKUserInfo *)_processGetUserInfoResponse:(ZKElement *)getUserInfoResponseElement error:(NSError *)error context:(NSDictionary *)context
+{
+    ZKElement *result = [getUserInfoResponseElement childElement:@"result"];
+    ZKUserInfo *info = [[[ZKUserInfo alloc] initWithXmlElement:result] autorelease];
+    [self _unwrapContext:context andCallSelectorWithResponse:info error:error];
+	return info;
 }
 
 - (NSArray *)_processEmptyRecycleBinResponse:(ZKElement *)emptyRecycleBinResponseElement error:(NSError *)error context:(NSDictionary *)context
