@@ -24,7 +24,6 @@
 // it easy to pull in everything you might need. you can use this, or just
 // import the bits you care about.
 
-#import "ZKSforceClient.h"
 #import "ZKUserInfo.h"
 #import "ZKSObject.h"
 #import "ZKSoapException.h"

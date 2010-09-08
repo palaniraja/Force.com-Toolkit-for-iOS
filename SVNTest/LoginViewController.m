@@ -43,10 +43,10 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    NSString *password = @"test12345";//@"test1234";
-    NSString *token = @"smcFudxsaStxq5dXFJaFn1IEF"; //@"b3haNhsBVrhrj78F22V6wTO";// @"cUb3haNhsBVrhrj78F22V6wTO";
+    NSString *password = @""; //@"test12345";//@"test1234";
+    NSString *token = @""; //@"smcFudxsaStxq5dXFJaFn1IEF"; //@"b3haNhsBVrhrj78F22V6wTO";// @"cUb3haNhsBVrhrj78F22V6wTO";
     passwordTextField.text = [NSString stringWithFormat:@"%@%@", password, token];// @"test1234cUb3haNhsBVrhrj78F22V6wTO";
-    usernameTextField.text = @"rick@centrix.ca";//@"dcarroll@chatterbuzz.com";
+    usernameTextField.text = @""; //@"rick@centrix.ca";//@"dcarroll@chatterbuzz.com";
 
 }
 
