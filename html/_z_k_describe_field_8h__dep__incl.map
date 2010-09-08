@@ -1,0 +1,22 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$_z_k_describe_field_8m.html" title="ZKSforce/ZKDescribeField.m" alt="" coords="68,83,281,112"/>
+<area shape="rect" id="node5" href="$_z_k_describe_s_object_8h.html" title="ZKSforce/ZKDescribeSObject.h" alt="" coords="356,83,591,112"/>
+<area shape="rect" id="node7" href="$_z_k_describe_s_object_8m.html" title="ZKSforce/ZKDescribeSObject.m" alt="" coords="5,160,243,189"/>
+<area shape="rect" id="node11" href="$_z_k_sforce_8h.html" title="ZKSforce/ZKSforce.h" alt="" coords="557,237,720,267"/>
+<area shape="rect" id="node14" href="$_z_k_s_object_8h.html" title="ZKSforce/ZKSObject.h" alt="" coords="1519,83,1692,112"/>
+<area shape="rect" id="node9" href="$_z_k_server_switchboard_09_describe_8m.html" title="ZKSforce/ZKServerSwitchboard+Describe.m" alt="" coords="267,160,587,189"/>
+<area shape="rect" id="node16" href="$_z_k_email_message_8h.html" title="ZKSforce/ZKEmailMessage.h" alt="" coords="763,160,976,189"/>
+<area shape="rect" id="node23" href="$_z_k_envelope_8h.html" title="ZKSforce/ZKEnvelope.h" alt="" coords="1000,160,1181,189"/>
+<area shape="rect" id="node31" href="$_z_k_get_deleted_result_8m.html" title="ZKSforce/ZKGetDeletedResult.m" alt="" coords="1205,160,1456,189"/>
+<area shape="rect" id="node33" href="$_z_k_get_updated_result_8m.html" title="ZKSforce/ZKGetUpdatedResult.m" alt="" coords="1480,160,1731,189"/>
+<area shape="rect" id="node35" href="$_z_k_message_element_8m.html" title="ZKSforce/ZKMessageElement.m" alt="" coords="1755,160,1997,189"/>
+<area shape="rect" id="node37" href="$_z_k_query_result_8m.html" title="ZKSforce/ZKQueryResult.m" alt="" coords="2021,160,2229,189"/>
+<area shape="rect" id="node39" href="$_z_k_query_result___n_s_table_view_8m.html" title="ZKSforce/ZKQueryResult_NSTableView.m" alt="" coords="2253,160,2552,189"/>
+<area shape="rect" id="node41" href="$_z_k_server_switchboard_8m.html" title="ZKSforce/ZKServerSwitchboard.m" alt="" coords="2576,160,2827,189"/>
+<area shape="rect" id="node44" href="$_z_k_s_object_8m.html" title="ZKSforce/ZKSObject.m" alt="" coords="2851,160,3029,189"/>
+<area shape="rect" id="node18" href="$_z_k_email_message_8m.html" title="ZKSforce/ZKEmailMessage.m" alt="" coords="744,237,963,267"/>
+<area shape="rect" id="node20" href="$_z_k_server_switchboard_09_utility_8m.html" title="ZKSforce/ZKServerSwitchboard+Utility.m" alt="" coords="987,237,1285,267"/>
+<area shape="rect" id="node25" href="$_z_k_envelope_8m.html" title="ZKSforce/ZKEnvelope.m" alt="" coords="1309,237,1496,267"/>
+<area shape="rect" id="node27" href="$_z_k_partner_envelope_8h.html" title="ZKSforce/ZKPartnerEnvelope.h" alt="" coords="1520,237,1752,267"/>
+<area shape="rect" id="node29" href="$_z_k_partner_envelope_8m.html" title="ZKSforce/ZKPartnerEnvelope.m" alt="" coords="1517,315,1755,344"/>
+</map>

@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$interface_z_k_base_client.html" title="ZKBaseClient" alt="" coords="5,181,120,211"/>
-<area shape="rect" id="node4" href="$interface_z_k_user_info.html" title="ZKUserInfo" alt="" coords="144,181,240,211"/>
-<area shape="rect" id="node6" href="$interface_z_k_xml_deserializer.html" title="ZKXmlDeserializer" alt="" coords="119,101,265,131"/>
-<area shape="rect" id="node8" href="$interface_z_k_element.html" title="ZKElement" alt="" coords="143,5,241,35"/>
-</map>
