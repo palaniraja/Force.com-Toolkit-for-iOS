@@ -79,6 +79,7 @@
     [name release];
     [value release];
     [attributes release];
+    [childElements release];
     [super dealloc];
 }
 
