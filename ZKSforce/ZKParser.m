@@ -36,10 +36,10 @@
 
 -(id)initWithDocument:(xmlDocPtr)d 
 {
-	xmlChar *xmlbuff;
-    int buffersize;
-
-	xmlDocDumpFormatMemory(d, &xmlbuff, &buffersize, 1);
+//	xmlChar *xmlbuff;
+//    int buffersize;
+//
+//	xmlDocDumpFormatMemory(d, &xmlbuff, &buffersize, 1);
 //    printf("%s", (char *) xmlbuff);
 	return [self initWithDocument:d node:xmlDocGetRootElement(d) parent:nil];
 }
