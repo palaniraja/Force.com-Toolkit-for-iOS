@@ -168,7 +168,11 @@ static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
     
 	ZKElement *responseElement = nil;
 	if ([data length] && [error code] != 401) {
-		responseElement = [self _processHttpResponse:response data:data];
+		@try {
+			responseElement = [self _processHttpResponse:response data:data];
+		} @catch (NSException *exception) {
+			error = [NSError errorWithDomain: @"XMLError" code: 199 userInfo: [NSDictionary dictionaryWithObject: exception forKey: @"exception"]];
+		}
 	}
 	
     // In this case, a valid status code is returned meaning that the request was
