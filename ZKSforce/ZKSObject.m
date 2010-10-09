@@ -257,11 +257,13 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 
 - (NSString *) Id 
 {
+	if (Id.length) return Id;
 	return [self fieldValue:@"Id"];
 }
 
 - (NSString *) getId 
 {
+	if (Id.length) return Id;
 	return [self fieldValue:@"Id"];
 }
 
