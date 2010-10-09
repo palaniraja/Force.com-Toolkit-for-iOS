@@ -186,6 +186,8 @@
         [self addElementString:elemName elemValue:elemValue string:string];
 	else if ([elemValue isKindOfClass:[NSArray class]]) 	
         [self addElementArray:elemName elemValue:elemValue string:string];
+	else if ([elemValue isKindOfClass:[NSSet class]]) 	
+        [self addElementArray:elemName elemValue: [elemValue allObjects] string:string];
 	else if ([elemValue isKindOfClass:[ZKSObject class]]) 	
         [self addElementSObject:elemName elemValue:elemValue string:string];
 	else if ([elemValue isKindOfClass:[NSNull class]]) ;
