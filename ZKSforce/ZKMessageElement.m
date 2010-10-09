@@ -224,6 +224,7 @@
 {
 	[self startElement:elemName string:string];
 	[self addElement:@"type" elemValue:[sobject type] string:string];
+	if ([sobject Id]) [self addElement:@"Id" elemValue: [sobject Id] string:string];
 	[self addElement:@"fieldsToNull" elemValue:[sobject fieldsToNull] string:string];
     
 	[self addSObjectFields: sobject string:string];
