@@ -73,7 +73,7 @@ static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
         NSError *error = [NSError errorWithDomain:@"ZKSwitchboardError"
                                              code:1
                                          userInfo:nil];
-        [target performSelector:sel withObject:nil withObject:error];
+		[target performSelector: sel withObject: nil withObject: error withObject: context];
         return;
     }
     
