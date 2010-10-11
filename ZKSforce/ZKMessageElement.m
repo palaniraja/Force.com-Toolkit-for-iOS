@@ -186,6 +186,8 @@
         [self addElementString:elemName elemValue:elemValue string:string];
 	else if ([elemValue isKindOfClass:[NSArray class]]) 	
         [self addElementArray:elemName elemValue:elemValue string:string];
+	else if ([elemValue isKindOfClass:[NSSet class]]) 	
+        [self addElementArray:elemName elemValue: [elemValue allObjects] string:string];
 	else if ([elemValue isKindOfClass:[ZKSObject class]]) 	
         [self addElementSObject:elemName elemValue:elemValue string:string];
 	else if ([elemValue isKindOfClass:[NSNull class]]) ;
@@ -222,6 +224,7 @@
 {
 	[self startElement:elemName string:string];
 	[self addElement:@"type" elemValue:[sobject type] string:string];
+	if ([sobject Id]) [self addElement:@"Id" elemValue: [sobject Id] string:string];
 	[self addElement:@"fieldsToNull" elemValue:[sobject fieldsToNull] string:string];
     
 	[self addSObjectFields: sobject string:string];

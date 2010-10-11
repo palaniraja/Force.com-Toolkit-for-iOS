@@ -194,6 +194,10 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 
 - (void)setFieldDateTimeValue:(NSDate *)value field:(NSString *)field 
 {
+	if (value == nil) {
+		[self setFieldValue: @"" field: field];
+		return;
+	}
 	NSMutableString *dt = [NSMutableString stringWithString:[dateTimeFormatter stringFromDate:value]];
 	// meh, insert the : in the TZ offset, to make it xsd:dateTime
 	[dt insertString:@":" atIndex:[dt length]-2];
@@ -253,11 +257,13 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 
 - (NSString *) Id 
 {
+	if (Id.length) return Id;
 	return [self fieldValue:@"Id"];
 }
 
 - (NSString *) getId 
 {
+	if (Id.length) return Id;
 	return [self fieldValue:@"Id"];
 }
 
