@@ -10,6 +10,7 @@
 #import "DetailViewController.h"
 #import "SVNTestAppDelegate.h"
 #import "ZKLoginResult.h"
+#import "ZKOAuthViewController.h"
 
 
 @interface RootViewController (Private)
@@ -284,6 +285,22 @@
     else if (error)
     {
         [self receivedErrorFromAPICall: error];
+    }
+}
+
+
+- (void)loginOAuth:(ZKOAuthViewController *)oAuthViewController error:(NSError *)error
+{
+    NSLog(@"loginOAuth: %@ error: %@", oAuthViewController, error);
+    
+    if ([oAuthViewController accessToken] && !error)
+    {
+        [[ZKServerSwitchboard switchboard] setApiUrlFromOAuthInstanceUrl:[oAuthViewController instanceUrl]];
+        [[ZKServerSwitchboard switchboard] setSessionId:[oAuthViewController accessToken]];
+        [[ZKServerSwitchboard switchboard] setOAuthRefreshToken:[oAuthViewController refreshToken]];
+        SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
+        [app hideLogin];
+        [self getRows];
     }
 }
 

@@ -11,6 +11,7 @@
 @class RootViewController;
 @class DetailViewController;
 @class LoginViewController;
+@class ZKOAuthViewController;
 
 @interface SVNTestAppDelegate : NSObject <UIApplicationDelegate> {
     
@@ -21,6 +22,7 @@
     RootViewController *rootViewController;
     DetailViewController *detailViewController;
     LoginViewController *loginViewController;
+    ZKOAuthViewController *oAuthViewController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

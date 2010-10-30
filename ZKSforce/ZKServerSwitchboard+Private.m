@@ -24,6 +24,7 @@
 #import "ZKParser.h"
 #import "ZKSoapException.h"
 #import "NSObject+Additions.h"
+#import "NSURL+Additions.h"
 
 static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
 
@@ -214,6 +215,37 @@ static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
     
 }
 
+- (void)_oauthRefreshAccessToken:(NSTimer *)timer
+{
+    if (!clientId)
+    {
+        NSLog(@"can't refresh OAuth Access Token without a client id set");
+        return;
+    }
+    if (!oAuthRefreshToken)
+    {
+        NSLog(@"can't refresh OAuth Access Token without oAuthRefreshToken set");
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://login.salesforce.com/services/oauth2/token"]];
+	[request setHTTPMethod:@"POST"];
+	[request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];	
+    
+    NSString *bodyString = [NSString stringWithFormat:@"grant_type=refresh_token&client_id=%@&refresh_token=%@&format=urlencoded", clientId, oAuthRefreshToken];
+    
+	NSData *data = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+	[request setHTTPBody:data];
+    
+    NSURLResponse *response = nil;
+    NSData *refreshResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    NSString *refreshResponseString = [[[NSString alloc] initWithData:refreshResponseData encoding:NSUTF8StringEncoding] autorelease];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://login.salesforce.com/?%@", refreshResponseString]];
+    NSString *newAccessToken = [url parameterWithName:@"access_token"];
+    if (newAccessToken)
+    {
+        self.sessionId = newAccessToken;
+    }
+}
 
 
 -(ZKElement *)_processHttpResponse:(NSHTTPURLResponse *)resp data:(NSData *)responseData

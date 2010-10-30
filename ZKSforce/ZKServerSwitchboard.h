@@ -32,6 +32,7 @@
     
 	NSString	*clientId;	
 	NSString	*sessionId;
+    NSString    *oAuthRefreshToken;
 	NSDate		*sessionExpiry;
     ZKUserInfo	*userInfo;
 	NSUInteger  preferredApiVersion;
@@ -42,11 +43,14 @@
 @private
     NSString    *_username;
     NSString    *_password;
+
+    NSTimer     *_oAuthRefreshTimer;
 }
 
 @property (nonatomic, copy) NSString *apiUrl;
 @property (nonatomic, copy) NSString *clientId;
 @property (nonatomic, copy) NSString *sessionId;
+@property (nonatomic, copy) NSString *oAuthRefreshToken;
 @property (nonatomic, retain) ZKUserInfo *userInfo;
 @property (nonatomic, assign) BOOL updatesMostRecentlyUsed;
 @property (nonatomic, assign) BOOL logXMLInOut;
@@ -55,7 +59,9 @@
 + (ZKServerSwitchboard *)switchboard;
 - (NSString *)authenticationUrl;
 
+- (void)setApiUrlFromOAuthInstanceUrl:(NSString *)instanceUrl;
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password target:(id)target selector:(SEL)selector;
+
 
 // Core Calls
 - (void)create:(NSArray *)objects target:(id)target selector:(SEL)selector context:(id)context;

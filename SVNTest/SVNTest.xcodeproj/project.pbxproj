@@ -56,10 +56,12 @@
 		5F1F34641224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34631224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m */; };
 		5F1F34ED1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34EC1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m */; };
 		5F1F34F21224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */; };
+		5F46DD291273541D00CFF523 /* ZKOAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F46DD281273541D00CFF523 /* ZKOAuthViewController.m */; };
 		5F6E90991229A369006EF146 /* ZKEmailMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E90981229A369006EF146 /* ZKEmailMessage.m */; };
 		5F6E93B7122C8F0B006EF146 /* ZKMessageEnvelope.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E93B6122C8F0B006EF146 /* ZKMessageEnvelope.m */; };
 		5F6E93BA122C8F18006EF146 /* ZKMessageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E93B9122C8F18006EF146 /* ZKMessageElement.m */; };
 		5F6E9713122F145C006EF146 /* ZKGetUpdatedResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E9712122F145C006EF146 /* ZKGetUpdatedResult.m */; };
+		5F976BBD1278CF7900F7FF2B /* NSURL+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F976BBC1278CF7900F7FF2B /* NSURL+Additions.m */; };
 		5FB1A664122347CC00CEEDF1 /* ZKServerSwitchboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB1A663122347CC00CEEDF1 /* ZKServerSwitchboard.m */; };
 		5FB1A6C8122359CC00CEEDF1 /* NSObject+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB1A6C7122359CC00CEEDF1 /* NSObject+Additions.m */; };
 /* End PBXBuildFile section */
@@ -159,6 +161,8 @@
 		5F1F34EC1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+Utility.m"; sourceTree = "<group>"; };
 		5F1F34F01224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+Describe.h"; sourceTree = "<group>"; };
 		5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+Describe.m"; sourceTree = "<group>"; };
+		5F46DD271273541D00CFF523 /* ZKOAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKOAuthViewController.h; sourceTree = "<group>"; };
+		5F46DD281273541D00CFF523 /* ZKOAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKOAuthViewController.m; sourceTree = "<group>"; };
 		5F6E90971229A369006EF146 /* ZKEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKEmailMessage.h; sourceTree = "<group>"; };
 		5F6E90981229A369006EF146 /* ZKEmailMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKEmailMessage.m; sourceTree = "<group>"; };
 		5F6E93B5122C8F0B006EF146 /* ZKMessageEnvelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKMessageEnvelope.h; sourceTree = "<group>"; };
@@ -167,6 +171,8 @@
 		5F6E93B9122C8F18006EF146 /* ZKMessageElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKMessageElement.m; sourceTree = "<group>"; };
 		5F6E9711122F145C006EF146 /* ZKGetUpdatedResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKGetUpdatedResult.h; sourceTree = "<group>"; };
 		5F6E9712122F145C006EF146 /* ZKGetUpdatedResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKGetUpdatedResult.m; sourceTree = "<group>"; };
+		5F976BBB1278CF7900F7FF2B /* NSURL+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Additions.h"; sourceTree = "<group>"; };
+		5F976BBC1278CF7900F7FF2B /* NSURL+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Additions.m"; sourceTree = "<group>"; };
 		5FB1A662122347CC00CEEDF1 /* ZKServerSwitchboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKServerSwitchboard.h; sourceTree = "<group>"; };
 		5FB1A663122347CC00CEEDF1 /* ZKServerSwitchboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKServerSwitchboard.m; sourceTree = "<group>"; };
 		5FB1A6C6122359CC00CEEDF1 /* NSObject+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Additions.h"; sourceTree = "<group>"; };
@@ -237,6 +243,10 @@
 				5F0B85DB1225F58C00D767DA /* NSDate+Additions.m */,
 				5F0B864B1225FE1900D767DA /* ZKDeletedObject.h */,
 				5F0B864C1225FE1900D767DA /* ZKDeletedObject.m */,
+				5F46DD271273541D00CFF523 /* ZKOAuthViewController.h */,
+				5F46DD281273541D00CFF523 /* ZKOAuthViewController.m */,
+				5F976BBB1278CF7900F7FF2B /* NSURL+Additions.h */,
+				5F976BBC1278CF7900F7FF2B /* NSURL+Additions.m */,
 			);
 			name = ZKSforce;
 			path = ../ZKSforce;
@@ -408,6 +418,7 @@
 			isa = PBXProject;
 			buildConfigurationList = 5C58154B1213189C000BA324 /* Build configuration list for PBXProject "SVNTest" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -488,6 +499,8 @@
 				5F6E93B7122C8F0B006EF146 /* ZKMessageEnvelope.m in Sources */,
 				5F6E93BA122C8F18006EF146 /* ZKMessageElement.m in Sources */,
 				5F6E9713122F145C006EF146 /* ZKGetUpdatedResult.m in Sources */,
+				5F46DD291273541D00CFF523 /* ZKOAuthViewController.m in Sources */,
+				5F976BBD1278CF7900F7FF2B /* NSURL+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

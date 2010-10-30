@@ -46,6 +46,8 @@
 - (ZKElement *)_processHttpResponse:(NSHTTPURLResponse *)resp data:(NSData *)responseData;
 - (void)_checkSession;
 - (void)_sessionResumed:(ZKLoginResult *)loginResult error:(NSError *)error;
+- (void)_oauthRefreshAccessToken:(NSTimer *)timer;
+
 
 // NSURLConnectionDelegate
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response;

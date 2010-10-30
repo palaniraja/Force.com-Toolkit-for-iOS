@@ -10,7 +10,9 @@
 #import "RootViewController.h"
 #import "DetailViewController.h"
 #import "LoginViewController.h"
+#import "ZKOAuthViewController.h"
 
+#define kSFOAuthConsumerKey @"3MVG9yZ.WNe6byQCyZdrxx1zmdLKE1MKQDV9IQZA_GtXc4AlBVEyOqBMthg8dXbxOc5y3ROnBrX_iwMkEU5oS"
 
 @implementation SVNTestAppDelegate
 
@@ -23,9 +25,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
+    [[ZKServerSwitchboard switchboard] setClientId:kSFOAuthConsumerKey];
+    
     // Override point for customization after app launch    
 	loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginView" bundle:nil];
 	
+    oAuthViewController = [[ZKOAuthViewController alloc] initWithTarget:rootViewController selector:@selector(loginOAuth:error:) clientId:kSFOAuthConsumerKey];
+    //oAuthViewController.redirectUri = @"https://secure.centrix.ca";
     // Add the split view controller's view to the window and display.
     [window addSubview:splitViewController.view];
     [window makeKeyAndVisible];
@@ -37,13 +43,18 @@
 
 - (void)showLogin 
 {
+    oAuthViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [splitViewController presentModalViewController:oAuthViewController animated:YES];
 	loginViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-	[splitViewController presentModalViewController:loginViewController animated:YES];
+	//[splitViewController presentModalViewController:loginViewController animated:YES];
 }
+
 
 - (void)hideLogin 
 {
 	[splitViewController dismissModalViewControllerAnimated:YES];
+    [oAuthViewController autorelease];
+    [loginViewController release];
 }
 
 -(void)popupActionSheet:(NSError *)err 

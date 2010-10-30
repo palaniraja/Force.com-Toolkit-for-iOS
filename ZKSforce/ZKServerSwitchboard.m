@@ -58,6 +58,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 @synthesize apiUrl;
 @synthesize clientId;
 @synthesize sessionId;
+@synthesize oAuthRefreshToken;
 @synthesize userInfo;
 @synthesize updatesMostRecentlyUsed;
 @synthesize logXMLInOut;
@@ -132,10 +133,17 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	[sessionId release];
 	[sessionExpiry release];
     [userInfo release];
+    [oAuthRefreshToken release];
     
     // Private vars
     [_username release];
     [_password release];
+    
+    if (_oAuthRefreshTimer)
+    {
+        [_oAuthRefreshTimer invalidate];
+        [_oAuthRefreshTimer release];
+    }
     
     [super dealloc];
 }
@@ -154,12 +162,37 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     return [self authenticationUrl];
 }
 
+- (void)setOAuthRefreshToken:(NSString *)refreshToken
+{
+    NSString *copy = [refreshToken copy];
+    [oAuthRefreshToken release];
+    oAuthRefreshToken = copy;
+    
+    // Disable whatever timer existed before
+    if (_oAuthRefreshTimer)
+    {
+        [_oAuthRefreshTimer invalidate];
+        [_oAuthRefreshTimer release];
+    }
+    if (oAuthRefreshToken)
+    {
+    // Reschedule a new timer
+        _oAuthRefreshTimer = [[NSTimer scheduledTimerWithTimeInterval:MAX_SESSION_AGE target:self selector:@selector(_oauthRefreshAccessToken:) userInfo:nil repeats:YES] retain];
+    }
+}
+
 #pragma mark Methods
 
 - (NSString *)authenticationUrl
 {
     NSString *url = [NSString stringWithFormat:@"%@/services/Soap/u/%d.0", [[self class] baseURL] , preferredApiVersion];
     return url;
+}
+
+
+- (void)setApiUrlFromOAuthInstanceUrl:(NSString *)instanceUrl
+{
+    self.apiUrl = [instanceUrl stringByAppendingFormat:@"/services/Soap/u/%d.0", preferredApiVersion];
 }
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password target:(id)target selector:(SEL)selector
