@@ -143,34 +143,39 @@
 #pragma mark -
 #pragma mark UIWebViewDelegate
 
-- (void)webViewDidFinishLoad:(UIWebView *)aWebView
-{
-    NSString *urlString = [[[aWebView request] URL] absoluteString];
-    
-    //NSLog(@"urlString = %@", urlString);
-    
-    NSString * newInstanceURL = [[[aWebView request] URL] parameterWithName:@"instance_url"];
-    if (newInstanceURL)
-    {
-        [instanceUrl release];
-        instanceUrl = [newInstanceURL retain];
-    }
-    
-    NSString *newRefreshToken = [[[aWebView request] URL] parameterWithName:@"refresh_token"];
-    if (newRefreshToken)
-    {
-        [refreshToken release];
-        refreshToken = [newRefreshToken retain];
-    }
-    
-    NSString *newAccessToken = [[[aWebView request] URL] parameterWithName:@"access_token"];
-    if (newAccessToken)
-    {
-        [accessToken release];
-        accessToken = [newAccessToken retain];
-        [self sendActionToTarget:nil];
-    }
 
+- (BOOL)webView:(UIWebView *)myWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType 
+{
+    NSString *urlString = [[request URL] absoluteString];
+
+    NSRange range = [urlString rangeOfString:self.redirectUri];
+    
+    if (range.length > 0 && range.location == 0) 
+    {
+        NSString * newInstanceURL = [[request URL] parameterWithName:@"instance_url"];
+        if (newInstanceURL)
+        {
+            [instanceUrl release];
+            instanceUrl = [newInstanceURL retain];
+        }
+        
+        NSString *newRefreshToken = [[request URL] parameterWithName:@"refresh_token"];
+        if (newRefreshToken)
+        {
+            [refreshToken release];
+            refreshToken = [newRefreshToken retain];
+        }
+        
+        NSString *newAccessToken = [[request URL] parameterWithName:@"access_token"];
+        if (newAccessToken)
+        {
+            [accessToken release];
+            accessToken = [newAccessToken retain];
+            [self sendActionToTarget:nil];
+        }
+        return NO;
+    }
+    return YES;
 }
 
 @end
