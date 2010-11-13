@@ -195,6 +195,28 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     self.apiUrl = [instanceUrl stringByAppendingFormat:@"/services/Soap/u/%d.0", preferredApiVersion];
 }
 
+- (NSDictionary *)contextWrapperDictionaryForTarget:(id)target selector:(SEL)selector context:(id)context
+{
+    NSValue *selectorValue = [NSValue value: &selector withObjCType: @encode(SEL)];
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            selectorValue, @"selector",
+            target, @"target",
+            context ? context: [NSNull null], @"context",
+            nil];
+}
+
+- (void)unwrapContext:(NSDictionary *)wrapperContext andCallSelectorWithResponse:(id)response error:(NSError *)error
+{
+    SEL selector;
+    [[wrapperContext valueForKey: @"selector"] getValue: &selector];
+    id target = [wrapperContext valueForKey:@"target"];
+    id context = [wrapperContext valueForKey:@"context"];
+    if ([context isEqual:[NSNull null]])
+        context = nil;
+    
+    [target performSelector:selector withObject:response withObject:error withObject: context];
+}
+
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password target:(id)target selector:(SEL)selector
 {
     // Save Username and Password for session management stuff
@@ -225,7 +247,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelop addBodyElement:loginElement];
     NSString *alternativeXML = [envelop stringRepresentation];    
 	
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:nil];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:nil];
     [self _sendRequestWithData:alternativeXML target:self selector:@selector(_processLoginResponse:error:context:) context: wrapperContext];
 }
 
@@ -251,7 +273,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElementNamed:@"create" withChildNamed:@"sobject" value:objects];
     NSString *xml = [envelope stringRepresentation]; 
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSaveResponse:error:context:) context: wrapperContext];
 }
 
@@ -272,7 +294,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElementNamed:@"delete" withChildNamed:@"ids" value:objectIDs];
     NSString *xml = [envelope stringRepresentation]; 
 	
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processDeleteResponse:error:context:) context: wrapperContext];
 }
 
@@ -305,7 +327,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElement:getDeletedElement];
     NSString *xml = [envelope stringRepresentation]; 
 	
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processGetDeletedResponse:error:context:) context: wrapperContext];
 }
 
@@ -336,7 +358,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElement:getUpdatedElement];
     NSString *xml = [envelope stringRepresentation]; 
 	
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processGetUpdatedResponse:error:context:) context: wrapperContext];
 }
 
@@ -355,7 +377,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElementNamed:@"query" withChildNamed:@"queryString" value:soqlQuery];
     NSString *xml = [envelope stringRepresentation]; 
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
 }
 
@@ -374,7 +396,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElementNamed:@"queryAll" withChildNamed:@"queryString" value:soqlQuery];
     NSString *xml = [envelope stringRepresentation]; 
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
 }
 
@@ -393,7 +415,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElementNamed:@"queryMore" withChildNamed:@"queryLocator" value:queryLocator];
     NSString *xml = [envelope stringRepresentation]; 
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processQueryResponse:error:context:) context: wrapperContext];
 }
 
@@ -412,7 +434,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElementNamed:@"search" withChildNamed:@"searchString" value:soslQuery];
     NSString *xml = [envelope stringRepresentation]; 
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSearchResponse:error:context:) context: wrapperContext];
 }
 
@@ -433,7 +455,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElementNamed:@"undelete" withChildNamed:@"ids" value:objectIDs];
     NSString *xml = [envelope stringRepresentation]; 
 	
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processUnDeleteResponse:error:context:) context: wrapperContext];
 }
 
@@ -458,12 +480,37 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     [envelope addBodyElementNamed:@"update" withChildNamed:@"sobject" value:objects];
     NSString *xml = [envelope stringRepresentation]; 
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSaveResponse:error:context:) context: wrapperContext];
 }
 
 
+#pragma mark -
+#pragma mark Apex Calls
 
+- (void)sendApexRequestToURL:(NSString *)webServiceLocation
+                    withData:(NSString *)payload
+                      target:(id)target
+                    selector:(SEL)sel
+                     context:(id)context
+{
+    // The method is equivalent to ZKServerSwitchboard+Private's _sendRequestWithData:target:selector:context
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:webServiceLocation]];
+	[request setHTTPMethod:@"POST"];
+	[request addValue:@"text/xml; charset=UTF-8" forHTTPHeaderField:@"content-type"];	
+	[request addValue:@"\"\"" forHTTPHeaderField:@"SOAPAction"];
+    NSLog(@"request = %@", request);
+	NSData *data = [payload dataUsingEncoding:NSUTF8StringEncoding];
+	[request setHTTPBody:data];
+    
+	if(self.logXMLInOut) {
+		NSLog(@"OutputHeaders:\n%@", [request allHTTPHeaderFields]);
+		NSLog(@"OutputBody:\n%@", payload);
+	}
+    
+    [self _sendRequest:request target:target selector:sel context:context];
+}
 
 
 @end
@@ -482,7 +529,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
         self.userInfo = [loginResult userInfo];
     }
 
-    [self _unwrapContext:context andCallSelectorWithResponse:loginResult error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:loginResult error:error];
     return loginResult;
 }
 
@@ -493,7 +540,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     {
         result = [[[ZKQueryResult alloc] initFromXmlNode:[[queryResponseElement childElements] objectAtIndex:0]] autorelease];
     }
-    [self _unwrapContext:context andCallSelectorWithResponse:result error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:result error:error];
     return result;
 }
 
@@ -506,7 +553,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 		ZKSaveResult * saveResult = [[[ZKSaveResult alloc] initWithXmlElement:result] autorelease];
 		[results addObject:saveResult];
 	}
-    [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:results error:error];
     return results;
 }
 
@@ -518,7 +565,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 		ZKSaveResult *sr = [[[ZKSaveResult alloc] initWithXmlElement:saveResultElement] autorelease];
 		[results addObject:sr];
 	} 
-    [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:results error:error];
 	return results;
 }
 
@@ -530,7 +577,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 	for (ZKElement *soNode in records) {
 		[results addObject:[ZKSObject fromXmlNode:soNode]];
 	}
-    [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:results error:error];
 	return results;
 }
 
@@ -541,7 +588,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     {
         result = [[[ZKGetDeletedResult alloc] initFromXmlNode:[[getDeletedResponseElement childElements] objectAtIndex:0]] autorelease];
     }
-    [self _unwrapContext:context andCallSelectorWithResponse:result error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:result error:error];
     return result;
 }
 
@@ -552,7 +599,7 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
     {
         result = [[[ZKGetUpdatedResult alloc] initFromXmlNode:[[getUpdatedResponseElement childElements] objectAtIndex:0]] autorelease];
     }
-    [self _unwrapContext:context andCallSelectorWithResponse:result error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:result error:error];
     return result;
 }
 

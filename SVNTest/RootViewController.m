@@ -11,6 +11,7 @@
 #import "SVNTestAppDelegate.h"
 #import "ZKLoginResult.h"
 #import "ZKOAuthViewController.h"
+#import "ZKServerSwitchboard+MyWebService.h"
 
 
 @interface RootViewController (Private)
@@ -30,6 +31,8 @@
 - (void)describeSObjectsTest;
 - (void)describeLayoutTest;
 - (void)getUserInfoTest;
+- (void)makeContactTest;
+- (void)nameTest;
 
 @end
 
@@ -301,6 +304,7 @@
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
         [app hideLogin];
         [self getRows];
+        //[self nameTest];
     }
 }
 
@@ -311,6 +315,7 @@
     {
         self.dataRows = [NSMutableArray arrayWithArray:[result records]];
         [self.tableView reloadData];
+        //[self makeContactTest];
     }
     else if (error)
     {
@@ -502,6 +507,30 @@
     }
 }
 
+- (void)makeContactResult:(id)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"makeContactResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
+- (void)nameTestResult:(id)result error:(NSError *)error context:(id)context
+{
+    NSLog(@"nameTestResult: %@ error: %@ context: %@", result, error, context);
+    if (result && !error)
+    {
+    }
+    else if (error)
+    {
+        [self receivedErrorFromAPICall: error];
+    }
+}
+
 #pragma mark UIActionSheetDelegate
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet 
@@ -612,6 +641,22 @@
 - (void)getUserInfoTest
 {
     [[ZKServerSwitchboard switchboard] getUserInfoWithTarget:self selector:@selector(getUserInfoResult:error:context:) context:nil];
+}
+
+- (void)makeContactTest
+{
+    NSLog(@"makeContactTest");
+    ZKSObject *account = [dataRows lastObject];
+    NSLog(@"account = %@", account);
+    NSString *lastName = @"Fillion";
+    [[ZKServerSwitchboard switchboard] apexMyWebServiceMakeContactWithLastName:lastName account:account target:self selector:@selector(makeContactResult:error:context:) context:nil];
+}
+
+- (void)nameTest
+{
+    NSLog(@"nameTest");
+    NSString *name = @"Fillion";
+    [[ZKServerSwitchboard switchboard] apexMyWebServiceNameTest:name target:self selector:@selector(nameTestResult:error:context:) context:nil];
 }
 
 @end

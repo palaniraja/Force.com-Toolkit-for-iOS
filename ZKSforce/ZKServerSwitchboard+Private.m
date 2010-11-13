@@ -274,27 +274,7 @@ static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
 	return [[body childElements] objectAtIndex:0];
 }
 
-- (NSDictionary *)_contextWrapperDictionaryForTarget:(id)target selector:(SEL)selector context:(id)context
-{
-    NSValue *selectorValue = [NSValue value: &selector withObjCType: @encode(SEL)];
-    return [NSDictionary dictionaryWithObjectsAndKeys:
-            selectorValue, @"selector",
-            target, @"target",
-            context ? context: [NSNull null], @"context",
-            nil];
-}
 
-- (void)_unwrapContext:(NSDictionary *)wrapperContext andCallSelectorWithResponse:(id)response error:(NSError *)error
-{
-    SEL selector;
-    [[wrapperContext valueForKey: @"selector"] getValue: &selector];
-    id target = [wrapperContext valueForKey:@"target"];
-    id context = [wrapperContext valueForKey:@"context"];
-    if ([context isEqual:[NSNull null]])
-        context = nil;
-    
-    [target performSelector:selector withObject:response withObject:error withObject: context];
-}
 
 
 

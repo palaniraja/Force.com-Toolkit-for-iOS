@@ -57,6 +57,7 @@
 		5F1F34ED1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34EC1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m */; };
 		5F1F34F21224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */; };
 		5F46DD291273541D00CFF523 /* ZKOAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F46DD281273541D00CFF523 /* ZKOAuthViewController.m */; };
+		5F59F6701287260A0023A05F /* ZKServerSwitchboard+MyWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59F66F1287260A0023A05F /* ZKServerSwitchboard+MyWebService.m */; };
 		5F6E90991229A369006EF146 /* ZKEmailMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E90981229A369006EF146 /* ZKEmailMessage.m */; };
 		5F6E93B7122C8F0B006EF146 /* ZKMessageEnvelope.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E93B6122C8F0B006EF146 /* ZKMessageEnvelope.m */; };
 		5F6E93BA122C8F18006EF146 /* ZKMessageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E93B9122C8F18006EF146 /* ZKMessageElement.m */; };
@@ -163,6 +164,8 @@
 		5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+Describe.m"; sourceTree = "<group>"; };
 		5F46DD271273541D00CFF523 /* ZKOAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKOAuthViewController.h; sourceTree = "<group>"; };
 		5F46DD281273541D00CFF523 /* ZKOAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKOAuthViewController.m; sourceTree = "<group>"; };
+		5F59F66E1287260A0023A05F /* ZKServerSwitchboard+MyWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+MyWebService.h"; sourceTree = "<group>"; };
+		5F59F66F1287260A0023A05F /* ZKServerSwitchboard+MyWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+MyWebService.m"; sourceTree = "<group>"; };
 		5F6E90971229A369006EF146 /* ZKEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKEmailMessage.h; sourceTree = "<group>"; };
 		5F6E90981229A369006EF146 /* ZKEmailMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKEmailMessage.m; sourceTree = "<group>"; };
 		5F6E93B5122C8F0B006EF146 /* ZKMessageEnvelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKMessageEnvelope.h; sourceTree = "<group>"; };
@@ -275,6 +278,8 @@
 				5C5815661213189E000BA324 /* SVNTestAppDelegate.m */,
 				5C58156B1213189E000BA324 /* DetailViewController.h */,
 				5C58156C1213189E000BA324 /* DetailViewController.m */,
+				5F59F66E1287260A0023A05F /* ZKServerSwitchboard+MyWebService.h */,
+				5F59F66F1287260A0023A05F /* ZKServerSwitchboard+MyWebService.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -501,6 +506,7 @@
 				5F6E9713122F145C006EF146 /* ZKGetUpdatedResult.m in Sources */,
 				5F46DD291273541D00CFF523 /* ZKOAuthViewController.m in Sources */,
 				5F976BBD1278CF7900F7FF2B /* NSURL+Additions.m in Sources */,
+				5F59F6701287260A0023A05F /* ZKServerSwitchboard+MyWebService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -62,7 +62,7 @@
     [envelope addBodyElementNamed:@"emptyRecycleBin" withChildNamed:@"ids" value:objectIDs];
     NSString *xml = [envelope stringRepresentation];  
 	
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processEmptyRecycleBinResponse:error:context:) context: wrapperContext];
 }
 
@@ -80,7 +80,7 @@
     [envelope addBodyElement:[ZKMessageElement elementWithName:@"getServerTimestamp" value:nil]];
     NSString *xml = [envelope stringRepresentation];  
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processGetServerTimestampResponse:error:context:) context: wrapperContext];
 }
 
@@ -93,7 +93,7 @@
     [envelope addBodyElement:[ZKMessageElement elementWithName:@"getUserInfo" value:nil]];
     NSString *xml = [envelope stringRepresentation];  
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processGetUserInfoResponse:error:context:) context: wrapperContext];
 }
 
@@ -115,7 +115,7 @@
     [envelope addBodyElementNamed:@"resetPassword" withChildNamed:@"userId" value:userId];
     NSString *xml = [envelope stringRepresentation];  
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processResetPasswordResponse:error:context:) context: wrapperContext];
 }
 
@@ -155,7 +155,7 @@
     [envelope addBodyElement:sendEmailElement];
     NSString *xml = [envelope stringRepresentation]; 
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSendEmailResponse:error:context:) context: wrapperContext];
 }
 
@@ -178,7 +178,7 @@
     [envelope addBodyElement:setPasswordElement];
     NSString *xml = [envelope stringRepresentation];  
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processSetPasswordResponse:error:context:) context: wrapperContext];
 }
 
@@ -192,7 +192,7 @@
 {
     // A fault would happen (and an error prepped) if it wasn't successful.
     NSNumber *response = [NSNumber numberWithBool: (error ? NO : YES)];
-    [self _unwrapContext:context andCallSelectorWithResponse:response error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:response error:error];
 	return response;
 }
 
@@ -202,7 +202,7 @@
     ZKElement *timestampElement = [result childElement:@"timestamp"];
     NSString *timestampString = [timestampElement stringValue];
     NSDate *timestamp = [NSDate dateWithLongFormatString:timestampString];
-    [self _unwrapContext:context andCallSelectorWithResponse:timestamp error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:timestamp error:error];
 	return timestamp;
 }
 
@@ -210,7 +210,7 @@
 {
     ZKElement *result = [getUserInfoResponseElement childElement:@"result"];
     ZKUserInfo *info = [[[ZKUserInfo alloc] initWithXmlElement:result] autorelease];
-    [self _unwrapContext:context andCallSelectorWithResponse:info error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:info error:error];
 	return info;
 }
 
@@ -222,7 +222,7 @@
 		ZKSaveResult *sr = [[[ZKSaveResult alloc] initWithXmlElement:saveResultElement] autorelease];
 		[results addObject:sr];
 	} 
-    [self _unwrapContext:context andCallSelectorWithResponse:results error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:results error:error];
 	return results;
 }
 
@@ -230,7 +230,7 @@
 {
     // A fault would happen (and an error prepped) if it wasn't successful.
     NSNumber *response = [NSNumber numberWithBool: (error ? NO : YES)];
-    [self _unwrapContext:context andCallSelectorWithResponse:response error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:response error:error];
 	return response;
 }
 
@@ -239,7 +239,7 @@
     ZKElement *result = [resetPasswordResponseElement childElement:@"result"];
     ZKElement *passwordElement = [result childElement:@"password"];
     NSString *password = [passwordElement stringValue];
-    [self _unwrapContext:context andCallSelectorWithResponse:password error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:password error:error];
 	return password;
 }
 

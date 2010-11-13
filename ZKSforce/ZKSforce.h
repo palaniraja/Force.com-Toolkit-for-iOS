@@ -38,3 +38,6 @@
 #import "ZKDeletedObject.h"
 #import "ZKGetUpdatedResult.h"
 #import "ZKEmailMessage.h"
+#import "ZKMessageEnvelope.h"
+#import "ZKMessageElement.h"
+#import "ZKParser.h"

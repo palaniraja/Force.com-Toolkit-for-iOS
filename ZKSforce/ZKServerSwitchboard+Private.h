@@ -39,8 +39,6 @@
               target:(id)target
             selector:(SEL)sel
              context:(id)context;
-- (NSDictionary *)_contextWrapperDictionaryForTarget:(id)target selector:(SEL)selector context:(id)context;
-- (void)_unwrapContext:(NSDictionary *)wrapperContext andCallSelectorWithResponse:(id)response error:(NSError *)error;
 - (void)_returnResponseForConnection:(NSURLConnection *)connection;
 
 - (ZKElement *)_processHttpResponse:(NSHTTPURLResponse *)resp data:(NSData *)responseData;

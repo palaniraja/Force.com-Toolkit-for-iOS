@@ -48,7 +48,7 @@
     [envelope addBodyElement:[ZKMessageElement elementWithName:@"describeGlobal" value:nil]];
     NSString *xml = [envelope stringRepresentation];  
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeGlobalResponse:error:context:) context: wrapperContext];
 }
 
@@ -60,7 +60,7 @@
     [envelope addBodyElementNamed:@"describeSObject" withChildNamed:@"sObjectType" value:sObjectType];
     NSString *xml = [envelope stringRepresentation];  
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeSObjectResponse:error:context:) context: wrapperContext];
 }
 
@@ -72,7 +72,7 @@
     [envelope addBodyElementNamed:@"describeSObjects" withChildNamed:@"sObjectType" value:sObjectTypes];
     NSString *xml = [envelope stringRepresentation];  
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeSObjectsResponse:error:context:) context: wrapperContext];
 }
 
@@ -84,7 +84,7 @@
     [envelope addBodyElementNamed:@"describeLayout" withChildNamed:@"sObjectType" value:sObjectType];
     NSString *xml = [envelope stringRepresentation];  
     
-    NSDictionary *wrapperContext = [self _contextWrapperDictionaryForTarget:target selector:selector context:context];
+    NSDictionary *wrapperContext = [self contextWrapperDictionaryForTarget:target selector:selector context:context];
     [self _sendRequestWithData:xml target:self selector:@selector(_processDescribeLayoutResponse:error:context:) context: wrapperContext];
 }
 
@@ -102,7 +102,7 @@
         ZKDescribeGlobalSObject * describe = [[[ZKDescribeGlobalSObject alloc] initWithXmlElement:object] autorelease];
 		[types addObject:describe];
     }
-    [self _unwrapContext:context andCallSelectorWithResponse:types error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:types error:error];
 	return types;
 }
 
@@ -110,7 +110,7 @@
 {
     ZKElement *result = [describeSObjectResponseElement childElement:@"result"];
 	ZKDescribeSObject *describe = [[[ZKDescribeSObject alloc] initWithXmlElement:result] autorelease];
-    [self _unwrapContext:context andCallSelectorWithResponse:describe error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:describe error:error];
 	return describe;
 }
 
@@ -123,7 +123,7 @@
         ZKDescribeSObject *describe = [[[ZKDescribeSObject alloc] initWithXmlElement:result] autorelease];
 		[describes addObject:describe];
     }
-    [self _unwrapContext:context andCallSelectorWithResponse:describes error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:describes error:error];
 	return describes;
 }
 
@@ -131,7 +131,7 @@
 {
     ZKElement *result = [describeLayoutResponseElement childElement:@"result"];
 	ZKDescribeLayoutResult *describe = [[[ZKDescribeLayoutResult alloc] initWithXmlElement:result] autorelease];
-    [self _unwrapContext:context andCallSelectorWithResponse:describe error:error];
+    [self unwrapContext:context andCallSelectorWithResponse:describe error:error];
 	return describe;	
 }
 

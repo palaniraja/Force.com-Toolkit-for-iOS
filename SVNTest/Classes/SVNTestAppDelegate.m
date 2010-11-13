@@ -25,6 +25,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
+    //[ZKServerSwitchboard switchboard].logXMLInOut = YES;
     [[ZKServerSwitchboard switchboard] setClientId:kSFOAuthConsumerKey];
     
     // Override point for customization after app launch    
