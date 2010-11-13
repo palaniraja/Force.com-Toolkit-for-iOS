@@ -206,7 +206,9 @@
 - (void) addElementString:(NSString *)elemName elemValue:(NSString *)elemValue string:(NSMutableString *)string
 {
 	[self startElement:elemName string:string];
-    [string appendString:[self _stripTagsFromString: elemValue]];
+    NSString *tagStrippedValue = [self _stripTagsFromString: elemValue];
+    if (tagStrippedValue)
+        [string appendString:tagStrippedValue];
 	[self endElement:elemName string:string];
 }
 
@@ -216,7 +218,9 @@
 	NSString *key;
 	while(key = [e nextObject]) 
     {
-		[self addElement:key elemValue:[[sobject fields] valueForKey:key] string:string];
+        // Make sure not to re-add the Id field.
+        if (![key isEqualToString:@"Id"])
+            [self addElement:key elemValue:[[sobject fields] valueForKey:key] string:string];
 	}
 }
 
@@ -224,7 +228,8 @@
 {
 	[self startElement:elemName string:string];
 	[self addElement:@"type" elemValue:[sobject type] string:string];
-	if ([sobject Id]) [self addElement:@"Id" elemValue: [sobject Id] string:string];
+	if ([sobject Id]) 
+        [self addElement:@"Id" elemValue: [sobject Id] string:string];
 	[self addElement:@"fieldsToNull" elemValue:[sobject fieldsToNull] string:string];
     
 	[self addSObjectFields: sobject string:string];
