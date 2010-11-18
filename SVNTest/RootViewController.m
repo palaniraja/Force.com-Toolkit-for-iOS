@@ -12,7 +12,7 @@
 #import "ZKLoginResult.h"
 #import "ZKOAuthViewController.h"
 #import "ZKServerSwitchboard+MyWebService.h"
-
+#import "ZKSampleApexWebSvcTest.h"
 
 @interface RootViewController (Private)
 
@@ -305,6 +305,9 @@
         [app hideLogin];
         [self getRows];
         //[self nameTest];
+        
+        //sampleApexWebSvcTest = [[ZKSampleApexWebSvcTest alloc] init];
+        //[sampleApexWebSvcTest runAllTests];
     }
 }
 
