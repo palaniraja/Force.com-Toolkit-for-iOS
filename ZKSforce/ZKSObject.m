@@ -89,15 +89,30 @@ static NSNumberFormatter *percentFormatter, *currencyFormatter;
 	if (self = [super init])
     {
         int i, childCount;
+        int childrenToSkip = 0;
         Id = [[[node childElement:@"sf:Id"] stringValue] copy];
+        if (!Id)
+            Id = [[[node childElement:@"Id"] stringValue] copy];
+        if (Id)
+            childrenToSkip++;
+        
         type = [[[node childElement:@"sf:type"] stringValue] copy];
+        if (!type)
+        {
+            type = [[node attributeValue:@"type"] copy];
+        }
+        else {
+            childrenToSkip++;
+        }
+
+
         fields = [[NSMutableDictionary alloc] init];
         fieldOrder = [[NSMutableArray alloc] init];
         fieldsToNull = [[NSMutableSet alloc] init];
         NSArray *children = [node childElements];
         childCount = [children count];
-        // start at 2 to skip Id & Type
-        for (i = 2; i < childCount; i++)
+        // start at childrenToSkip to skip Id & Type
+        for (i = childrenToSkip; i < childCount; i++)
         {
             ZKElement *f = [children objectAtIndex:i];
             NSString *xsiNil = [f attributeValue:@"nil" ns:NS_URI_XSI];

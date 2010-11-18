@@ -95,6 +95,16 @@
 	return sv;
 }
 
+- (NSString *)attributeValue:(NSString *)name
+{
+    const xmlChar * n = (const xmlChar *)[name UTF8String];
+	xmlChar *v = xmlGetProp(node, n);
+	if (v == NULL) return nil;
+	NSString *sv = [NSString stringWithUTF8String:(const char *)v];
+	xmlFree(v);
+	return sv;
+}
+
 - (id)childElements:(NSString *)name ns:(NSString *)namespace checkNs:(BOOL)checkNs all:(BOOL)returnAll
 {
 	NSMutableArray *results = returnAll ? [NSMutableArray array] : nil;

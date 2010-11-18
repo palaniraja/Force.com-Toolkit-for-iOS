@@ -46,6 +46,7 @@
 
 @synthesize name;
 @synthesize value;
+@synthesize type;
 
 + (ZKMessageElement *)elementWithName:(NSString *)aName value:(id)aValue
 {
@@ -184,6 +185,8 @@
 {
 	if ([elemValue isKindOfClass:[NSString class]])      	
         [self addElementString:elemName elemValue:elemValue string:string];
+    else if ([elemValue isKindOfClass:[NSNumber class]])
+        [self addElementString:elemName elemValue:[elemValue stringValue] string:string];
 	else if ([elemValue isKindOfClass:[NSArray class]]) 	
         [self addElementArray:elemName elemValue:elemValue string:string];
 	else if ([elemValue isKindOfClass:[NSSet class]]) 	
@@ -227,7 +230,10 @@
 - (void) addElementSObject:(NSString *)elemName elemValue:(ZKSObject *)sobject string:(NSMutableString *)string
 {
 	[self startElement:elemName string:string];
-	[self addElement:@"type" elemValue:[sobject type] string:string];
+    if (self.type == ZKMessageElementTypePartner)
+    {
+        [self addElement:@"type" elemValue:[sobject type] string:string];
+    }
 	if ([sobject Id]) 
         [self addElement:@"Id" elemValue: [sobject Id] string:string];
 	[self addElement:@"fieldsToNull" elemValue:[sobject fieldsToNull] string:string];

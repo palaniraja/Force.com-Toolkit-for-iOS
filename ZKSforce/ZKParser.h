@@ -36,6 +36,7 @@
 - (NSArray *)childElements:(NSString *)name ns:(NSString *)namespace;
 - (NSArray *)childElements;
 - (NSString *)attributeValue:(NSString *)name ns:(NSString *)namespace;
+- (NSString *)attributeValue:(NSString *)name;
 
 @end;
 

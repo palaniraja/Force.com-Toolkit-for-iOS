@@ -22,17 +22,27 @@
 
 #import <Foundation/Foundation.h>
 
+enum _ZKMessageElementType
+{
+    ZKMessageElementTypePartner = 0,
+    ZKMessageElementTypeEnterprise = 1,
+    ZKMessageElementTypeApex = 2
+};
+typedef NSUInteger ZKMessageElementType;
+
 
 @interface ZKMessageElement : NSObject {
     NSString *name;
     id value;
     NSMutableDictionary *attributes;
     NSMutableArray *childElements;
+    ZKMessageElementType type;
 }
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, retain) id value;
 @property (nonatomic, readonly) NSArray *childElements;
+@property (nonatomic, assign) ZKMessageElementType type;
 
 + (ZKMessageElement *)elementWithName:(NSString *)aName value:(id)aValue;
 
