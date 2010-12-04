@@ -451,7 +451,6 @@
 			isa = PBXProject;
 			buildConfigurationList = 5C58154B1213189C000BA324 /* Build configuration list for PBXProject "SVNTest" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

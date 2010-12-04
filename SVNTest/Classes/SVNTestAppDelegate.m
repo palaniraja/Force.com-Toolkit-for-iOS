@@ -12,7 +12,7 @@
 #import "LoginViewController.h"
 #import "ZKOAuthViewController.h"
 
-#define kSFOAuthConsumerKey @"3MVG9yZ.WNe6byQCyZdrxx1zmdLKE1MKQDV9IQZA_GtXc4AlBVEyOqBMthg8dXbxOc5y3ROnBrX_iwMkEU5oS"
+#define kSFOAuthConsumerKey @"3MVG9Km_cBLhsuPx1wfiUYQnz8DJA.dWDx8FcddHJrhuNVSbVSIjb.G8InICLCqhL2ln.FpWhtbwpR.dsFUvM"
 
 @implementation SVNTestAppDelegate
 
