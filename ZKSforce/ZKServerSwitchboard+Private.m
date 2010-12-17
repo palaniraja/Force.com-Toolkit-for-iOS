@@ -165,6 +165,7 @@ static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
 	if ([responseElement childElement:@"faultcode"] != nil) {
 		NSDictionary *errorDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:[[responseElement childElement:@"faultcode"] stringValue],@"faultcode", [[responseElement childElement:@"faultstring"] stringValue], @"faultstring", nil];
 		error = [NSError errorWithDomain:@"APIError" code:0 userInfo:errorDictionary];
+		[errorDictionary release];
 	}
 	
 	id context = [targetInfo valueForKey:@"context"];
