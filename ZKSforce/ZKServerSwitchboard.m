@@ -572,12 +572,16 @@ static ZKServerSwitchboard * sharedSwitchboard =  nil;
 - (NSArray *)_processSearchResponse:(ZKElement *)searchResponseElement error:(NSError *)error context:(NSDictionary *)context;
 {
     ZKElement *searchResult = [searchResponseElement childElement:@"result"];
-	NSArray *records = [[searchResult childElement:@"searchRecords"] childElements:@"record"];
-	NSMutableArray *results = [NSMutableArray array];
-	for (ZKElement *soNode in records) {
-		[results addObject:[ZKSObject fromXmlNode:soNode]];
-	}
+    NSArray *searchRecords = [[searchResponseElement childElement:@"result"] childElements:@"searchRecords"];
+
+    NSMutableArray *results = [NSMutableArray arrayWithCapacity:[searchRecords count]];
+
+    for ( ZKElement *sRecord in searchRecords ) {
+       ZKSObject *record = [[ZKSObject alloc] initFromXmlNode:[sRecord childElement:@"record"] ];
+       [results addObject:record];
+    }
     [self unwrapContext:context andCallSelectorWithResponse:results error:error];
+                                          
 	return results;
 }
 
