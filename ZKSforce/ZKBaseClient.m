@@ -53,6 +53,7 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:endpointUrl]];
 	[request setHTTPMethod:@"POST"];
 	[request addValue:@"text/xml; charset=UTF-8" forHTTPHeaderField:@"content-type"];	
+	[request addValue:@"salesforce-toolkit-ios/20.0" forHTTPHeaderField:@"User-Agent"];	
 	[request addValue:@"\"\"" forHTTPHeaderField:@"SOAPAction"];
 	
 	NSData *data = [payload dataUsingEncoding:NSUTF8StringEncoding];
@@ -164,6 +165,7 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:endpointUrl]];
 	[request setHTTPMethod:@"POST"];
 	[request addValue:@"text/xml; charset=UTF-8" forHTTPHeaderField:@"content-type"];	
+	[request addValue:@"salesforce-toolkit-ios/20.0" forHTTPHeaderField:@"User-Agent"];	
 	[request addValue:@"\"\"" forHTTPHeaderField:@"SOAPAction"];
 	
 	NSData *data = [payload dataUsingEncoding:NSUTF8StringEncoding];
