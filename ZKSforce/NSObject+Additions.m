@@ -21,6 +21,7 @@
 
 
 #import "NSObject+Additions.h"
+#import <objc/objc-runtime.h>
 
 
 @implementation NSObject (Additions)
