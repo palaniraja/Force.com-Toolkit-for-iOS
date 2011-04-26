@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -19,25 +19,29 @@
 // THE SOFTWARE.
 //
 
+#import <UIKit/UIKit.h>
 
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
 
-#import "ZKUserInfo.h"
-#import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "FDCServerSwitchboard.h"
-#import "FDCServerSwitchboard+Utility.h"
-#import "FDCServerSwitchboard+Describe.h"
-#import "FDCGetDeletedResult.h"
-#import "FDCDeletedObject.h"
-#import "FDCGetUpdatedResult.h"
-#import "FDCEmailMessage.h"
-#import "FDCMessageEnvelope.h"
-#import "FDCMessageElement.h"
-#import "ZKParser.h"
+@interface FDCOAuthViewController : UIViewController <UIWebViewDelegate>
+{
+    UIWebView *webView;
+
+    id target;
+    SEL action;
+    NSString *clientId;
+    NSString *display;
+    NSString *redirectUri;
+    NSString *accessToken;
+    NSString *refreshToken;
+    NSString *instanceUrl;
+}
+
+- (id)initWithTarget:(id)aTarget selector:(SEL)aSelector clientId:(NSString *)aClientId;
+
+@property (nonatomic, copy) NSString *display;
+@property (nonatomic, copy) NSString *redirectUri;
+@property (readonly) NSString *accessToken;
+@property (readonly) NSString *refreshToken;
+@property (readonly) NSString *instanceUrl;
+
+@end

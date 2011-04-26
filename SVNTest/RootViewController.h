@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ZKSforce.h"
 
 @class DetailViewController;
-@class ZKSampleApexWebSvcTest;
+@class FDCSampleApexWebSvcTest;
 
 @interface RootViewController : UITableViewController <UIActionSheetDelegate, UIAlertViewDelegate> {
     DetailViewController *detailViewController;
@@ -18,7 +17,7 @@
 	NSMutableArray *dataRows;
 	NSIndexPath *deleteIndexPath;
     
-    ZKSampleApexWebSvcTest *sampleApexWebSvcTest;
+    FDCSampleApexWebSvcTest *sampleApexWebSvcTest;
 }
 
 @property (nonatomic, retain) IBOutlet DetailViewController *detailViewController;

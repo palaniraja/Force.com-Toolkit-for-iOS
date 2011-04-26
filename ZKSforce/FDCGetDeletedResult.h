@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -18,26 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 // THE SOFTWARE.
 //
-
-
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
-
-#import "ZKUserInfo.h"
-#import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "FDCServerSwitchboard.h"
-#import "FDCServerSwitchboard+Utility.h"
-#import "FDCServerSwitchboard+Describe.h"
-#import "FDCGetDeletedResult.h"
-#import "FDCDeletedObject.h"
+#import <Foundation/Foundation.h>
 #import "FDCGetUpdatedResult.h"
-#import "FDCEmailMessage.h"
-#import "FDCMessageEnvelope.h"
-#import "FDCMessageElement.h"
-#import "ZKParser.h"
+
+@class ZKElement;
+
+@interface FDCGetDeletedResult : FDCGetUpdatedResult <NSCopying> {
+    NSDate *earliestDateAvailable;
+
+}
+
+@property (readonly) NSDate *earliestDateAvailable;
+
+
+- (id)initFromXmlNode:(ZKElement *)node;
+- (id)initWithRecords:(NSArray *)records earliestDateAvailable:(NSDate *)earliestDate latestDateCovered:(NSDate *)latestDate;
+
+@end

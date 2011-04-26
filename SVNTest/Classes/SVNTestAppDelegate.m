@@ -10,7 +10,8 @@
 #import "RootViewController.h"
 #import "DetailViewController.h"
 #import "LoginViewController.h"
-#import "ZKOAuthViewController.h"
+#import "FDCOAuthViewController.h"
+#import "FDCServerSwitchboard.h"
 
 #define kSFOAuthConsumerKey @"3MVG9CVKiXR7Ri5oh_84IylskqHQ62FcZmNu1sa4AqZpap0V_cQgleM9Gn70TdoQ11O9M99P2BtELOz_Cij9U"
 
@@ -26,12 +27,12 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
     //[ZKServerSwitchboard switchboard].logXMLInOut = YES;
-    [[ZKServerSwitchboard switchboard] setClientId:kSFOAuthConsumerKey];
+    [[FDCServerSwitchboard switchboard] setClientId:kSFOAuthConsumerKey];
     
     // Override point for customization after app launch    
 	loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginView" bundle:nil];
 	
-    oAuthViewController = [[ZKOAuthViewController alloc] initWithTarget:rootViewController selector:@selector(loginOAuth:error:) clientId:kSFOAuthConsumerKey];
+    oAuthViewController = [[FDCOAuthViewController alloc] initWithTarget:rootViewController selector:@selector(loginOAuth:error:) clientId:kSFOAuthConsumerKey];
     //oAuthViewController.redirectUri = @"https://secure.centrix.ca";
     // Add the split view controller's view to the window and display.
     [window addSubview:splitViewController.view];

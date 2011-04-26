@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 //
 
-#import "ZKURLConnection.h"
+#import "FDCURLConnection.h"
 
 @protocol BaseClientProtocol
 
@@ -47,7 +47,7 @@ extern NSString * const TEXTXML_CONTENTTYPE;
 - (ZKElement *)processResponse:(NSData *)respPayload response:(NSHTTPURLResponse *)resp error:(NSError **)err;
 - (void) sendRequestAsync:(NSString *)payload withResponseDelegate:(id)responseDelegate andResponseSelector:(SEL)responseSelector withOperationName:(NSString *)operation withObjectName:(NSString *)objectName withDelegate:(id)delegate;
 
-- (void)_stopReceiveWithStatus:(NSString *)statusString withConnection:(ZKURLConnection *)conn;
+- (void)_stopReceiveWithStatus:(NSString *)statusString withConnection:(FDCURLConnection *)conn;
 - (NSString *)getConnectionHashString:(NSURLConnection *)conn;
 - (id) init;
 - (NSMutableURLRequest *)makeRequest:(NSString *)payload;

@@ -23,7 +23,6 @@
 #import "ZKSoapException.h"
 #import "ZKParser.h"
 
-
 @implementation ZKBaseClient
 
 static NSString *SOAP_NS = @"http://schemas.xmlsoap.org/soap/envelope/";
@@ -69,7 +68,7 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 {
 	
 	NSMutableURLRequest *request = [self makeRequest:payload] ;
-	ZKURLConnection * conn = [[ZKURLConnection alloc] initWithRequest:request delegate:self withResponseDelegate:responseDelegate withResponseSelector:responseSelector 
+	FDCURLConnection * conn = [[FDCURLConnection alloc] initWithRequest:request delegate:self withResponseDelegate:responseDelegate withResponseSelector:responseSelector 
 												   withClientDelegate:delegate withLayoutObjectName:objectName withOperationName:operation];
 	[conn release];
 }
@@ -84,7 +83,7 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 // exchange is complete.  We look at the response to check that the HTTP 
 // status code is 2xx and that the Content-Type is acceptable.  If these checks 
 // fail, we give up on the transfer.
-- (void)connection:(ZKURLConnection *)conn didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(FDCURLConnection *)conn didReceiveResponse:(NSURLResponse *)response
 {
     NSLog(@"didReceiveResponse");
     
@@ -114,7 +113,7 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 
 // A delegate method called by the NSURLConnection as data arrives.  We just 
 // write the data to the file.
-- (void)connection:(ZKURLConnection *)conn didReceiveData:(NSData *)data
+- (void)connection:(FDCURLConnection *)conn didReceiveData:(NSData *)data
 {
 	NSLog(@"Data Received.");
 	
@@ -124,7 +123,7 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 
 // Shuts down the connection and displays the result (statusString == nil) 
 // or the error status (otherwise).
-- (void)_stopReceiveWithStatus:(NSString *)statusString withConnection:(ZKURLConnection *)conn
+- (void)_stopReceiveWithStatus:(NSString *)statusString withConnection:(FDCURLConnection *)conn
 {
     if (conn != nil) 
     {
@@ -175,7 +174,7 @@ NSString * const TEXTXML_CONTENTTYPE = @"text/xml";
 	NSError *err = nil;
 	// todo, support request compression
 	// todo, support response compression
-	NSData *respPayload = [ZKURLConnection sendSynchronousRequest:request returningResponse:&resp error:&err];
+	NSData *respPayload = [FDCURLConnection sendSynchronousRequest:request returningResponse:&resp error:&err];
 	ZKElement *root = [ZKParser parseData:respPayload];
 	if (root == nil)	
 		@throw [NSException exceptionWithName:@"Xml error" reason:@"Unable to parse XML returned by server" userInfo:nil];

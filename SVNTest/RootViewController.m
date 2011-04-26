@@ -10,9 +10,10 @@
 #import "DetailViewController.h"
 #import "SVNTestAppDelegate.h"
 #import "ZKLoginResult.h"
-#import "ZKOAuthViewController.h"
-#import "ZKServerSwitchboard+MyWebService.h"
-#import "ZKSampleApexWebSvcTest.h"
+#import "FDCOAuthViewController.h"
+#import "FDCServerSwitchboard+MyWebService.h"
+#import "FDCSampleApexWebSvcTest.h"
+#import "ZKSforce.h"
 
 @interface RootViewController (Private)
 
@@ -185,7 +186,7 @@
 		NSLog(@"ok");
 		ZKSObject *delObj = (ZKSObject *)[self.dataRows objectAtIndex:deleteIndexPath.row];
 		NSString *objectID = [delObj fieldValue:@"Id"];
-        [[ZKServerSwitchboard switchboard] delete:[NSArray arrayWithObject:objectID] target:self selector:@selector(deleteResult:error:context:) context:nil];
+        [[FDCServerSwitchboard switchboard] delete:[NSArray arrayWithObject:objectID] target:self selector:@selector(deleteResult:error:context:) context:nil];
 	}
 }
 
@@ -292,15 +293,15 @@
 }
 
 
-- (void)loginOAuth:(ZKOAuthViewController *)oAuthViewController error:(NSError *)error
+- (void)loginOAuth:(FDCOAuthViewController *)oAuthViewController error:(NSError *)error
 {
     NSLog(@"loginOAuth: %@ error: %@", oAuthViewController, error);
     
     if ([oAuthViewController accessToken] && !error)
     {
-        [[ZKServerSwitchboard switchboard] setApiUrlFromOAuthInstanceUrl:[oAuthViewController instanceUrl]];
-        [[ZKServerSwitchboard switchboard] setSessionId:[oAuthViewController accessToken]];
-        [[ZKServerSwitchboard switchboard] setOAuthRefreshToken:[oAuthViewController refreshToken]];
+        [[FDCServerSwitchboard switchboard] setApiUrlFromOAuthInstanceUrl:[oAuthViewController instanceUrl]];
+        [[FDCServerSwitchboard switchboard] setSessionId:[oAuthViewController accessToken]];
+        [[FDCServerSwitchboard switchboard] setOAuthRefreshToken:[oAuthViewController refreshToken]];
         SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
         [app hideLogin];
         [self getRows];
@@ -363,7 +364,7 @@
     }
 }
 
-- (void)getDeletedResult:(ZKGetDeletedResult *)result error:(NSError *)error context:(id)context
+- (void)getDeletedResult:(FDCGetDeletedResult *)result error:(NSError *)error context:(id)context
 {
     NSLog(@"getDeletedResult: %@ error: %@ context: %@", result, error, context);
     if (result && !error)
@@ -436,7 +437,7 @@
     }
 }
 
-- (void)getUpdatedResult:(ZKGetUpdatedResult *)result error:(NSError *)error context:(id)context
+- (void)getUpdatedResult:(FDCGetUpdatedResult *)result error:(NSError *)error context:(id)context
 {
     NSLog(@"getUpdatedResult: %@ error: %@ context: %@", result, error, context);
     if (result && !error)
@@ -558,58 +559,58 @@
 - (void)getRows 
 {
     NSString *queryString = @"Select Id, Name, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Phone, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Type, Website From Account";
-    [[ZKServerSwitchboard switchboard] query:queryString target:self selector:@selector(queryResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] query:queryString target:self selector:@selector(queryResult:error:context:) context:nil];
 }
 
 - (void)searchTest
 {
     NSString *queryString = @"find {4159017000} in phone fields returning contact(id, phone, firstname, lastname), lead(id, phone, firstname, lastname), account(id, phone, name)";
-    [[ZKServerSwitchboard switchboard] search:queryString target:self selector:@selector(searchResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] search:queryString target:self selector:@selector(searchResult:error:context:) context:nil];
 }
 
 - (void)getDeletedTest
 {
     NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow: - (60*60*24)];
-    [[ZKServerSwitchboard switchboard] getDeleted:@"Account" fromDate:startDate toDate:nil target:self selector:@selector(getDeletedResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] getDeleted:@"Account" fromDate:startDate toDate:nil target:self selector:@selector(getDeletedResult:error:context:) context:nil];
 }
 
 - (void)getServerTimestampTest
 {
-    [[ZKServerSwitchboard switchboard] getServerTimestampWithTarget:self selector:@selector(getServerTimestampResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] getServerTimestampWithTarget:self selector:@selector(getServerTimestampResult:error:context:) context:nil];
 }
 
 - (void)emptyRecycleBinTest
 {
     NSArray *objectIDs = [NSArray arrayWithObject:@"001A000000KKopAIAT"];
-    [[ZKServerSwitchboard switchboard] emptyRecycleBin:objectIDs target:self selector:@selector(emptyRecycleBinResult:error:context:) context:nil];    
+    [[FDCServerSwitchboard switchboard] emptyRecycleBin:objectIDs target:self selector:@selector(emptyRecycleBinResult:error:context:) context:nil];    
 }
 
 - (void)sendEmailTest
 {
-    ZKEmailMessage *message = [[[ZKEmailMessage alloc] init] autorelease];
+    FDCEmailMessage *message = [[[FDCEmailMessage alloc] init] autorelease];
     message.plainTextBody = @"This is a test message from the sendEmail function via the iOS toolkit.";
     message.targetObjectId = @"005A0000000h8tgIAA";
     NSArray *messages = [NSArray arrayWithObject: message];
-    [[ZKServerSwitchboard switchboard] sendEmail:messages target:self selector:@selector(sendEmailResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] sendEmail:messages target:self selector:@selector(sendEmailResult:error:context:) context:nil];
 }
 
 - (void)setPasswordTest
 {
     NSString *userId = @"005A0000000rP0UIAU";
     NSString *newPassword = @"test1234";
-    [[ZKServerSwitchboard switchboard] setPassword:newPassword forUserId:userId target:self selector:@selector(setPasswordResult:error:context:) context:nil];    
+    [[FDCServerSwitchboard switchboard] setPassword:newPassword forUserId:userId target:self selector:@selector(setPasswordResult:error:context:) context:nil];    
 }
 
 - (void)resetPasswordTest
 {
     NSString *userId = @"005A0000000rP0UIAU";
-    [[ZKServerSwitchboard switchboard] resetPasswordForUserId:userId triggerUserEmail:YES target:self selector:@selector(resetPasswordResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] resetPasswordForUserId:userId triggerUserEmail:YES target:self selector:@selector(resetPasswordResult:error:context:) context:nil];
 }
 
 - (void)unDeleteTest
 {
     NSArray *objectIds = [NSArray arrayWithObjects:@"001A000000KRgJ1IAL", nil];
-    [[ZKServerSwitchboard switchboard] unDelete:objectIds target:self selector:@selector(unDeleteResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] unDelete:objectIds target:self selector:@selector(unDeleteResult:error:context:) context:nil];
 }
 
 - (void)getUpdatedTest
@@ -617,33 +618,33 @@
     NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow: - (60*60*24)];
     NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow: + (60*60*12)];
 
-    [[ZKServerSwitchboard switchboard] getUpdated:@"Account" fromDate:startDate toDate:endDate target:self selector:@selector(getUpdatedResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] getUpdated:@"Account" fromDate:startDate toDate:endDate target:self selector:@selector(getUpdatedResult:error:context:) context:nil];
 }
 
 - (void)describeGlobalTest
 {
-    [[ZKServerSwitchboard switchboard] describeGlobalWithTarget:self selector:@selector(describeGlobalResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] describeGlobalWithTarget:self selector:@selector(describeGlobalResult:error:context:) context:nil];
 }
 
 - (void)describeSObjectTest
 {
-    [[ZKServerSwitchboard switchboard] describeSObject:@"Account" target:self selector:@selector(describeSObjectResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] describeSObject:@"Account" target:self selector:@selector(describeSObjectResult:error:context:) context:nil];
 }
 
 - (void)describeSObjectsTest
 {
     NSArray *sObjectTypes = [NSArray arrayWithObjects:@"Account", @"Contact", nil];
-    [[ZKServerSwitchboard switchboard] describeSObjects:sObjectTypes target:self selector:@selector(describeSObjectsResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] describeSObjects:sObjectTypes target:self selector:@selector(describeSObjectsResult:error:context:) context:nil];
 }
 
 - (void)describeLayoutTest
 {
-    [[ZKServerSwitchboard switchboard] describeLayout:@"Account" target:self selector:@selector(describeLayoutResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] describeLayout:@"Account" target:self selector:@selector(describeLayoutResult:error:context:) context:nil];
 }
 
 - (void)getUserInfoTest
 {
-    [[ZKServerSwitchboard switchboard] getUserInfoWithTarget:self selector:@selector(getUserInfoResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] getUserInfoWithTarget:self selector:@selector(getUserInfoResult:error:context:) context:nil];
 }
 
 - (void)makeContactTest
@@ -652,14 +653,14 @@
     ZKSObject *account = [dataRows lastObject];
     NSLog(@"account = %@", account);
     NSString *lastName = @"Fillion";
-    [[ZKServerSwitchboard switchboard] apexMyWebServiceMakeContactWithLastName:lastName account:account target:self selector:@selector(makeContactResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] apexMyWebServiceMakeContactWithLastName:lastName account:account target:self selector:@selector(makeContactResult:error:context:) context:nil];
 }
 
 - (void)nameTest
 {
     NSLog(@"nameTest");
     NSString *name = @"Fillion";
-    [[ZKServerSwitchboard switchboard] apexMyWebServiceNameTest:name target:self selector:@selector(nameTestResult:error:context:) context:nil];
+    [[FDCServerSwitchboard switchboard] apexMyWebServiceNameTest:name target:self selector:@selector(nameTestResult:error:context:) context:nil];
 }
 
 @end

@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -20,24 +20,37 @@
 //
 
 
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
+#import <Foundation/Foundation.h>
 
-#import "ZKUserInfo.h"
-#import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "FDCServerSwitchboard.h"
-#import "FDCServerSwitchboard+Utility.h"
-#import "FDCServerSwitchboard+Describe.h"
-#import "FDCGetDeletedResult.h"
-#import "FDCDeletedObject.h"
-#import "FDCGetUpdatedResult.h"
-#import "FDCEmailMessage.h"
-#import "FDCMessageEnvelope.h"
-#import "FDCMessageElement.h"
-#import "ZKParser.h"
+enum _FDCMessageElementType
+{
+    FDCMessageElementTypePartner = 0,
+    FDCMessageElementTypeEnterprise = 1,
+    FDCMessageElementTypeApex = 2
+};
+typedef NSUInteger FDCMessageElementType;
+
+
+@interface FDCMessageElement : NSObject {
+    NSString *name;
+    id value;
+    NSMutableDictionary *attributes;
+    NSMutableArray *childElements;
+    FDCMessageElementType type;
+}
+
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, retain) id value;
+@property (nonatomic, readonly) NSArray *childElements;
+@property (nonatomic, assign) FDCMessageElementType type;
+
++ (FDCMessageElement *)elementWithName:(NSString *)aName value:(id)aValue;
+
+- (id)initWithName:(NSString *)aName value:(id)aValue;
+
+- (void)addAttribute:(NSString *)attributeName value:(NSString *)aValue;
+- (void)addChildElement:(FDCMessageElement *)element;
+
+- (NSString *)stringRepresentation;
+
+@end
