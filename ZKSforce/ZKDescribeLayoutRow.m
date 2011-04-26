@@ -26,7 +26,12 @@
 
 @implementation ZKDescribeLayoutRow
 
-- (NSInteger ) numItems 
+-(void)dealloc {
+	[layoutItems release];
+	[super dealloc];
+}
+
+- (NSInteger) numItems 
 {
 	return [self integer:@"numItems"];
 }
