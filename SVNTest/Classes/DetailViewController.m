@@ -8,8 +8,8 @@
 
 #import "DetailViewController.h"
 #import "RootViewController.h"
-#import "ZKServerSwitchboard.h"
-
+#import "FDCServerSwitchboard.h"
+#import "ZKSforce.h"
 
 @interface DetailViewController ()
 
@@ -151,11 +151,11 @@
 
 		if ([account fieldValue:@"Id"] == nil) 
         {
-            [[ZKServerSwitchboard switchboard] create:objects target:self selector:@selector(updateResults:error:context:) context:nil];
+            [[FDCServerSwitchboard switchboard] create:objects target:self selector:@selector(updateResults:error:context:) context:nil];
 		} 
         else 
         {
-            [[ZKServerSwitchboard switchboard] update:objects target:self selector:@selector(updateResults:error:context:) context:nil];
+            [[FDCServerSwitchboard switchboard] update:objects target:self selector:@selector(updateResults:error:context:) context:nil];
 		}
 		[objects release];
 	} else {

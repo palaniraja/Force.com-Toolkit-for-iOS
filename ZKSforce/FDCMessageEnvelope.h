@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -19,25 +19,31 @@
 // THE SOFTWARE.
 //
 
+#import <Foundation/Foundation.h>
 
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
+@class FDCMessageElement;
 
-#import "ZKUserInfo.h"
-#import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "FDCServerSwitchboard.h"
-#import "FDCServerSwitchboard+Utility.h"
-#import "FDCServerSwitchboard+Describe.h"
-#import "FDCGetDeletedResult.h"
-#import "FDCDeletedObject.h"
-#import "FDCGetUpdatedResult.h"
-#import "FDCEmailMessage.h"
-#import "FDCMessageEnvelope.h"
-#import "FDCMessageElement.h"
-#import "ZKParser.h"
+@interface FDCMessageEnvelope : NSObject {
+    NSString *primaryNamespaceUri;
+    NSMutableArray *headerElements;
+    NSMutableArray *bodyElements;
+}
+
+@property (nonatomic, copy) NSString *primaryNamespaceUri;
+@property (nonatomic, readonly) NSArray *headerElements;
+@property (nonatomic, readonly) NSArray *bodyElements;
+
++ (FDCMessageEnvelope *)envelopeWithSessionId:(NSString *)sessionId clientId:(NSString *)clientId;
+
+- (void)addSessionHeader:(NSString *)sessionId;
+- (void)addCallOptions:(NSString *)clientId;
+- (void)addEmailHeader;
+- (void)addHeaderElement:(FDCMessageElement *)element;
+- (void)addBodyElement:(FDCMessageElement *)element;
+- (void)addBodyElementNamed:(NSString *)elementName withChildNamed:(NSString *)childElementName value:(id)childValue;
+
+- (void)addUpdatesMostRecentlyUsedHeader;
+
+- (NSString *)stringRepresentation;
+
+@end

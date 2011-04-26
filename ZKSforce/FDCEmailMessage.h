@@ -1,4 +1,4 @@
-// Copyright (c) 2006 Simon Fell
+// Copyright (c) 2010 Rick Fillion
 //
 // Permission is hereby granted, free of charge, to any person obtaining a 
 // copy of this software and associated documentation files (the "Software"), 
@@ -20,24 +20,29 @@
 //
 
 
-// this just imports everything else that's you'll need access to, to make
-// it easy to pull in everything you might need. you can use this, or just
-// import the bits you care about.
-
-#import "ZKUserInfo.h"
+#import <Foundation/Foundation.h>
 #import "ZKSObject.h"
-#import "ZKSoapException.h"
-#import "ZKSaveResult.h"
-#import "ZKQueryResult.h"
-#import "ZKDescribeSObject.h"
-#import "ZKDescribeField.h"
-#import "FDCServerSwitchboard.h"
-#import "FDCServerSwitchboard+Utility.h"
-#import "FDCServerSwitchboard+Describe.h"
-#import "FDCGetDeletedResult.h"
-#import "FDCDeletedObject.h"
-#import "FDCGetUpdatedResult.h"
-#import "FDCEmailMessage.h"
-#import "FDCMessageEnvelope.h"
-#import "FDCMessageElement.h"
-#import "ZKParser.h"
+
+enum _FDCEmailMessagePriority {
+    FDCEmailMessagePriorityLowest = 0,
+    FDCEmailMessagePriorityLow = 1,
+    FDCEmailMessagePriorityNormal = 2,
+    FDCEmailMessagePriorityHigh = 3,
+    FDCEmailMessagePriorityHighest = 4
+};
+typedef NSUInteger FDCEmailMessagePriority;
+
+@interface FDCEmailMessage : ZKSObject {
+
+    
+}
+
+@property (nonatomic, assign) BOOL bccSender;
+@property (nonatomic, assign) FDCEmailMessagePriority priority;
+@property (nonatomic, copy) NSString *subject;
+@property (nonatomic, assign) BOOL useSignature;
+@property (nonatomic, copy) NSString *targetObjectId;
+@property (nonatomic, copy) NSString *plainTextBody;
+
+
+@end

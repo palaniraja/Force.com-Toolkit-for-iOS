@@ -18,8 +18,8 @@
 {
 	SVNTestAppDelegate *app = [[UIApplication sharedApplication] delegate];
 	RootViewController *rootViewController = app.rootViewController;
-    [ZKServerSwitchboard switchboard].logXMLInOut = YES;
-    [[ZKServerSwitchboard switchboard] loginWithUsername:usernameTextField.text password:passwordTextField.text target:rootViewController selector:@selector(loginResult:error:)];
+    [FDCServerSwitchboard switchboard].logXMLInOut = YES;
+    [[FDCServerSwitchboard switchboard] loginWithUsername:usernameTextField.text password:passwordTextField.text target:rootViewController selector:@selector(loginResult:error:)];
 }
 
 /*
