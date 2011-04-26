@@ -25,7 +25,6 @@
 		5C4E9D091213384D000C45AD /* ZKPicklistEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CD71213384D000C45AD /* ZKPicklistEntry.m */; };
 		5C4E9D0A1213384D000C45AD /* ZKPicklistForRecordType.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CD91213384D000C45AD /* ZKPicklistForRecordType.m */; };
 		5C4E9D0B1213384D000C45AD /* ZKQueryResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CDB1213384D000C45AD /* ZKQueryResult.m */; };
-		5C4E9D0C1213384D000C45AD /* ZKQueryResult_NSTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CDD1213384D000C45AD /* ZKQueryResult_NSTableView.m */; };
 		5C4E9D0D1213384D000C45AD /* ZKRecordTypeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CDF1213384D000C45AD /* ZKRecordTypeInfo.m */; };
 		5C4E9D0E1213384D000C45AD /* ZKRecordTypeMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CE11213384D000C45AD /* ZKRecordTypeMapping.m */; };
 		5C4E9D0F1213384D000C45AD /* ZKRelatedList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CE31213384D000C45AD /* ZKRelatedList.m */; };
@@ -34,7 +33,6 @@
 		5C4E9D121213384D000C45AD /* ZKSaveResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CE91213384D000C45AD /* ZKSaveResult.m */; };
 		5C4E9D141213384D000C45AD /* ZKSoapException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CEE1213384D000C45AD /* ZKSoapException.m */; };
 		5C4E9D151213384D000C45AD /* ZKSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CF01213384D000C45AD /* ZKSObject.m */; };
-		5C4E9D161213384D000C45AD /* ZKURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CF21213384D000C45AD /* ZKURLConnection.m */; };
 		5C4E9D171213384D000C45AD /* ZKUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CF41213384D000C45AD /* ZKUserInfo.m */; };
 		5C4E9D181213384D000C45AD /* ZKXmlDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E9CF61213384D000C45AD /* ZKXmlDeserializer.m */; };
 		5C4E9D57121349D2000C45AD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4E9D56121349D2000C45AD /* Security.framework */; };
@@ -50,25 +48,26 @@
 		5C5815EF12133454000BA324 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5815E912133454000BA324 /* LoginViewController.m */; };
 		5C5815F012133454000BA324 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C5815EB12133454000BA324 /* DetailView.xib */; };
 		5C5815F112133454000BA324 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C5815EC12133454000BA324 /* MainWindow.xib */; };
-		5F0B85D01225EAAA00D767DA /* ZKGetDeletedResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B85CF1225EAAA00D767DA /* ZKGetDeletedResult.m */; };
+		5F0B85D01225EAAA00D767DA /* FDCGetDeletedResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B85CF1225EAAA00D767DA /* FDCGetDeletedResult.m */; };
 		5F0B85DC1225F58C00D767DA /* NSDate+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B85DB1225F58C00D767DA /* NSDate+Additions.m */; };
-		5F0B864D1225FE1900D767DA /* ZKDeletedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B864C1225FE1900D767DA /* ZKDeletedObject.m */; };
-		5F1F34641224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34631224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m */; };
-		5F1F34ED1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34EC1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m */; };
-		5F1F34F21224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */; };
-		5F46DD291273541D00CFF523 /* ZKOAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F46DD281273541D00CFF523 /* ZKOAuthViewController.m */; };
-		5F59F6701287260A0023A05F /* ZKServerSwitchboard+MyWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59F66F1287260A0023A05F /* ZKServerSwitchboard+MyWebService.m */; };
-		5F6E90991229A369006EF146 /* ZKEmailMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E90981229A369006EF146 /* ZKEmailMessage.m */; };
-		5F6E93B7122C8F0B006EF146 /* ZKMessageEnvelope.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E93B6122C8F0B006EF146 /* ZKMessageEnvelope.m */; };
-		5F6E93BA122C8F18006EF146 /* ZKMessageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E93B9122C8F18006EF146 /* ZKMessageElement.m */; };
-		5F6E9713122F145C006EF146 /* ZKGetUpdatedResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E9712122F145C006EF146 /* ZKGetUpdatedResult.m */; };
+		5F0B864D1225FE1900D767DA /* FDCDeletedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B864C1225FE1900D767DA /* FDCDeletedObject.m */; };
+		5F1F34641224AE5100B8F6B1 /* FDCServerSwitchboard+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34631224AE5100B8F6B1 /* FDCServerSwitchboard+Private.m */; };
+		5F1F34ED1224BB8D00B8F6B1 /* FDCServerSwitchboard+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34EC1224BB8D00B8F6B1 /* FDCServerSwitchboard+Utility.m */; };
+		5F1F34F21224BC1300B8F6B1 /* FDCServerSwitchboard+Describe.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F1F34F11224BC1300B8F6B1 /* FDCServerSwitchboard+Describe.m */; };
+		5F46DD291273541D00CFF523 /* FDCOAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F46DD281273541D00CFF523 /* FDCOAuthViewController.m */; };
+		5F59F6701287260A0023A05F /* FDCServerSwitchboard+MyWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59F66F1287260A0023A05F /* FDCServerSwitchboard+MyWebService.m */; };
+		5F6E90991229A369006EF146 /* FDCEmailMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E90981229A369006EF146 /* FDCEmailMessage.m */; };
+		5F6E93B7122C8F0B006EF146 /* FDCMessageEnvelope.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E93B6122C8F0B006EF146 /* FDCMessageEnvelope.m */; };
+		5F6E93BA122C8F18006EF146 /* FDCMessageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E93B9122C8F18006EF146 /* FDCMessageElement.m */; };
+		5F6E9713122F145C006EF146 /* FDCGetUpdatedResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E9712122F145C006EF146 /* FDCGetUpdatedResult.m */; };
 		5F976BBD1278CF7900F7FF2B /* NSURL+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F976BBC1278CF7900F7FF2B /* NSURL+Additions.m */; };
-		5FAD2E7D12936770005AE776 /* ZKServerSwitchboard+SampleApexWebSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAD2E7C12936770005AE776 /* ZKServerSwitchboard+SampleApexWebSvc.m */; };
-		5FAD2E81129370FC005AE776 /* ZKSampleAccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAD2E80129370FC005AE776 /* ZKSampleAccountInfo.m */; };
-		5FAD2E8412937107005AE776 /* ZKSampleContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAD2E8312937107005AE776 /* ZKSampleContactInfo.m */; };
-		5FAD2ED112937672005AE776 /* ZKSampleApexWebSvcTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAD2ED012937672005AE776 /* ZKSampleApexWebSvcTest.m */; };
-		5FB1A664122347CC00CEEDF1 /* ZKServerSwitchboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB1A663122347CC00CEEDF1 /* ZKServerSwitchboard.m */; };
+		5FAD2E7D12936770005AE776 /* FDCServerSwitchboard+SampleApexWebSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAD2E7C12936770005AE776 /* FDCServerSwitchboard+SampleApexWebSvc.m */; };
+		5FAD2E81129370FC005AE776 /* FDCSampleAccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAD2E80129370FC005AE776 /* FDCSampleAccountInfo.m */; };
+		5FAD2E8412937107005AE776 /* FDCSampleContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAD2E8312937107005AE776 /* FDCSampleContactInfo.m */; };
+		5FAD2ED112937672005AE776 /* FDCSampleApexWebSvcTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAD2ED012937672005AE776 /* FDCSampleApexWebSvcTest.m */; };
+		5FB1A664122347CC00CEEDF1 /* FDCServerSwitchboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB1A663122347CC00CEEDF1 /* FDCServerSwitchboard.m */; };
 		5FB1A6C8122359CC00CEEDF1 /* NSObject+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB1A6C7122359CC00CEEDF1 /* NSObject+Additions.m */; };
+		F42AED7C13663C1C00AC8E56 /* FDCURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = F42AED7B13663C1C00AC8E56 /* FDCURLConnection.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,8 +108,6 @@
 		5C4E9CD91213384D000C45AD /* ZKPicklistForRecordType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKPicklistForRecordType.m; sourceTree = "<group>"; };
 		5C4E9CDA1213384D000C45AD /* ZKQueryResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKQueryResult.h; sourceTree = "<group>"; };
 		5C4E9CDB1213384D000C45AD /* ZKQueryResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKQueryResult.m; sourceTree = "<group>"; };
-		5C4E9CDC1213384D000C45AD /* ZKQueryResult_NSTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKQueryResult_NSTableView.h; sourceTree = "<group>"; };
-		5C4E9CDD1213384D000C45AD /* ZKQueryResult_NSTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKQueryResult_NSTableView.m; sourceTree = "<group>"; };
 		5C4E9CDE1213384D000C45AD /* ZKRecordTypeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKRecordTypeInfo.h; sourceTree = "<group>"; };
 		5C4E9CDF1213384D000C45AD /* ZKRecordTypeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKRecordTypeInfo.m; sourceTree = "<group>"; };
 		5C4E9CE01213384D000C45AD /* ZKRecordTypeMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKRecordTypeMapping.h; sourceTree = "<group>"; };
@@ -128,8 +125,6 @@
 		5C4E9CEE1213384D000C45AD /* ZKSoapException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSoapException.m; sourceTree = "<group>"; };
 		5C4E9CEF1213384D000C45AD /* ZKSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKSObject.h; sourceTree = "<group>"; };
 		5C4E9CF01213384D000C45AD /* ZKSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSObject.m; sourceTree = "<group>"; };
-		5C4E9CF11213384D000C45AD /* ZKURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKURLConnection.h; sourceTree = "<group>"; };
-		5C4E9CF21213384D000C45AD /* ZKURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKURLConnection.m; sourceTree = "<group>"; };
 		5C4E9CF31213384D000C45AD /* ZKUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKUserInfo.h; sourceTree = "<group>"; };
 		5C4E9CF41213384D000C45AD /* ZKUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKUserInfo.m; sourceTree = "<group>"; };
 		5C4E9CF51213384D000C45AD /* ZKXmlDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKXmlDeserializer.h; sourceTree = "<group>"; };
@@ -154,44 +149,46 @@
 		5C5815EA12133454000BA324 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = SOURCE_ROOT; };
 		5C5815EB12133454000BA324 /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		5C5815EC12133454000BA324 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		5F0B85CE1225EAAA00D767DA /* ZKGetDeletedResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKGetDeletedResult.h; sourceTree = "<group>"; };
-		5F0B85CF1225EAAA00D767DA /* ZKGetDeletedResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKGetDeletedResult.m; sourceTree = "<group>"; };
+		5F0B85CE1225EAAA00D767DA /* FDCGetDeletedResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCGetDeletedResult.h; sourceTree = "<group>"; };
+		5F0B85CF1225EAAA00D767DA /* FDCGetDeletedResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCGetDeletedResult.m; sourceTree = "<group>"; };
 		5F0B85DA1225F58C00D767DA /* NSDate+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Additions.h"; sourceTree = "<group>"; };
 		5F0B85DB1225F58C00D767DA /* NSDate+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Additions.m"; sourceTree = "<group>"; };
-		5F0B864B1225FE1900D767DA /* ZKDeletedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKDeletedObject.h; sourceTree = "<group>"; };
-		5F0B864C1225FE1900D767DA /* ZKDeletedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKDeletedObject.m; sourceTree = "<group>"; };
-		5F1F34621224AE5100B8F6B1 /* ZKServerSwitchboard+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+Private.h"; sourceTree = "<group>"; };
-		5F1F34631224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+Private.m"; sourceTree = "<group>"; };
-		5F1F34EB1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+Utility.h"; sourceTree = "<group>"; };
-		5F1F34EC1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+Utility.m"; sourceTree = "<group>"; };
-		5F1F34F01224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+Describe.h"; sourceTree = "<group>"; };
-		5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+Describe.m"; sourceTree = "<group>"; };
-		5F46DD271273541D00CFF523 /* ZKOAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKOAuthViewController.h; sourceTree = "<group>"; };
-		5F46DD281273541D00CFF523 /* ZKOAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKOAuthViewController.m; sourceTree = "<group>"; };
-		5F59F66E1287260A0023A05F /* ZKServerSwitchboard+MyWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+MyWebService.h"; sourceTree = "<group>"; };
-		5F59F66F1287260A0023A05F /* ZKServerSwitchboard+MyWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+MyWebService.m"; sourceTree = "<group>"; };
-		5F6E90971229A369006EF146 /* ZKEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKEmailMessage.h; sourceTree = "<group>"; };
-		5F6E90981229A369006EF146 /* ZKEmailMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKEmailMessage.m; sourceTree = "<group>"; };
-		5F6E93B5122C8F0B006EF146 /* ZKMessageEnvelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKMessageEnvelope.h; sourceTree = "<group>"; };
-		5F6E93B6122C8F0B006EF146 /* ZKMessageEnvelope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKMessageEnvelope.m; sourceTree = "<group>"; };
-		5F6E93B8122C8F18006EF146 /* ZKMessageElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKMessageElement.h; sourceTree = "<group>"; };
-		5F6E93B9122C8F18006EF146 /* ZKMessageElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKMessageElement.m; sourceTree = "<group>"; };
-		5F6E9711122F145C006EF146 /* ZKGetUpdatedResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKGetUpdatedResult.h; sourceTree = "<group>"; };
-		5F6E9712122F145C006EF146 /* ZKGetUpdatedResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKGetUpdatedResult.m; sourceTree = "<group>"; };
+		5F0B864B1225FE1900D767DA /* FDCDeletedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCDeletedObject.h; sourceTree = "<group>"; };
+		5F0B864C1225FE1900D767DA /* FDCDeletedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCDeletedObject.m; sourceTree = "<group>"; };
+		5F1F34621224AE5100B8F6B1 /* FDCServerSwitchboard+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FDCServerSwitchboard+Private.h"; sourceTree = "<group>"; };
+		5F1F34631224AE5100B8F6B1 /* FDCServerSwitchboard+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FDCServerSwitchboard+Private.m"; sourceTree = "<group>"; };
+		5F1F34EB1224BB8D00B8F6B1 /* FDCServerSwitchboard+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FDCServerSwitchboard+Utility.h"; sourceTree = "<group>"; };
+		5F1F34EC1224BB8D00B8F6B1 /* FDCServerSwitchboard+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FDCServerSwitchboard+Utility.m"; sourceTree = "<group>"; };
+		5F1F34F01224BC1300B8F6B1 /* FDCServerSwitchboard+Describe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FDCServerSwitchboard+Describe.h"; sourceTree = "<group>"; };
+		5F1F34F11224BC1300B8F6B1 /* FDCServerSwitchboard+Describe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FDCServerSwitchboard+Describe.m"; sourceTree = "<group>"; };
+		5F46DD271273541D00CFF523 /* FDCOAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCOAuthViewController.h; sourceTree = "<group>"; };
+		5F46DD281273541D00CFF523 /* FDCOAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCOAuthViewController.m; sourceTree = "<group>"; };
+		5F59F66E1287260A0023A05F /* FDCServerSwitchboard+MyWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FDCServerSwitchboard+MyWebService.h"; sourceTree = "<group>"; };
+		5F59F66F1287260A0023A05F /* FDCServerSwitchboard+MyWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FDCServerSwitchboard+MyWebService.m"; sourceTree = "<group>"; };
+		5F6E90971229A369006EF146 /* FDCEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCEmailMessage.h; sourceTree = "<group>"; };
+		5F6E90981229A369006EF146 /* FDCEmailMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCEmailMessage.m; sourceTree = "<group>"; };
+		5F6E93B5122C8F0B006EF146 /* FDCMessageEnvelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCMessageEnvelope.h; sourceTree = "<group>"; };
+		5F6E93B6122C8F0B006EF146 /* FDCMessageEnvelope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCMessageEnvelope.m; sourceTree = "<group>"; };
+		5F6E93B8122C8F18006EF146 /* FDCMessageElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCMessageElement.h; sourceTree = "<group>"; };
+		5F6E93B9122C8F18006EF146 /* FDCMessageElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCMessageElement.m; sourceTree = "<group>"; };
+		5F6E9711122F145C006EF146 /* FDCGetUpdatedResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCGetUpdatedResult.h; sourceTree = "<group>"; };
+		5F6E9712122F145C006EF146 /* FDCGetUpdatedResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCGetUpdatedResult.m; sourceTree = "<group>"; };
 		5F976BBB1278CF7900F7FF2B /* NSURL+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Additions.h"; sourceTree = "<group>"; };
 		5F976BBC1278CF7900F7FF2B /* NSURL+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Additions.m"; sourceTree = "<group>"; };
-		5FAD2E7B12936770005AE776 /* ZKServerSwitchboard+SampleApexWebSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZKServerSwitchboard+SampleApexWebSvc.h"; sourceTree = "<group>"; };
-		5FAD2E7C12936770005AE776 /* ZKServerSwitchboard+SampleApexWebSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ZKServerSwitchboard+SampleApexWebSvc.m"; sourceTree = "<group>"; };
-		5FAD2E7F129370FC005AE776 /* ZKSampleAccountInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKSampleAccountInfo.h; sourceTree = "<group>"; };
-		5FAD2E80129370FC005AE776 /* ZKSampleAccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSampleAccountInfo.m; sourceTree = "<group>"; };
-		5FAD2E8212937107005AE776 /* ZKSampleContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKSampleContactInfo.h; sourceTree = "<group>"; };
-		5FAD2E8312937107005AE776 /* ZKSampleContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSampleContactInfo.m; sourceTree = "<group>"; };
-		5FAD2ECF12937672005AE776 /* ZKSampleApexWebSvcTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKSampleApexWebSvcTest.h; sourceTree = "<group>"; };
-		5FAD2ED012937672005AE776 /* ZKSampleApexWebSvcTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSampleApexWebSvcTest.m; sourceTree = "<group>"; };
-		5FB1A662122347CC00CEEDF1 /* ZKServerSwitchboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKServerSwitchboard.h; sourceTree = "<group>"; };
-		5FB1A663122347CC00CEEDF1 /* ZKServerSwitchboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKServerSwitchboard.m; sourceTree = "<group>"; };
+		5FAD2E7B12936770005AE776 /* FDCServerSwitchboard+SampleApexWebSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FDCServerSwitchboard+SampleApexWebSvc.h"; sourceTree = "<group>"; };
+		5FAD2E7C12936770005AE776 /* FDCServerSwitchboard+SampleApexWebSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FDCServerSwitchboard+SampleApexWebSvc.m"; sourceTree = "<group>"; };
+		5FAD2E7F129370FC005AE776 /* FDCSampleAccountInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCSampleAccountInfo.h; sourceTree = "<group>"; };
+		5FAD2E80129370FC005AE776 /* FDCSampleAccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCSampleAccountInfo.m; sourceTree = "<group>"; };
+		5FAD2E8212937107005AE776 /* FDCSampleContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCSampleContactInfo.h; sourceTree = "<group>"; };
+		5FAD2E8312937107005AE776 /* FDCSampleContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCSampleContactInfo.m; sourceTree = "<group>"; };
+		5FAD2ECF12937672005AE776 /* FDCSampleApexWebSvcTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCSampleApexWebSvcTest.h; sourceTree = "<group>"; };
+		5FAD2ED012937672005AE776 /* FDCSampleApexWebSvcTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCSampleApexWebSvcTest.m; sourceTree = "<group>"; };
+		5FB1A662122347CC00CEEDF1 /* FDCServerSwitchboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCServerSwitchboard.h; sourceTree = "<group>"; };
+		5FB1A663122347CC00CEEDF1 /* FDCServerSwitchboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCServerSwitchboard.m; sourceTree = "<group>"; };
 		5FB1A6C6122359CC00CEEDF1 /* NSObject+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Additions.h"; sourceTree = "<group>"; };
 		5FB1A6C7122359CC00CEEDF1 /* NSObject+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Additions.m"; sourceTree = "<group>"; };
+		F42AED7A13663C1C00AC8E56 /* FDCURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCURLConnection.h; sourceTree = "<group>"; };
+		F42AED7B13663C1C00AC8E56 /* FDCURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCURLConnection.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,28 +235,28 @@
 				5C4E9CEA1213384D000C45AD /* ZKSforce.h */,
 				5C4E9CED1213384D000C45AD /* ZKSoapException.h */,
 				5C4E9CEE1213384D000C45AD /* ZKSoapException.m */,
-				5C4E9CF11213384D000C45AD /* ZKURLConnection.h */,
-				5C4E9CF21213384D000C45AD /* ZKURLConnection.m */,
 				5C4E9CF31213384D000C45AD /* ZKUserInfo.h */,
 				5C4E9CF41213384D000C45AD /* ZKUserInfo.m */,
 				5C4E9CF51213384D000C45AD /* ZKXmlDeserializer.h */,
 				5C4E9CF61213384D000C45AD /* ZKXmlDeserializer.m */,
-				5FB1A662122347CC00CEEDF1 /* ZKServerSwitchboard.h */,
-				5FB1A663122347CC00CEEDF1 /* ZKServerSwitchboard.m */,
-				5F1F34621224AE5100B8F6B1 /* ZKServerSwitchboard+Private.h */,
-				5F1F34631224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m */,
-				5F1F34EB1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.h */,
-				5F1F34EC1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m */,
-				5F1F34F01224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.h */,
-				5F1F34F11224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m */,
+				F42AED7A13663C1C00AC8E56 /* FDCURLConnection.h */,
+				F42AED7B13663C1C00AC8E56 /* FDCURLConnection.m */,
+				5FB1A662122347CC00CEEDF1 /* FDCServerSwitchboard.h */,
+				5FB1A663122347CC00CEEDF1 /* FDCServerSwitchboard.m */,
+				5F1F34621224AE5100B8F6B1 /* FDCServerSwitchboard+Private.h */,
+				5F1F34631224AE5100B8F6B1 /* FDCServerSwitchboard+Private.m */,
+				5F1F34EB1224BB8D00B8F6B1 /* FDCServerSwitchboard+Utility.h */,
+				5F1F34EC1224BB8D00B8F6B1 /* FDCServerSwitchboard+Utility.m */,
+				5F1F34F01224BC1300B8F6B1 /* FDCServerSwitchboard+Describe.h */,
+				5F1F34F11224BC1300B8F6B1 /* FDCServerSwitchboard+Describe.m */,
 				5FB1A6C6122359CC00CEEDF1 /* NSObject+Additions.h */,
 				5FB1A6C7122359CC00CEEDF1 /* NSObject+Additions.m */,
 				5F0B85DA1225F58C00D767DA /* NSDate+Additions.h */,
 				5F0B85DB1225F58C00D767DA /* NSDate+Additions.m */,
-				5F0B864B1225FE1900D767DA /* ZKDeletedObject.h */,
-				5F0B864C1225FE1900D767DA /* ZKDeletedObject.m */,
-				5F46DD271273541D00CFF523 /* ZKOAuthViewController.h */,
-				5F46DD281273541D00CFF523 /* ZKOAuthViewController.m */,
+				5F0B864B1225FE1900D767DA /* FDCDeletedObject.h */,
+				5F0B864C1225FE1900D767DA /* FDCDeletedObject.m */,
+				5F46DD271273541D00CFF523 /* FDCOAuthViewController.h */,
+				5F46DD281273541D00CFF523 /* FDCOAuthViewController.m */,
 				5F976BBB1278CF7900F7FF2B /* NSURL+Additions.h */,
 				5F976BBC1278CF7900F7FF2B /* NSURL+Additions.m */,
 			);
@@ -290,8 +287,8 @@
 				5C5815661213189E000BA324 /* SVNTestAppDelegate.m */,
 				5C58156B1213189E000BA324 /* DetailViewController.h */,
 				5C58156C1213189E000BA324 /* DetailViewController.m */,
-				5F59F66E1287260A0023A05F /* ZKServerSwitchboard+MyWebService.h */,
-				5F59F66F1287260A0023A05F /* ZKServerSwitchboard+MyWebService.m */,
+				5F59F66E1287260A0023A05F /* FDCServerSwitchboard+MyWebService.h */,
+				5F59F66F1287260A0023A05F /* FDCServerSwitchboard+MyWebService.m */,
 				5FAD2E7E129370D5005AE776 /* SampleApexWebSvc */,
 			);
 			path = Classes;
@@ -344,12 +341,10 @@
 				5C4E9CD11213384D000C45AD /* ZKLoginResult.m */,
 				5C4E9CDA1213384D000C45AD /* ZKQueryResult.h */,
 				5C4E9CDB1213384D000C45AD /* ZKQueryResult.m */,
-				5C4E9CDC1213384D000C45AD /* ZKQueryResult_NSTableView.h */,
-				5C4E9CDD1213384D000C45AD /* ZKQueryResult_NSTableView.m */,
-				5F0B85CE1225EAAA00D767DA /* ZKGetDeletedResult.h */,
-				5F0B85CF1225EAAA00D767DA /* ZKGetDeletedResult.m */,
-				5F6E9711122F145C006EF146 /* ZKGetUpdatedResult.h */,
-				5F6E9712122F145C006EF146 /* ZKGetUpdatedResult.m */,
+				5F0B85CE1225EAAA00D767DA /* FDCGetDeletedResult.h */,
+				5F0B85CF1225EAAA00D767DA /* FDCGetDeletedResult.m */,
+				5F6E9711122F145C006EF146 /* FDCGetUpdatedResult.h */,
+				5F6E9712122F145C006EF146 /* FDCGetUpdatedResult.m */,
 			);
 			name = Results;
 			sourceTree = "<group>";
@@ -359,8 +354,8 @@
 			children = (
 				5C4E9CEF1213384D000C45AD /* ZKSObject.h */,
 				5C4E9CF01213384D000C45AD /* ZKSObject.m */,
-				5F6E90971229A369006EF146 /* ZKEmailMessage.h */,
-				5F6E90981229A369006EF146 /* ZKEmailMessage.m */,
+				5F6E90971229A369006EF146 /* FDCEmailMessage.h */,
+				5F6E90981229A369006EF146 /* FDCEmailMessage.m */,
 			);
 			name = ZKSObjects;
 			sourceTree = "<group>";
@@ -368,10 +363,10 @@
 		5F6E93B4122C8EF4006EF146 /* Message Envelope */ = {
 			isa = PBXGroup;
 			children = (
-				5F6E93B5122C8F0B006EF146 /* ZKMessageEnvelope.h */,
-				5F6E93B6122C8F0B006EF146 /* ZKMessageEnvelope.m */,
-				5F6E93B8122C8F18006EF146 /* ZKMessageElement.h */,
-				5F6E93B9122C8F18006EF146 /* ZKMessageElement.m */,
+				5F6E93B5122C8F0B006EF146 /* FDCMessageEnvelope.h */,
+				5F6E93B6122C8F0B006EF146 /* FDCMessageEnvelope.m */,
+				5F6E93B8122C8F18006EF146 /* FDCMessageElement.h */,
+				5F6E93B9122C8F18006EF146 /* FDCMessageElement.m */,
 			);
 			name = "Message Envelope";
 			sourceTree = "<group>";
@@ -412,14 +407,14 @@
 		5FAD2E7E129370D5005AE776 /* SampleApexWebSvc */ = {
 			isa = PBXGroup;
 			children = (
-				5FAD2E7B12936770005AE776 /* ZKServerSwitchboard+SampleApexWebSvc.h */,
-				5FAD2E7C12936770005AE776 /* ZKServerSwitchboard+SampleApexWebSvc.m */,
-				5FAD2E7F129370FC005AE776 /* ZKSampleAccountInfo.h */,
-				5FAD2E80129370FC005AE776 /* ZKSampleAccountInfo.m */,
-				5FAD2E8212937107005AE776 /* ZKSampleContactInfo.h */,
-				5FAD2E8312937107005AE776 /* ZKSampleContactInfo.m */,
-				5FAD2ECF12937672005AE776 /* ZKSampleApexWebSvcTest.h */,
-				5FAD2ED012937672005AE776 /* ZKSampleApexWebSvcTest.m */,
+				5FAD2E7B12936770005AE776 /* FDCServerSwitchboard+SampleApexWebSvc.h */,
+				5FAD2E7C12936770005AE776 /* FDCServerSwitchboard+SampleApexWebSvc.m */,
+				5FAD2E7F129370FC005AE776 /* FDCSampleAccountInfo.h */,
+				5FAD2E80129370FC005AE776 /* FDCSampleAccountInfo.m */,
+				5FAD2E8212937107005AE776 /* FDCSampleContactInfo.h */,
+				5FAD2E8312937107005AE776 /* FDCSampleContactInfo.m */,
+				5FAD2ECF12937672005AE776 /* FDCSampleApexWebSvcTest.h */,
+				5FAD2ED012937672005AE776 /* FDCSampleApexWebSvcTest.m */,
 			);
 			name = SampleApexWebSvc;
 			sourceTree = "<group>";
@@ -507,7 +502,6 @@
 				5C4E9D091213384D000C45AD /* ZKPicklistEntry.m in Sources */,
 				5C4E9D0A1213384D000C45AD /* ZKPicklistForRecordType.m in Sources */,
 				5C4E9D0B1213384D000C45AD /* ZKQueryResult.m in Sources */,
-				5C4E9D0C1213384D000C45AD /* ZKQueryResult_NSTableView.m in Sources */,
 				5C4E9D0D1213384D000C45AD /* ZKRecordTypeInfo.m in Sources */,
 				5C4E9D0E1213384D000C45AD /* ZKRecordTypeMapping.m in Sources */,
 				5C4E9D0F1213384D000C45AD /* ZKRelatedList.m in Sources */,
@@ -516,28 +510,28 @@
 				5C4E9D121213384D000C45AD /* ZKSaveResult.m in Sources */,
 				5C4E9D141213384D000C45AD /* ZKSoapException.m in Sources */,
 				5C4E9D151213384D000C45AD /* ZKSObject.m in Sources */,
-				5C4E9D161213384D000C45AD /* ZKURLConnection.m in Sources */,
 				5C4E9D171213384D000C45AD /* ZKUserInfo.m in Sources */,
 				5C4E9D181213384D000C45AD /* ZKXmlDeserializer.m in Sources */,
-				5FB1A664122347CC00CEEDF1 /* ZKServerSwitchboard.m in Sources */,
+				5FB1A664122347CC00CEEDF1 /* FDCServerSwitchboard.m in Sources */,
 				5FB1A6C8122359CC00CEEDF1 /* NSObject+Additions.m in Sources */,
-				5F1F34641224AE5100B8F6B1 /* ZKServerSwitchboard+Private.m in Sources */,
-				5F1F34ED1224BB8D00B8F6B1 /* ZKServerSwitchboard+Utility.m in Sources */,
-				5F1F34F21224BC1300B8F6B1 /* ZKServerSwitchboard+Describe.m in Sources */,
-				5F0B85D01225EAAA00D767DA /* ZKGetDeletedResult.m in Sources */,
+				5F1F34641224AE5100B8F6B1 /* FDCServerSwitchboard+Private.m in Sources */,
+				5F1F34ED1224BB8D00B8F6B1 /* FDCServerSwitchboard+Utility.m in Sources */,
+				5F1F34F21224BC1300B8F6B1 /* FDCServerSwitchboard+Describe.m in Sources */,
+				5F0B85D01225EAAA00D767DA /* FDCGetDeletedResult.m in Sources */,
 				5F0B85DC1225F58C00D767DA /* NSDate+Additions.m in Sources */,
-				5F0B864D1225FE1900D767DA /* ZKDeletedObject.m in Sources */,
-				5F6E90991229A369006EF146 /* ZKEmailMessage.m in Sources */,
-				5F6E93B7122C8F0B006EF146 /* ZKMessageEnvelope.m in Sources */,
-				5F6E93BA122C8F18006EF146 /* ZKMessageElement.m in Sources */,
-				5F6E9713122F145C006EF146 /* ZKGetUpdatedResult.m in Sources */,
-				5F46DD291273541D00CFF523 /* ZKOAuthViewController.m in Sources */,
+				5F0B864D1225FE1900D767DA /* FDCDeletedObject.m in Sources */,
+				5F6E90991229A369006EF146 /* FDCEmailMessage.m in Sources */,
+				5F6E93B7122C8F0B006EF146 /* FDCMessageEnvelope.m in Sources */,
+				5F6E93BA122C8F18006EF146 /* FDCMessageElement.m in Sources */,
+				5F6E9713122F145C006EF146 /* FDCGetUpdatedResult.m in Sources */,
+				5F46DD291273541D00CFF523 /* FDCOAuthViewController.m in Sources */,
 				5F976BBD1278CF7900F7FF2B /* NSURL+Additions.m in Sources */,
-				5F59F6701287260A0023A05F /* ZKServerSwitchboard+MyWebService.m in Sources */,
-				5FAD2E7D12936770005AE776 /* ZKServerSwitchboard+SampleApexWebSvc.m in Sources */,
-				5FAD2E81129370FC005AE776 /* ZKSampleAccountInfo.m in Sources */,
-				5FAD2E8412937107005AE776 /* ZKSampleContactInfo.m in Sources */,
-				5FAD2ED112937672005AE776 /* ZKSampleApexWebSvcTest.m in Sources */,
+				5F59F6701287260A0023A05F /* FDCServerSwitchboard+MyWebService.m in Sources */,
+				5FAD2E7D12936770005AE776 /* FDCServerSwitchboard+SampleApexWebSvc.m in Sources */,
+				5FAD2E81129370FC005AE776 /* FDCSampleAccountInfo.m in Sources */,
+				5FAD2E8412937107005AE776 /* FDCSampleContactInfo.m in Sources */,
+				5FAD2ED112937672005AE776 /* FDCSampleApexWebSvcTest.m in Sources */,
+				F42AED7C13663C1C00AC8E56 /* FDCURLConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
