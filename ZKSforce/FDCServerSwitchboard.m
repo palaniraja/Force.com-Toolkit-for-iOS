@@ -93,7 +93,7 @@ static FDCServerSwitchboard * sharedSwitchboard =  nil;
                                             &kCFTypeDictionaryValueCallBacks);
     connectionsData = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks,
                                                 &kCFTypeDictionaryValueCallBacks);
-    preferredApiVersion = 19;
+    preferredApiVersion = 21;
 
     self.logXMLInOut = NO;
     
