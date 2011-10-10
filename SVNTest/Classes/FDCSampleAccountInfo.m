@@ -20,7 +20,7 @@
 //
 
 #import "FDCSampleAccountInfo.h"
-#import "FDCMessageElement.h";
+#import "FDCMessageElement.h"
 
 
 @implementation  FDCSampleAccountInfo 
